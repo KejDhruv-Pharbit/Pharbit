@@ -80,7 +80,7 @@ contract PharbitOptimized is ERC1155, ERC1155Holder, Ownable {
         });
 
         _mint(company, batchId, supply, "");
-        emit BatchMinted(batchId, company, supply, pricePerToken);
+        emit BatchMinted(batchId, company, supply, pricePerToken)  ; 
     }
 
     // =========================
