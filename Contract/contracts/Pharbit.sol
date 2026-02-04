@@ -56,7 +56,7 @@ contract PharbitOptimized is ERC1155, ERC1155Holder, Ownable {
     // =========================
     event BatchMinted(uint256 indexed batchId, address indexed company, uint256 supply, uint256 price);
     event TransferInitiated(uint256 indexed txId, uint256 indexed batchId, address indexed from, address to, uint256 amount, bytes32 courierHash);
-    event Redeemed(uint256 indexed txId, address indexed user);
+    event Redeemed(uint256 indexed txId, address indexed user );
 
     constructor() ERC1155("") Ownable(msg.sender) {}
 
