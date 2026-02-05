@@ -2,15 +2,17 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-contract Pharbit is ERC1155, ERC1155Holder, Ownable {
+contract Pharbit is ERC1155, ERC1155Holder, AccessControl {
 
     using ECDSA for bytes32;
     using MessageHashUtils for bytes32;
+
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 
     // =========================
     // ERRORS
@@ -33,6 +35,7 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
         address company;        // Owner company
         uint128 totalSupply;
         uint128 pricePerToken;
+        bytes32 metadataHash;
         bool active;            // false = frozen
     }
 
@@ -89,7 +92,22 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
     // CONSTRUCTOR
     // =========================
 
-    constructor() ERC1155("") Ownable(msg.sender) {}
+    constructor() ERC1155("") {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+    }
+
+    // =========================
+    // ADMIN MANAGEMENT
+    // =========================
+
+    function addAdmin(address user) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        grantRole(ADMIN_ROLE, user);
+    }
+
+    function removeAdmin(address user) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        revokeRole(ADMIN_ROLE, user);
+    }
 
     // =========================
     // COMPANY MINT (SELF)
@@ -97,7 +115,8 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
 
     function mintBatch(
         uint128 supply,
-        uint128 pricePerToken
+        uint128 pricePerToken,
+        bytes32 metadataHash
     ) external {
 
         if (supply == 0) revert InvalidAmount();
@@ -108,6 +127,7 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
             company: msg.sender,
             totalSupply: supply,
             pricePerToken: pricePerToken,
+            metadataHash: metadataHash,
             active: true
         });
 
@@ -240,7 +260,8 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
     // FREEZE / UNFREEZE (ADMIN)
     // =========================
 
-    function freezeBatch(uint256 batchId) external onlyOwner {
+    function freezeBatch(uint256 batchId) external {
+        if (batches[batchId].company != msg.sender) revert Unauthorized();
 
         if (batchId >= batchCount) revert InvalidBatch();
 
@@ -249,7 +270,8 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
         emit BatchFrozen(batchId);
     }
 
-    function unfreezeBatch(uint256 batchId) external onlyOwner {
+    function unfreezeBatch(uint256 batchId) external {
+        if (batches[batchId].company != msg.sender) revert Unauthorized();
 
         if (batchId >= batchCount) revert InvalidBatch();
 
@@ -290,7 +312,7 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
         }
 
         // Case 2: Admin returns escrow
-        if (msg.sender == owner()) {
+        if (hasRole(ADMIN_ROLE, msg.sender)) {
 
             uint256 esc = balanceOf(address(this), batchId);
 
@@ -312,13 +334,27 @@ contract Pharbit is ERC1155, ERC1155Holder, Ownable {
     }
 
     // =========================
+    // VERIFY METADATA
+    // =========================
+
+    function verifyMetadata(
+        uint256 batchId,
+        bytes32 hashToCheck
+    ) external view returns (bool) {
+
+        if (batchId >= batchCount) revert InvalidBatch();
+
+        return batches[batchId].metadataHash == hashToCheck;
+    }
+
+    // =========================
     // INTERFACE SUPPORT
     // =========================
 
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC1155, ERC1155Holder)
+        override(ERC1155, ERC1155Holder, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
