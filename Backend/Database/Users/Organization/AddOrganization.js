@@ -9,57 +9,57 @@ import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export async function createOrgWallet(data) {
 
-  // 1️⃣ Check if organization already exists
-  const { data: existingOrg, error: fetchError } = await supabase
-    .from("organizations")
-    .select("id, wallet_address")
-    .eq("registration_id", data.registrationId) // ✅ FIXED
-    .single();
+    // 1️⃣ Check if organization already exists
+    const { data: existingOrg, error: fetchError } = await supabase
+        .from("organizations")
+        .select("id, wallet_address")
+        .eq("registration_id", data.registrationId) // ✅ FIXED
+        .single();
 
-  if (fetchError && fetchError.code !== "PGRST116") {
-    throw fetchError;
-  }
-
-  // If org exists
-  if (existingOrg) {
-
-    if (existingOrg.wallet_address) {
-      throw new Error("Organization already has a wallet");
+    if (fetchError && fetchError.code !== "PGRST116") {
+        throw fetchError;
     }
 
-    throw new Error("Organization already exists");
-  }
+    // If org exists
+    if (existingOrg) {
 
-  // 2️⃣ Generate wallet
-  const wallet = Wallet.createRandom();
+        if (existingOrg.wallet_address) {
+            throw new Error("Organization already has a wallet");
+        }
 
-  // 3️⃣ Encrypt private key
-  const encrypted = encrypt(wallet.privateKey);
+        throw new Error("Organization already exists");
+    }
 
-  // 4️⃣ Insert into DB
-  const { data: newOrg, error } = await supabase
-    .from("organizations")
-    .insert({
-      registration_id: data.registrationId, // ✅ FIXED
-      name: data.organizationName,
-      type: data.type,
+    // 2️⃣ Generate wallet
+    const wallet = Wallet.createRandom();
 
-      wallet_address: wallet.address,
-      wallet_encrypted: encrypted.content,
-      wallet_iv: encrypted.iv,
-      wallet_tag: encrypted.tag
-    })
-    .select()
-    .single();
+    // 3️⃣ Encrypt private key
+    const encrypted = encrypt(wallet.privateKey);
 
-  if (error) throw error;
+    // 4️⃣ Insert into DB
+    const { data: newOrg, error } = await supabase
+        .from("organizations")
+        .insert({
+            registration_id: data.registrationId, // ✅ FIXED
+            name: data.organizationName,
+            type: data.type,
 
-  // 5️⃣ Return (DEV ONLY)
-  return {
-    id: newOrg.id,
-    name: newOrg.name,
-    address: wallet.address,
+            wallet_address: wallet.address,
+            wallet_encrypted: encrypted.content,
+            wallet_iv: encrypted.iv,
+            wallet_tag: encrypted.tag
+        })
+        .select()
+        .single();
 
-    privateKey: wallet.privateKey 
-  };
+    if (error) throw error;
+
+    // 5️⃣ Return (DEV ONLY)
+    return {
+        id: newOrg.id,
+        name: newOrg.name,
+        address: wallet.address,
+
+        privateKey: wallet.privateKey
+    };
 }

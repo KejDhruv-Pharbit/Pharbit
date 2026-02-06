@@ -11,5 +11,5 @@ export async function createAuthUser(email, password) {
 
   if (error) throw error;
 
-  return data.user; 
+  return data.user;
 }
