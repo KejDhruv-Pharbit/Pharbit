@@ -2,6 +2,7 @@ import express from "express";
 import supabase from "../../Middleware/Database/DatabaseConnect.js";
 import { createAuthUser } from "../../Database/Users/User/CreateUser.js";
 import { FindUser, getAuthUser } from "../../Middleware/Database/AuthUser.js";
+import { UserDetails } from "../../Database/Users/User/UserDetails.js";
 
 const router = express.Router();
 
@@ -167,10 +168,9 @@ router.get("/auth/me", async (req, res) => {
         error: "Unauthorized"
       });
     }
-    const employee = await FindUser(authUser.id);
+    const employee = await UserDetails(authUser.id);
     return res.status(200).json({
       message: "User fetched successfully",
-      user: authUser,
       employee
     });
 
