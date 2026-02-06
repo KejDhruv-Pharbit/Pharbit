@@ -1,6 +1,6 @@
 import express from "express";
 
-import { FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
+import { FindUser, getAuthUser } from "../../Middleware/Database/AuthUser.js";
 import { findInviteByToken, InviteEmployee, markInviteUsed } from "../../Database/Users/Organization/InviteEmployee.js";
 import { createAuthUser } from "../../Database/Users/User/CreateUser.js";
 import { EmployeeRegistration } from "../../Database/Users/Organization/EmployeeRegistration.js";
@@ -15,7 +15,7 @@ router.post("/org/invite", async (req, res) => {
                 error: "Unauthorized"
             });
         }
-        const employee = await FindRole(authUser.id);
+        const employee = await FindUser(authUser.id);
         if (!employee) {
             return res.status(403).json({
                 error: "Not an employee"

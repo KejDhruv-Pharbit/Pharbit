@@ -8,7 +8,7 @@ export const getAuthUser = async (req) => {
     return data.user;
 };
 
-export const FindRole = async (userId) => {
+export const FindUser = async (userId) => {
     const { data, error } = await supabase
         .from("employees")
         .select("*")

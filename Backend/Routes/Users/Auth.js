@@ -1,6 +1,7 @@
 import express from "express";
 import supabase from "../../Middleware/Database/DatabaseConnect.js";
 import { createAuthUser } from "../../Database/Users/User/CreateUser.js";
+import { FindUser, getAuthUser } from "../../Middleware/Database/AuthUser.js";
 
 const router = express.Router();
 
@@ -132,7 +133,7 @@ router.post("/auth/logout", async (req, res) => {
     if (error) {
       console.error("Supabase logout error:", error.message);
     }
-      
+
     res.clearCookie("Pharbit_Token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -153,4 +154,34 @@ router.post("/auth/logout", async (req, res) => {
     });
   }
 });
+
+
+
+router.get("/auth/me", async (req, res) => {
+  try {
+
+    const authUser = await getAuthUser(req);
+
+    if (!authUser) {
+      return res.status(401).json({
+        error: "Unauthorized"
+      });
+    }
+    const employee = await FindUser(authUser.id);
+    return res.status(200).json({
+      message: "User fetched successfully",
+      user: authUser,
+      employee
+    });
+
+  } catch (err) {
+
+    console.error("ME error:", err);
+
+    return res.status(500).json({
+      error: err.message || "Failed to fetch user"
+    });
+  }
+});
+
 export default router;
