@@ -1,12 +1,12 @@
 import express from "express";
 import supabase from "../../Middleware/Database/DatabaseConnect.js";
+import { createAuthUser } from "../../Database/Users/User/CreateUser.js";
 
 const router = express.Router();
 
-
+//User Login 
 router.post("/auth/login", async (req, res) => {
   try {
-
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({
@@ -17,15 +17,12 @@ router.post("/auth/login", async (req, res) => {
       email,
       password
     });
-
     if (error || !data?.session) {
       return res.status(401).json({
         error: "Invalid email or password"
       });
     }
-
     const { user, session } = data;
-
     res.cookie("Pharbit_Token", session.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -52,4 +49,108 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
+
+// User Signup
+router.post("/auth/signup", async (req, res) => {
+  try {
+
+    const { email, password, firstName, lastName } = req.body;
+
+    // Validate
+    if (!email || !password || !firstName || !lastName) {
+      return res.status(400).json({
+        error: "All fields are required"
+      });
+    }
+
+    // Create user (Admin)
+    const authUser = await createAuthUser(
+      email,
+      password,
+      firstName,
+      lastName
+    );
+
+    if (!authUser) {
+      return res.status(400).json({
+        error: "User creation failed"
+      });
+    }
+
+    // Auto login
+    const { data: loginData, error: loginErr } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (loginErr || !loginData?.session) {
+      return res.status(400).json({
+        error: "Login after signup failed"
+      });
+    }
+      
+    res.cookie("Pharbit_Token", loginData.session.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000, 
+      path: "/"
+    });
+
+    return res.status(201).json({
+      message: "Signup successful",
+      user: {
+        id: authUser.id,
+        email: authUser.email,
+        name: `${firstName} ${lastName}`
+      }
+    });
+
+  } catch (err) {
+    console.error("Signup error:", err);
+    return res.status(500).json({
+      error: err.message || "Signup failed"
+    });
+  }
+});
+
+
+// User Logout 
+router.post("/auth/logout", async (req, res) => {
+  try {
+
+    const token = req.cookies?.Pharbit_Token;
+
+    if (!token) {
+      return res.status(200).json({
+        message: "Already logged out"
+      });
+    }
+    const { error } = await supabase.auth.admin.signOut(token);
+
+    if (error) {
+      console.error("Supabase logout error:", error.message);
+    }
+      
+    res.clearCookie("Pharbit_Token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/"
+    });
+
+    return res.status(200).json({
+      message: "Logout successful"
+    });
+
+  } catch (err) {
+
+    console.error("Logout error:", err);
+
+    return res.status(500).json({
+      error: "Logout failed"
+    });
+  }
+});
 export default router;
