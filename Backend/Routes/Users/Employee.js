@@ -2,7 +2,7 @@ import express from "express";
 
 import { FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
 import { InviteEmployee } from "../../Database/Users/InviteEmployee.js";
-import { findInviteByToken } from "../../Database/Users/Organization/InviteEmployee.js";
+import { findInviteByToken, markInviteUsed } from "../../Database/Users/Organization/InviteEmployee.js";
 import { createAuthUser } from "../../Database/Users/User/CreateUser.js";
 import { EmployeeRegistration } from "../../Database/Users/Organization/EmployeeRegistration.js";
 

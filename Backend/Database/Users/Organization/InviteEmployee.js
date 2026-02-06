@@ -82,9 +82,13 @@ export async function findInviteByToken(token) {
 
 export async function markInviteUsed(inviteId) {
 
+  if (!inviteId) {
+    throw new Error("Invite ID required");
+  }
+
   const { error } = await supabase
     .from("org_invites")
-    .update({ used: true })
+    .delete()
     .eq("id", inviteId);
 
   if (error) throw error;
