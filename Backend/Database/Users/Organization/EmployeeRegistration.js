@@ -1,4 +1,4 @@
-import supabase from "../../../Middleware/Database/DatabaseConnect";
+import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export async function EmployeeRegistration({
     authId,

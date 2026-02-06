@@ -1,4 +1,4 @@
-import supabase from "./DatabaseConnect";
+import supabase from "./DatabaseConnect.js";
 
 export const getAuthUser = async (req) => {
     const token = req.cookies?.Pharbit_Token;
@@ -11,11 +11,11 @@ export const getAuthUser = async (req) => {
 export const FindRole = async (userId) => {
     const { data, error } = await supabase
         .from("employees")
-        .select("role")
+        .select("*")
         .eq("auth_id", userId)
         .single();
 
     if (error) throw error;
-
-    return data.role;
+    console.log(data);
+    return data;
 };

@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 
 
 import Organization from "./Routes/Users/Organization.js"
+import Autherization from "./Routes/Users/Auth.js"
+import Employee from "./Routes/Users/Employee.js"
 dotenv.config();
 
 const app = express();
@@ -19,6 +21,8 @@ app.use(cors({
 }));
 
 app.use("/", Organization); 
+app.use("/", Autherization); 
+app.use("/" , Employee)
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

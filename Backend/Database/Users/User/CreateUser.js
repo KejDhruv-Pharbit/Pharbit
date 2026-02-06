@@ -1,9 +1,9 @@
-import supabase from "../../../Middleware/Database/DatabaseConnect";
+import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export async function createAuthUser(email, password) {
 
   const { data, error } =
-    await supabaseAdmin.auth.admin.createUser({
+    await supabase.auth.admin.createUser({
       email,
       password,
       email_confirm: true

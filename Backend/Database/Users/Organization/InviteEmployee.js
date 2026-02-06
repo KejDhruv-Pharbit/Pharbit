@@ -52,8 +52,6 @@ export async function InviteEmployee(data, employee) {
 }
 
 
-
-
 export async function findInviteByToken(token) {
     if (!token) {
         throw new Error("Token required");

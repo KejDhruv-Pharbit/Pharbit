@@ -1,8 +1,7 @@
 import express from "express";
 
 import { FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
-import { InviteEmployee } from "../../Database/Users/InviteEmployee.js";
-import { findInviteByToken, markInviteUsed } from "../../Database/Users/Organization/InviteEmployee.js";
+import { findInviteByToken, InviteEmployee, markInviteUsed } from "../../Database/Users/Organization/InviteEmployee.js";
 import { createAuthUser } from "../../Database/Users/User/CreateUser.js";
 import { EmployeeRegistration } from "../../Database/Users/Organization/EmployeeRegistration.js";
 
@@ -22,6 +21,7 @@ router.post("/org/invite", async (req, res) => {
                 error: "Not an employee"
             });
         }
+        console.log(employee.role);
         if (!["manager", "owner", "admin"].includes(employee.role)) {
             return res.status(403).json({
                 error: "You are not allowed to invite"
@@ -45,51 +45,48 @@ router.post("/org/invite", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
 router.post("/auth/accept-invite", async (req, res) => {
+  try {
 
-    try {
-        const { token, password } = req.body;
-        if (!token || !password) {
-            return res.status(400).json({
-                error: "Token and password required"
-            });
-        }
-        const invite = await findInviteByToken(token);
+    const { token, password } = req.body;
 
-        const authUser = await createAuthUser(
-            invite.email,
-            password
-        );
-
-        const employee = await EmployeeRegistration({
-            authId: authUser.id,
-            orgId: invite.org_id,
-            email: invite.email,
-            role: invite.role
-        });
-
-        await markInviteUsed(invite.id);
-
-        if (error) throw error;
-
-        res.status(201).json({
-            message: "Account created successfully",
-            employee
-        });
-
-    } catch (err) {
-        console.error("Accept invite error:", err);
-        res.status(400).json({
-            error: err.message
-        });
+    if (!token || !password) {
+      return res.status(400).json({
+        error: "Token and password required"
+      });
     }
+
+    // 1. Find invite
+    const invite = await findInviteByToken(token);
+
+    // 2. Create auth user
+    const authUser = await createAuthUser(
+      invite.email,
+      password
+    );
+
+    // 3. Create employee
+    const employee = await EmployeeRegistration({
+      authId: authUser.id,
+      orgId: invite.org_id,
+      email: invite.email,
+      role: invite.role
+    });
+
+    await markInviteUsed(invite.id);
+    return res.status(201).json({
+      message: "Account created successfully",
+      employee
+    });
+
+  } catch (err) {
+
+    console.error("Accept invite error:", err);
+
+    return res.status(400).json({
+      error: err.message
+    });
+  }
 });
 
 
