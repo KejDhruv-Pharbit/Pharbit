@@ -4,11 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 export async function InviteEmployee(data, employee) {
 
   const { email, role } = data;
-
   if (!email || !role) {
     throw new Error("Email and role are required");
   }
-  // 1️⃣ Check if already employee
+
   const { data: existingEmp, error: fetchError } = await supabase
     .from("employees")
     .select("id")
@@ -28,7 +27,6 @@ export async function InviteEmployee(data, employee) {
   const expires = new Date();
   expires.setDate(expires.getDate() + 2); 
 
-  // 3️⃣ Insert invite
   const { error } = await supabase
     .from("org_invites")
     .insert({
@@ -51,4 +49,43 @@ export async function InviteEmployee(data, employee) {
     role,
     link
   };
+}
+
+
+
+
+export async function findInviteByToken(token) {
+  if (!token) {
+    throw new Error("Token required");
+  }
+  const { data, error } = await supabase
+    .from("org_invites")
+    .select("*")
+    .eq("token", token)
+    .single();
+
+  if (error || !data) {
+    throw new Error("Invalid invite");
+  }
+
+  if (data.used) {
+    throw new Error("Invite already used");
+  }
+
+  if (new Date(data.expires_at) < new Date()) {
+    throw new Error("Invite expired");
+  }
+
+  return data;
+}
+
+
+export async function markInviteUsed(inviteId) {
+
+  const { error } = await supabase
+    .from("org_invites")
+    .update({ used: true })
+    .eq("id", inviteId);
+
+  if (error) throw error;
 }
