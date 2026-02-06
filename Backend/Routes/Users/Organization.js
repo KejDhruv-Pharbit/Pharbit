@@ -10,7 +10,7 @@ router.use(express.json());
 router.use(cookieParser());
 
 
-router.post("/organization/entry", async (req, res) => {
+router.post("/organization", async (req, res) => {
   try {
     const {
       registrationId,
