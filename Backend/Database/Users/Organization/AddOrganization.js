@@ -1,6 +1,7 @@
 import { Wallet } from "ethers";
-import { encrypt, decrypt } from "../../../Middleware/Database/EncryptDecrypt.js";
+import { encrypt } from "../../../Middleware/Database/EncryptDecrypt.js";
 import supabase from "../../../Middleware/Database/DatabaseConnect.js";
+
 
 // ===============================
 // CREATE ORG + WALLET (SAFE)
@@ -12,7 +13,7 @@ export async function createOrgWallet(data) {
   const { data: existingOrg, error: fetchError } = await supabase
     .from("organizations")
     .select("id, wallet_address")
-    .eq("registrationId", data.registrationId)
+    .eq("registration_id", data.registrationId) // ✅ FIXED
     .single();
 
   if (fetchError && fetchError.code !== "PGRST116") {
@@ -21,7 +22,7 @@ export async function createOrgWallet(data) {
 
   // If org exists
   if (existingOrg) {
-    // If wallet already exists → stop
+
     if (existingOrg.wallet_address) {
       throw new Error("Organization already has a wallet");
     }
@@ -38,10 +39,11 @@ export async function createOrgWallet(data) {
   // 4️⃣ Insert into DB
   const { data: newOrg, error } = await supabase
     .from("organizations")
-      .insert({
-      registrationId : data.registrationId , 
+    .insert({
+      registration_id: data.registrationId, // ✅ FIXED
       name: data.organizationName,
       type: data.type,
+
       wallet_address: wallet.address,
       wallet_encrypted: encrypted.content,
       wallet_iv: encrypted.iv,
@@ -52,16 +54,12 @@ export async function createOrgWallet(data) {
 
   if (error) throw error;
 
-  // 5️⃣ Return (DEV ONLY: privateKey)
+  // 5️⃣ Return (DEV ONLY)
   return {
     id: newOrg.id,
-    name: data.organizationName,
+    name: newOrg.name,
     address: wallet.address,
 
-    // Remove in production
-    privateKey:
-      process.env.NODE_ENV === "development"
-        ? wallet.privateKey
-        : undefined
+    privateKey: wallet.privateKey 
   };
 }
