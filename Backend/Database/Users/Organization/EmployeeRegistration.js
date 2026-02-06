@@ -4,7 +4,9 @@ export async function EmployeeRegistration({
     authId,
     orgId,
     email,
-    role
+    role,
+    firstName, 
+    lastName , 
 }) {
 
     if (!authId || !orgId || !email || !role) {
@@ -31,6 +33,8 @@ export async function EmployeeRegistration({
             auth_id: authId,
             org_id: orgId,
             email,
+            first_name: firstName,
+            last_name : lastName , 
             role
         })
         .select()

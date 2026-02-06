@@ -60,9 +60,11 @@ router.post("/auth/accept-invite", async (req, res) => {
     const invite = await findInviteByToken(token);
 
     // 2. Create auth user
-    const authUser = await createAuthUser(
+      const authUser = await createAuthUser(
       invite.email,
-      password
+          password , 
+       invite.first_name,
+      invite.last_name , 
     );
 
     // 3. Create employee
@@ -70,7 +72,9 @@ router.post("/auth/accept-invite", async (req, res) => {
       authId: authUser.id,
       orgId: invite.org_id,
       email: invite.email,
-      role: invite.role
+      role: invite.role,
+       firstName: invite.first_name,
+      lastName : invite.last_name
     });
 
     await markInviteUsed(invite.id);

@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function InviteEmployee(data, employee) {
 
-    const { email, role } = data;
-    if (!email || !role) {
+    const { email, role  , firstName , lastName} = data;
+    if (!email || !role) { 
         throw new Error("Email and role are required");
     }
 
@@ -32,6 +32,8 @@ export async function InviteEmployee(data, employee) {
         .insert({
             org_id: employee.org_id,
             invited_by: employee.id,
+            first_name: firstName,
+            last_name : lastName , 
             email: email,
             role: role,
             token: token,
