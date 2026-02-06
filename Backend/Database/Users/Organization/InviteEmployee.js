@@ -1,0 +1,54 @@
+import supabase from "../../../Middleware/Database/DatabaseConnect.js";
+import { v4 as uuidv4 } from "uuid";
+
+export async function InviteEmployee(data, employee) {
+
+  const { email, role } = data;
+
+  if (!email || !role) {
+    throw new Error("Email and role are required");
+  }
+  // 1️⃣ Check if already employee
+  const { data: existingEmp, error: fetchError } = await supabase
+    .from("employees")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (fetchError && fetchError.code !== "PGRST116") {
+    throw fetchError;
+  }
+
+  if (existingEmp) {
+    throw new Error("Employee already exists");
+  }
+
+  const token = uuidv4();
+
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 2); 
+
+  // 3️⃣ Insert invite
+  const { error } = await supabase
+    .from("org_invites")
+    .insert({
+      org_id: employee.org_id,
+      invited_by: employee.id,
+      email: email,
+      role: role,
+      token: token,
+      expires_at: expires
+    });
+
+  if (error) throw error;
+
+  const link = `http://localhost:5173/join?token=${token}`;
+
+  console.log("INVITE LINK:", link);
+
+  return {
+    email,
+    role,
+    link
+  };
+}
