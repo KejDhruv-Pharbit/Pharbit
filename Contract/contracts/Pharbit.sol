@@ -262,17 +262,13 @@ contract Pharbit is ERC1155, ERC1155Holder, AccessControl {
 
     function freezeBatch(uint256 batchId) external {
         if (batches[batchId].company != msg.sender) revert Unauthorized();
-
         if (batchId >= batchCount) revert InvalidBatch();
-
         batches[batchId].active = false;
-
         emit BatchFrozen(batchId);
     }
 
     function unfreezeBatch(uint256 batchId) external {
         if (batches[batchId].company != msg.sender) revert Unauthorized();
-
         if (batchId >= batchCount) revert InvalidBatch();
 
         batches[batchId].active = true;
@@ -317,7 +313,6 @@ contract Pharbit is ERC1155, ERC1155Holder, AccessControl {
             uint256 esc = balanceOf(address(this), batchId);
 
             if (esc >= amount) {
-
                 _safeTransferFrom(
                     address(this),
                     company,
@@ -341,9 +336,7 @@ contract Pharbit is ERC1155, ERC1155Holder, AccessControl {
         uint256 batchId,
         bytes32 hashToCheck
     ) external view returns (bool) {
-
         if (batchId >= batchCount) revert InvalidBatch();
-
         return batches[batchId].metadataHash == hashToCheck;
     }
 
