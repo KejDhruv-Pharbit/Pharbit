@@ -1,126 +1,115 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect";
 
-export const createMedicine = async (req, res) => {
+export async function createMedicine(data, orgId) {
   try {
 
-    const {
-      name,
-      brand_name,
-      composition,
-      dosage_form,
-      category,
-      strength,
-      route_of_administration,
+    /* ---------------------------
+       Validation
+    ----------------------------*/
 
-      // Regulatory
-      drug_code,
-      hsn_code,
-      schedule,
-      approval_number,
-      manufacturing_license,
-
-      // Pricing
-      mrp,
-      cost_price,
-
-      // Safety
-      storage_conditions,
-      warnings,
-      side_effects,
-
-      // Legal
-      legal_document_url
-    } = req.body;
-
-    const organization_id = req.user.organization_id;
-
-    // Basic validation
-    if (!name || !composition || composition.length === 0) {
-      return res.status(400).json({
+    if (!data.name || !data.composition || data.composition.length === 0) {
+      return {
+        success: false,
+        status: 400,
         error: "Name and composition are required"
-      });
+      };
     }
 
-    if (!drug_code) {
-      return res.status(400).json({
+    if (!data.drug_code) {
+      return {
+        success: false,
+        status: 400,
         error: "Drug code is required"
-      });
+      };
     }
 
-    /* ----------------------------------
-       Check if medicine already exists
-    -----------------------------------*/
+    /* ---------------------------
+       Duplicate Check
+    ----------------------------*/
 
-    const { data: existingMedicine, error: findError } = await supabase
+    const { data: existing, error: findError } = await supabase
       .from("medicines")
       .select("id")
-      .eq("drug_code", drug_code)
+      .eq("drug_code", data.drug_code)
+      .ilike("name", data.name)
+      .eq("organization_id", orgId)
       .maybeSingle();
 
     if (findError) throw findError;
 
-    if (existingMedicine) {
-      return res.status(409).json({
+    if (existing) {
+      return {
         success: false,
+        status: 409,
         error: "Medicine with same name and drug code already exists"
-      });
+      };
     }
 
-    /* ----------------------------------
-       Insert new medicine
-    -----------------------------------*/
+    /* ---------------------------
+       Insert Medicine
+    ----------------------------*/
 
-    const { data, error } = await supabase
+    const { data: inserted, error: insertError } = await supabase
       .from("medicines")
       .insert([
         {
-          organization_id,
+          organization_id: orgId,
 
-          name,
-          brand_name,
-          composition,
-          dosage_form,
-          category,
-          strength,
-          route_of_administration,
+          name: data.name,
+          brand_name: data.brand_name,
 
-          drug_code,
-          hsn_code,
-          schedule,
-          approval_number,
-          manufacturing_license,
+          composition: data.composition,
+          category: data.category,
 
-          mrp,
-          cost_price,
+          dosage_form: data.dosage_form,
+          strength: data.strength,
+          route_of_administration: data.route_of_administration,
 
-          storage_conditions,
-          warnings,
-          side_effects,
+          drug_code: data.drug_code,
+          hsn_code: data.hsn_code,
+          schedule: data.schedule,
 
-          legal_document_url,
+          approval_number: data.approval_number,
+          manufacturing_license: data.manufacturing_license,
 
-          // Verification defaults
+          mrp: data.mrp,
+          cost_price: data.cost_price,
+
+          storage_conditions: data.storage_conditions,
+          warnings: data.warnings,
+          side_effects: data.side_effects,
+
+          legal_document_url: data.legal_document_url,
+
+          // Verification
           is_verified: false,
           verification_status: "pending"
         }
       ])
-      .select();
+      .select()
+      .single();
 
-    if (error) throw error;
+    if (insertError) throw insertError;
 
-    res.status(201).json({
+    /* ---------------------------
+       Success
+    ----------------------------*/
+
+    return {
       success: true,
+      status: 201,
       message: "Medicine submitted for verification",
-      data
-    });
+      data: inserted
+    };
 
   } catch (err) {
 
     console.error("Create medicine error:", err);
 
-    res.status(500).json({
+    return {
       success: false,
+      status: 500,
       error: err.message
-    });
+    };
   }
-};
+}
