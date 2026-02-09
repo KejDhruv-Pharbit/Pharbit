@@ -24,13 +24,20 @@ export const FindUser = async (userId) => {
 };
 
 
+export const FindRole = async (userId) => {
+    const { data, error } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+    if (error) throw error;
+    return data;
+};
+
+
 export const FindOrganization = async (userId) => {
   try {
-
-    /* -----------------------------
-       Get Organization ID
-    ------------------------------*/
-
     const { data: employee, error: empError } = await supabase
       .from("employees")
       .select("org_id")
@@ -40,10 +47,6 @@ export const FindOrganization = async (userId) => {
     if (empError || !employee) {
       throw new Error("Employee not linked to any organization");
     }
-
-    /* -----------------------------
-       Get Organization Details
-    ------------------------------*/
 
     const { data: organization, error: orgError } = await supabase
       .from("organizations")
@@ -55,15 +58,10 @@ export const FindOrganization = async (userId) => {
       throw new Error("Organization not found");
     }
 
-    /* -----------------------------
-       Success
-    ------------------------------*/
-
     return {
       success: true,
       data: organization
     };
-
   } catch (err) {
 
     console.error("FindOrganization error:", err);
