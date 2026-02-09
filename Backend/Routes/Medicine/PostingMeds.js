@@ -7,14 +7,12 @@ const router = express.Router();
 router.post("/addMeds", async (req, res) => {
   try {
     const authUser = await getAuthUser(req);
-
     if (!authUser) {
       return res.status(401).json({
         error: "Unauthorized"
       });
     }
     const orgResult = await FindOrganization(authUser.id);
-
     if (!orgResult.success) {
       return res.status(404).json({
         error: orgResult.error
@@ -34,6 +32,9 @@ router.post("/addMeds", async (req, res) => {
       error: "Internal server error"
     });
   }
-});
+}); 
+
+
+
 
 export default router;
