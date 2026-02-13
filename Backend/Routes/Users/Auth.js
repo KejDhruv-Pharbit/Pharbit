@@ -25,16 +25,16 @@ router.post("/auth/login", async (req, res) => {
       });
     }
     const { user, session } = data;
-res.cookie("Pharbit_Token", session.access_token, {
-  httpOnly: true,
-  secure: false,
-  sameSite: "lax",
-  maxAge: 60 * 60 * 1000,
-  path: "/"
-});
+    res.cookie("Pharbit_Token", session.access_token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 1000,
+      path: "/"
+    });
 
-console.log("Cookie should be set now");
-console.log("Headers being sent:", res.getHeaders());
+    console.log("Cookie should be set now");
+    console.log("Headers being sent:", res.getHeaders());
 
     return res.status(200).json({
       message: "Login successful",
@@ -94,12 +94,12 @@ router.post("/auth/signup", async (req, res) => {
         error: "Login after signup failed"
       });
     }
-      
+
     res.cookie("Pharbit_Token", loginData.session.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 60 * 60 * 1000, 
+      maxAge: 60 * 60 * 1000,
       path: "/"
     });
 

@@ -27,7 +27,7 @@ router.post(
         });
       }
       const files = req.files || {};
-      const data = req.body; 
+      const data = req.body;
       const orgId = orgResult.data.id;
       const result = await createMedicine(
         data,
@@ -56,7 +56,7 @@ router.put("/verifyMeds", async (req, res) => {
     }
 
     const roleResult = await FindRole(authUser.id);
-    console.log(roleResult); 
+    console.log(roleResult);
     if (!roleResult.success || roleResult.data.role !== "admin") {
       return res.status(403).json({
         error: "Admin access required"

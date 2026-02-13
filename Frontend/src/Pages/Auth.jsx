@@ -7,7 +7,7 @@ import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 
-const url = import.meta.env.VITE_API_URL; 
+const url = import.meta.env.VITE_API_URL;
 export default function Auth() {
   const navigate = useNavigate();
 
@@ -97,25 +97,25 @@ export default function Auth() {
         setIsLogin(true);
       }
     } catch (err) {
-        setError(err.message || "Something went wrong");
-        toast.error(err.message);
+      setError(err.message || "Something went wrong");
+      toast.error(err.message);
     }
     setLoading(false);
   };
 
   return (
-      <div className="auth-container" >
-          <Toaster 
-      position="top-center"
-      toastOptions={{
-        className: 'custom-toast', // Matches the CSS I provided
-        duration: 4000,
-      }} />
+    <div className="auth-container" >
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          className: 'custom-toast', // Matches the CSS I provided
+          duration: 4000,
+        }} />
       {/* LEFT SECTION - MOCKUP */}
       <div className="auth-left">
         <div className="phone-mockup">
           <img src={phoneimg} alt="phone" className="phone-frame" />
-          
+
           <div className="phone-screen">
             <h3>PHARBIT</h3>
             <p>Verify Your Medicine</p>
@@ -139,20 +139,20 @@ export default function Auth() {
             {isLogin
               ? "Welcome Back"
               : signupType === "employee"
-              ? "Activate Account"
-              : "Create an account"}
+                ? "Activate Account"
+                : "Create an account"}
           </h2>
           <p className="subtitle">
             {isLogin
               ? "Login to continue to your dashboard"
               : signupType === "employee"
-              ? "Use your employee token to activate your account"
-              : "Create your account to get started"}
+                ? "Use your employee token to activate your account"
+                : "Create your account to get started"}
           </p>
 
-                  <div className="toggle">
-                      
-                      <div className={`slider-blob ${isLogin ? "left" : "right"}`}></div>
+          <div className="toggle">
+
+            <div className={`slider-blob ${isLogin ? "left" : "right"}`}></div>
             <button
               className={isLogin ? "active" : ""}
               onClick={() => setIsLogin(true)}
@@ -245,15 +245,15 @@ export default function Auth() {
           </form>
 
           <div className="social-btns">
-  <button type="button" className="social-btn">
-    <FaApple style={{ fontSize: "1.2rem", color: "#000" }} />
-    <span>Apple</span>
-  </button>
-  <button type="button" className="social-btn">
-    <FcGoogle style={{ fontSize: "1.2rem" }} />
-    <span>Google</span>
-  </button>
-</div>
+            <button type="button" className="social-btn">
+              <FaApple style={{ fontSize: "1.2rem", color: "#000" }} />
+              <span>Apple</span>
+            </button>
+            <button type="button" className="social-btn">
+              <FcGoogle style={{ fontSize: "1.2rem" }} />
+              <span>Google</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

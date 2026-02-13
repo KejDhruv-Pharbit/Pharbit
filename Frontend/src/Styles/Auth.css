@@ -42,38 +42,42 @@
   position: relative;
   z-index: 2;
   display: block;
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
 }
 
 /* 1. Ensure the container matches the image exactly */
 .phone-mockup {
   position: relative;
   width: 100%;
-  max-width: 800px; 
+  max-width: 800px;
   margin-top: 20px;
-  display: flex; /* Centers the image to the container */
+  display: flex;
+  /* Centers the image to the container */
   justify-content: center;
 }
 
 /* 2. Image must be the master of dimensions */
 .phone-mockup img {
   width: 100%;
-  height: auto; /* Maintains aspect ratio */
+  height: auto;
+  /* Maintains aspect ratio */
   display: block;
   position: relative;
-  z-index: 2; /* Keeps frame above background elements */
+  z-index: 2;
+  /* Keeps frame above background elements */
 }
 
 /* 3. Use Precise percentages for the screen area */
 .phone-screen {
   position: absolute;
   /* Adjust these percentages based on your specific PNG's bezel size */
-  top: 6.5%;    
-  left: 31%;    
-  width: 33%;   
-  height: 75%; 
+  top: 6.5%;
+  left: 31%;
+  width: 33%;
+  height: 75%;
   background: linear-gradient(180deg, #ffffff 0%, rgba(250, 204, 21, 0.12) 100%);
-  border-radius: 30px; /* Slightly higher for modern phone frames */
+  border-radius: 30px;
+  /* Slightly higher for modern phone frames */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -81,13 +85,16 @@
   justify-content: center;
   text-align: center;
   gap: 8px;
-  z-index: 1; /* Sits behind the frame if the frame has a transparent hole */
+  z-index: 1;
+  /* Sits behind the frame if the frame has a transparent hole */
   overflow: hidden;
 }
+
 .phone-screen h3 {
-      font-family: "Poppins", sans-serif;
-  letter-spacing: 4px;       /* Wide spacing */
-  text-transform: uppercase; 
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 4px;
+  /* Wide spacing */
+  text-transform: uppercase;
   color: var(--dark-text);
   font-size: 1.2rem;
   font-weight: 700;
@@ -107,7 +114,7 @@
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,14 +150,39 @@
   z-index: 5;
 }
 
-.c1 { top: 5%; left: 15%; }
-.c2 { top: 45%; left: 10%; animation-delay: 0.5s; }
-.c3 { top: 15%; right: 15%; animation-delay: 1s; }
-.c4 { bottom: 10%; right: 20%; animation-delay: 1.5s; }
+.c1 {
+  top: 5%;
+  left: 15%;
+}
+
+.c2 {
+  top: 45%;
+  left: 10%;
+  animation-delay: 0.5s;
+}
+
+.c3 {
+  top: 15%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.c4 {
+  bottom: 10%;
+  right: 20%;
+  animation-delay: 1.5s;
+}
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 /* ================= RIGHT SIDE (GLASS CARD) ================= */
@@ -180,14 +212,18 @@
 
 .auth-card h2 {
   font-family: "Poppins", sans-serif;
-  font-weight: 200;           /* Ultra light */
-  letter-spacing: 4px;       /* Wide spacing */
-  text-transform: uppercase;  /* Optional: looks very premium with spacing */
+  font-weight: 200;
+  /* Ultra light */
+  letter-spacing: 4px;
+  /* Wide spacing */
+  text-transform: uppercase;
+  /* Optional: looks very premium with spacing */
   font-size: 22px;
   color: var(--text-main);
   text-align: center;
   margin-bottom: 10px;
 }
+
 .subtitle {
   text-align: center;
   color: var(--text-muted);
@@ -199,12 +235,14 @@
 /* THE TOGGLE CONTAINER */
 .toggle {
   display: flex;
-  position: relative; /* Essential for the absolute blob */
+  position: relative;
+  /* Essential for the absolute blob */
   background: rgba(0, 0, 0, 0.05);
   padding: 5px;
   border-radius: 100px;
   margin-bottom: 25px;
-  height: 48px; /* Fixed height for consistent sliding */
+  height: 48px;
+  /* Fixed height for consistent sliding */
   z-index: 1;
 }
 
@@ -213,13 +251,16 @@
   position: absolute;
   top: 5px;
   left: 5px;
-  width: calc(50% - 5px); /* Half the width minus padding */
+  width: calc(50% - 5px);
+  /* Half the width minus padding */
   height: calc(100% - 10px);
   background: white;
   border-radius: 100px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth spring-like movement */
-  z-index: -1; /* Sits behind the button text */
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Smooth spring-like movement */
+  z-index: -1;
+  /* Sits behind the button text */
 }
 
 /* BLOB POSITIONS */
@@ -234,10 +275,13 @@
 /* BUTTONS */
 .toggle button {
   flex: 1;
-  background: transparent !important; 
-  border: none !important;      /* Force remove any inherited borders */
-  outline: none !important;     /* Removes the focus rectangle */
-  box-shadow: none !important;/* Always transparent now */
+  background: transparent !important;
+  border: none !important;
+  /* Force remove any inherited borders */
+  outline: none !important;
+  /* Removes the focus rectangle */
+  box-shadow: none !important;
+  /* Always transparent now */
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
@@ -249,7 +293,8 @@
 
 /* TEXT COLOR CHANGE WHEN ACTIVE */
 .toggle button.active {
-  color: var(--text-main); /* Text turns dark when the white blob is behind it */
+  color: var(--text-main);
+  /* Text turns dark when the white blob is behind it */
 }
 
 
@@ -291,8 +336,13 @@
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.toggle-switch.right { background: var(--primary-yellow); }
-.toggle-switch.right .toggle-ball { left: 25px; }
+.toggle-switch.right {
+  background: var(--primary-yellow);
+}
+
+.toggle-switch.right .toggle-ball {
+  left: 25px;
+}
 
 /* FORM INPUTS - PILL SHAPED */
 .form-inner form input {
@@ -314,16 +364,18 @@
 }
 
 /* SUBMIT BUTTON */
- .submit-btn {
+.submit-btn {
   width: 100%;
   padding: 14px;
 
-  background: rgba(252, 211, 77, 0.12); /* very light yellow */
+  background: rgba(252, 211, 77, 0.12);
+  /* very light yellow */
   border: 2px solid var(--primary-yellow);
 
   border-radius: 100px;
 
-  color: #000000; /* dark amber text */
+  color: #000000;
+  /* dark amber text */
 
   font-weight: 600;
   font-size: 16px;
@@ -382,7 +434,8 @@
   width: 90%;
   padding: 14px 22px;
   margin-bottom: 15px;
-  border-radius: 100px; /* THE PILL LOOK */
+  border-radius: 100px;
+  /* THE PILL LOOK */
   border: 1px solid #edf2f7;
   background: rgba(255, 255, 255, 0.8);
   font-size: 14px;
@@ -403,7 +456,8 @@
   width: 100%;
   padding: 15px;
 
-  background: rgba(252, 211, 77, 0.12); /* very light yellow */
+  background: rgba(252, 211, 77, 0.12);
+  /* very light yellow */
   border: 2px solid var(--primary-yellow);
 
   border-radius: 100px;
@@ -427,11 +481,18 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 15px rgba(252, 211, 77, 0.25);
 }
+
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 1024px) {
-  .auth-left { display: none; }
-  .auth-right { flex: 1; width: 100%; }
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    flex: 1;
+    width: 100%;
+  }
 }
 
 
@@ -440,15 +501,18 @@
 /* TABLET LAYOUT (Same layout, just scaled down) */
 @media (max-width: 1200px) {
   .auth-left {
-    flex: 1; /* Give more room to the form */
+    flex: 1;
+    /* Give more room to the form */
   }
-  
+
   .phone-mockup {
-    max-width: 500px; /* Scale down the phone image */
+    max-width: 500px;
+    /* Scale down the phone image */
   }
 
   .auth-card {
-    max-width: 400px; /* Slimmer card for tablets */
+    max-width: 400px;
+    /* Slimmer card for tablets */
     padding: 30px;
   }
 }
@@ -463,9 +527,10 @@
   .phone-mockup {
     max-width: 400px;
   }
-  
+
   .circle {
-    width: 45px; /* Smaller floating icons */
+    width: 45px;
+    /* Smaller floating icons */
     height: 45px;
     font-size: 18px;
   }
@@ -478,11 +543,13 @@
     background: radial-gradient(circle at top, #fff9e6, #f1f5f9);
     flex-direction: column;
     justify-content: center;
-    overflow-y: auto; /* Allow scrolling if keyboard pops up */
+    overflow-y: auto;
+    /* Allow scrolling if keyboard pops up */
   }
 
   .auth-left {
-    display: none; /* Hide phone mockup on mobile as requested */
+    display: none;
+    /* Hide phone mockup on mobile as requested */
   }
 
   .auth-right {
@@ -492,8 +559,10 @@
 
   .auth-card {
     width: 100%;
-    max-width: 100%; /* Take full width minus padding */
-    border-radius: 30px; /* Slightly less rounded for small screens */
+    max-width: 100%;
+    /* Take full width minus padding */
+    border-radius: 30px;
+    /* Slightly less rounded for small screens */
     padding: 30px 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
   }
@@ -511,11 +580,13 @@
   }
 
   .auth-card form input {
-    width: 80% !important; /* Forces inputs to be full width on mobile */
+    width: 80% !important;
+    /* Forces inputs to be full width on mobile */
   }
-  
+
   .social-btns {
-    flex-direction: column; /* Stack Apple/Google buttons on small phones */
+    flex-direction: column;
+    /* Stack Apple/Google buttons on small phones */
     gap: 10px;
   }
 }
@@ -526,7 +597,10 @@
     height: auto;
     padding: 40px 20px;
   }
-  .auth-left { display: none; }
+
+  .auth-left {
+    display: none;
+  }
 }
 
 /* TOAST GLASSMORPHISM STYLE */
@@ -536,7 +610,8 @@
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.5) !important;
   color: #1e293b !important;
-  border-radius: 100px !important; /* Pill shape to match your inputs */
+  border-radius: 100px !important;
+  /* Pill shape to match your inputs */
   font-family: 'Poppins', sans-serif !important;
   font-size: 14px !important;
   font-weight: 500 !important;
@@ -551,8 +626,15 @@
 
 /* Animation refinement */
 @keyframes toastFadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .custom-toast {

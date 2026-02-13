@@ -293,63 +293,63 @@ export default function MedicalForm() {
           </button>
         </div>
 
-   <div className="medicine-preview">
-  <div className="preview-card">
-    <div className="preview-header">
-      <h2>{form.name || "Medicine Name"}</h2>
-      <span className="status-badge">Pending Verification</span>
-    </div>
+        <div className="medicine-preview">
+          <div className="preview-card">
+            <div className="preview-header">
+              <h2>{form.name || "Medicine Name"}</h2>
+              <span className="status-badge">Pending Verification</span>
+            </div>
 
-    <div className="preview-section">
-      <h4>Identities</h4>
-      <p><b>Brand:</b> {form.brand_name || "-"}</p>
-      <p><b>Drug Code:</b> {form.drug_code || "-"}</p>
-      <p><b>HSN Code:</b> {form.hsn_code || "-"}</p>
-    </div>
+            <div className="preview-section">
+              <h4>Identities</h4>
+              <p><b>Brand:</b> {form.brand_name || "-"}</p>
+              <p><b>Drug Code:</b> {form.drug_code || "-"}</p>
+              <p><b>HSN Code:</b> {form.hsn_code || "-"}</p>
+            </div>
 
-    <div className="preview-section">
-      <h4>Medical Specs</h4>
-      <p><b>Dosage:</b> {form.dosage_form || "-"}</p>
-      <p><b>Strength:</b> {form.strength || "-"}</p>
-      <p><b>Route:</b> {form.route_of_administration || "-"}</p>
-      
-      <p className="margin-top"><b>Composition:</b></p>
-      <div className="preview-pills">
-        {form.composition.length > 0 ? (
-          form.composition.map((c, i) => (
-            <span key={i} className="preview-pill">{c}</span>
-          ))
-        ) : <span className="text-muted">None added</span>}
+            <div className="preview-section">
+              <h4>Medical Specs</h4>
+              <p><b>Dosage:</b> {form.dosage_form || "-"}</p>
+              <p><b>Strength:</b> {form.strength || "-"}</p>
+              <p><b>Route:</b> {form.route_of_administration || "-"}</p>
+
+              <p className="margin-top"><b>Composition:</b></p>
+              <div className="preview-pills">
+                {form.composition.length > 0 ? (
+                  form.composition.map((c, i) => (
+                    <span key={i} className="preview-pill">{c}</span>
+                  ))
+                ) : <span className="text-muted">None added</span>}
+              </div>
+            </div>
+
+            <div className="preview-section">
+              <h4>Safety & Storage</h4>
+              <p><b>Conditions:</b> {form.storage_conditions.join(", ") || "-"}</p>
+              <p><b>Side Effects:</b> {form.side_effects.join(", ") || "-"}</p>
+              <p><b>Warnings:</b> {form.warnings.join(", ") || "-"}</p>
+            </div>
+
+            <div className="preview-section">
+              <h4>Financial & Legal</h4>
+              <div className="preview-grid">
+                <p><b>MRP:</b> EUR {form.mrp || "0"}</p>
+                <p><b>Cost:</b> EUR {form.cost_price || "0"}</p>
+              </div>
+              <p><b>License:</b> {form.manufacturing_license || "-"}</p>
+              <p><b>Approval:</b> {form.approval_number || "-"}</p>
+            </div>
+
+            <div className="preview-footer">
+              <p><b>Attached Documents:</b> {documents.length} Files</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div className="preview-section">
-      <h4>Safety & Storage</h4>
-      <p><b>Conditions:</b> {form.storage_conditions.join(", ") || "-"}</p>
-      <p><b>Side Effects:</b> {form.side_effects.join(", ") || "-"}</p>
-      <p><b>Warnings:</b> {form.warnings.join(", ") || "-"}</p>
-    </div>
-
-    <div className="preview-section">
-      <h4>Financial & Legal</h4>
-      <div className="preview-grid">
-        <p><b>MRP:</b> EUR {form.mrp || "0"}</p>
-        <p><b>Cost:</b> EUR {form.cost_price || "0"}</p>
-      </div>
-      <p><b>License:</b> {form.manufacturing_license || "-"}</p>
-      <p><b>Approval:</b> {form.approval_number || "-"}</p>
-    </div>
-
-    <div className="preview-footer">
-      <p><b>Attached Documents:</b> {documents.length} Files</p>
-    </div>
-  </div>
-</div>
-      </div>
 
 
 
-     {/* Modal Content */}
+      {/* Modal Content */}
 
       {showReview && (
         <div className="review-modal">
