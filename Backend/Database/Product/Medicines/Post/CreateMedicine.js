@@ -1,8 +1,13 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect";
 
-export async function createMedicine(data, orgId) {
+export async function createMedicine(data, orgId , files) {
   try {
 
+
+     const MedicalDocsUrl = await uploadFiles(
+    files?.medicineDocuments,
+    "Medicine-Documents"
+  );
     /* ---------------------------
        Validation
     ----------------------------*/

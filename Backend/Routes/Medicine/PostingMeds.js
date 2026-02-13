@@ -1,11 +1,14 @@
 import express from "express";
 import { FindOrganization, FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
+import { upload } from "../../Middleware/Database/uploadfiles.js";
 import { createMedicineService } from "../../Database/Product/Medicines/Post/CreateMedicine.js";
 import { verifyMedicine } from "../../Database/Product/Medicines/Post/verifyMeds.js";
 
 const router = express.Router();
 
-router.post("/addMeds", async (req, res) => {
+router.post("/addMeds",upload.fields([
+  { name: "medicineDocuments", maxCount: 10 }
+]) ,  async (req, res) => {
   try {
     const authUser = await getAuthUser(req);
     if (!authUser) {
@@ -21,7 +24,8 @@ router.post("/addMeds", async (req, res) => {
     }
 
     const orgId = orgResult.data.id;
-    const result = await createMedicineService(req.body, orgId);
+    const files = req.files;
+    const result = await createMedicineService(req.body, orgId , files);
 
     return res.status(result.status).json(result);
 
