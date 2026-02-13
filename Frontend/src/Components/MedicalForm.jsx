@@ -258,11 +258,11 @@ export default function MedicalForm() {
             <h3>Pricing</h3>
             <div className="form-grid">
               <div className="field">
-                <label>MRP (₹)</label>
+                <label>MRP (EUR)</label>
                 <input type="number" name="mrp" value={form.mrp} onChange={handleChange} />
               </div>
               <div className="field">
-                <label>Cost Price (₹)</label>
+                <label>Cost Price (EUR)</label>
                 <input type="number" name="cost_price" value={form.cost_price} onChange={handleChange} />
               </div>
             </div>
@@ -335,8 +335,8 @@ export default function MedicalForm() {
     <div className="preview-section">
       <h4>Financial & Legal</h4>
       <div className="preview-grid">
-        <p><b>MRP:</b> ₹{form.mrp || "0"}</p>
-        <p><b>Cost:</b> ₹{form.cost_price || "0"}</p>
+        <p><b>MRP:</b> EUR {form.mrp || "0"}</p>
+        <p><b>Cost:</b> EUR {form.cost_price || "0"}</p>
       </div>
       <p><b>License:</b> {form.manufacturing_license || "-"}</p>
       <p><b>Approval:</b> {form.approval_number || "-"}</p>
@@ -368,8 +368,8 @@ export default function MedicalForm() {
                   <h4>General & Pricing</h4>
                   <div className="data-row"><span className="label">Name</span><span className="value">{form.name}</span></div>
                   <div className="data-row"><span className="label">Brand</span><span className="value">{form.brand_name || "-"}</span></div>
-                  <div className="data-row"><span className="label">MRP</span><span className="value">₹{form.mrp}</span></div>
-                  <div className="data-row"><span className="label">Cost</span><span className="value">₹{form.cost_price}</span></div>
+                  <div className="data-row"><span className="label">MRP</span><span className="value">EUR {form.mrp}</span></div>
+                  <div className="data-row"><span className="label">Cost</span><span className="value">EUR {form.cost_price}</span></div>
                 </div>
 
                 {/* Section 2: Medical Details */}
