@@ -1,4 +1,4 @@
-/* RESET */
+/ * RESET */
 * {
   margin: 0;
   padding: 0;
@@ -31,27 +31,12 @@
   text-align: center;
 }
 
-.auth-left h1 {
-  color: #2563eb;
-  font-size: 48px;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-
-.auth-left p {
-  color: #475569;
-  font-size: 18px;
-  max-width: 420px;
-  line-height: 1.6;
-  margin-bottom: 50px;
-}
-
 
 /* PHONE MOCKUP */
 
 .phone-mockup {
   position: relative;
-  width: 600px; /* bigger image */
+  width: 800px; /* bigger image */
   margin-top: 30px;
 
   /* soft bluish splash without box */
@@ -303,4 +288,99 @@ form button:disabled {
   .auth-left p {
     font-size: 16px;
   }
+}
+
+
+/* ================= PHONE SCREEN (INSIDE PHONE) ================= */
+
+.phone-frame {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Content inside transparent phone */
+.phone-screen {
+  position: absolute;
+
+  /* Adjust these if needed based on your phone image */
+  top: 9%;
+  left: 30%;
+  width: 40%;
+  height: 80%;
+
+  background: linear-gradient(180deg, #f8fbff, #eef3ff);
+  border-radius: 22px;
+
+  padding: 22px 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 10px;
+
+  z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.phone-screen h3 {
+  color: #2563eb;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.phone-screen p {
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.phone-card {
+  width: 100%;
+  padding: 10px 8px;
+
+  background: white;
+  border-radius: 10px;
+
+  margin-bottom: 10px;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.phone-btn {
+  margin-top: auto;
+
+  width: 100%;
+  padding: 10px;
+
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.35);
+  transition: all 0.25s ease;
+}
+
+.phone-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.45);
 }

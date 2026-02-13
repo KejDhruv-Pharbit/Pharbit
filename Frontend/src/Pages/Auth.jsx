@@ -129,18 +129,40 @@ export default function Auth() {
       {/* LEFT SECTION */}
       <div className="auth-left">
 
-        <h1>PHARBIT</h1>
-        <p>Medicine → Token → Find Your Store</p>
-
         <div className="phone-mockup">
 
+          {/* Phone Frame */}
           <img
             src={phoneimg}
             alt="phone"
+            className="phone-frame"
           />
 
-          {/* Floating Icons */}
+          {/* Phone Screen Content */}
+          <div className="phone-screen">
 
+            <h3>PHARBIT</h3>
+            <p>Verify Your Medicine</p>
+
+            <div className="phone-card">
+              <span>💊 Scan Medicine</span>
+            </div>
+
+            <div className="phone-card">
+              <span>🔗 Token ID</span>
+            </div>
+
+            <div className="phone-card">
+              <span>🏪 Nearby Stores</span>
+            </div>
+
+            <button className="phone-btn">
+              Find Store
+            </button>
+
+          </div>
+
+          {/* Floating Icons */}
           <div className="circle c1">💊</div>
           <div className="circle c2">🔗</div>
           <div className="circle c3">🏪</div>
