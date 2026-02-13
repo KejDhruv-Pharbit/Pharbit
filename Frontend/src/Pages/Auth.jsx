@@ -56,7 +56,8 @@ export default function Auth() {
           body: JSON.stringify({
             email: form.email,
             password: form.password
-          })
+          }),
+          credentials: "include",
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
@@ -71,7 +72,8 @@ export default function Auth() {
             lastName: form.lastName,
             email: form.email,
             password: form.password
-          })
+          }),
+          credentials: "include",
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
@@ -84,7 +86,8 @@ export default function Auth() {
           body: JSON.stringify({
             token: form.token,
             password: form.password
-          })
+          }),
+          credentials: "include",
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
