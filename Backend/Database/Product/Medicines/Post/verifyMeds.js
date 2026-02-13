@@ -1,10 +1,6 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect.js";
+import { FindMeds } from "../Get/FindMedicines.js";
 
-/**
- * Verify / Approve a medicine
- * @param {string} medicineId - UUID of medicine
- * @param {string} adminId - UUID of admin (optional)
- */
 export async function verifyMedicine(medicineId, adminId = null) {
   try {
 
@@ -16,19 +12,13 @@ export async function verifyMedicine(medicineId, adminId = null) {
       };
     }
 
-    const { data: medicine, error: findError } = await supabase
-      .from("medicines")
-      .select("id, is_verified")
-      .eq("id", medicineId)
-      .single();
+    const result = await FindMeds(medicineId);
 
-    if (findError || !medicine) {
-      return {
-        success: false,
-        status: 404,
-        error: "Medicine not found"
-      };
+    if (!result.success) {
+      return result; 
     }
+
+    const medicine = result.data;
 
     if (medicine.is_verified) {
       return {
@@ -43,7 +33,7 @@ export async function verifyMedicine(medicineId, adminId = null) {
       .update({
         is_verified: true,
         verification_status: "approved",
-        verified_at: new Date(),
+        verified_at: new Date().toISOString(),
         verified_by: adminId
       })
       .eq("id", medicineId)
@@ -51,6 +41,7 @@ export async function verifyMedicine(medicineId, adminId = null) {
       .single();
 
     if (updateError) throw updateError;
+
     return {
       success: true,
       status: 200,
@@ -65,7 +56,7 @@ export async function verifyMedicine(medicineId, adminId = null) {
     return {
       success: false,
       status: 500,
-      error: err.message
+      error: err.message || "Server error"
     };
   }
 }

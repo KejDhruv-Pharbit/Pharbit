@@ -6,10 +6,7 @@ import { verifyMedicine } from "../../Database/Product/Medicines/Post/verifyMeds
 
 const router = express.Router();
 
-router.post(
-  "/addMeds", upload.fields([
-    { name: "medicineDocuments", maxCount: 10 }
-  ]),
+router.post(  "/addMeds", upload.fields([ { name: "medicineDocuments", maxCount: 10 } ]),
   async (req, res) => {
     try {
       const authUser = await getAuthUser(req);
