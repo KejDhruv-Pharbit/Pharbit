@@ -80,14 +80,18 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 12px;
+  gap: 8px;
   z-index: 1; /* Sits behind the frame if the frame has a transparent hole */
   overflow: hidden;
 }
 .phone-screen h3 {
+      font-family: "Poppins", sans-serif;
+  letter-spacing: 4px;       /* Wide spacing */
+  text-transform: uppercase; 
   color: var(--dark-text);
   font-size: 1.2rem;
   font-weight: 700;
+  margin-bottom: 0;
 }
 
 .phone-screen p {
@@ -175,13 +179,15 @@
 }
 
 .auth-card h2 {
-  font-size: 26px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;           /* Ultra light */
+  letter-spacing: 4px;       /* Wide spacing */
+  text-transform: uppercase;  /* Optional: looks very premium with spacing */
+  font-size: 22px;
   color: var(--text-main);
   text-align: center;
-  font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
-
 .subtitle {
   text-align: center;
   color: var(--text-muted);
