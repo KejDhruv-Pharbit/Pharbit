@@ -134,8 +134,6 @@ export default function MedicalForm() {
         body: fd,
         credentials: "include"
       });
-
-      alert("Medicine submitted!");
       closeReview();
     } catch (err) {
       alert("Submission failed");

@@ -1,12 +1,41 @@
-import supabase from "../../../../Middleware/Database/DatabaseConnect";
-import { uploadFiles } from "./uploadfiles";
+import supabase from "../../../../Middleware/Database/DatabaseConnect.js";
+import { uploadFiles } from "./uploadfiles.js";
 
 export async function createMedicine(data, orgId, files) {
   try {
 
-    /* ---------------------------
-       Upload Documents (Safe)
-    ----------------------------*/
+    /* =========================
+       Normalize Arrays
+    ========================== */
+
+    const normalizeArray = (val) => {
+      if (!val) return [];
+
+      // If already array → return
+      if (Array.isArray(val)) return val;
+
+      // If stringified JSON → parse
+      if (typeof val === "string") {
+        try {
+          const parsed = JSON.parse(val);
+          return Array.isArray(parsed) ? parsed : [val];
+        } catch {
+          return [val];
+        }
+      }
+
+      return [];
+    };
+
+    data.composition = normalizeArray(data.composition);
+    data.category = normalizeArray(data.category);
+    data.storage_conditions = normalizeArray(data.storage_conditions);
+    data.warnings = normalizeArray(data.warnings);
+    data.side_effects = normalizeArray(data.side_effects);
+
+    /* =========================
+       Upload Documents
+    ========================== */
 
     let medicalDocsUrl = null;
 
@@ -18,7 +47,6 @@ export async function createMedicine(data, orgId, files) {
         );
       } catch (uploadErr) {
         console.error("Upload failed:", uploadErr);
-
         return {
           success: false,
           status: 400,
@@ -27,11 +55,11 @@ export async function createMedicine(data, orgId, files) {
       }
     }
 
-    /* ---------------------------
+    /* =========================
        Validation
-    ----------------------------*/
+    ========================== */
 
-    if (!data.name || !data.composition || data.composition.length === 0) {
+    if (!data.name || data.composition.length === 0) {
       return {
         success: false,
         status: 400,
@@ -47,9 +75,9 @@ export async function createMedicine(data, orgId, files) {
       };
     }
 
-    /* ---------------------------
+    /* =========================
        Duplicate Check
-    ----------------------------*/
+    ========================== */
 
     const { data: existing, error: findError } = await supabase
       .from("medicines")
@@ -68,9 +96,9 @@ export async function createMedicine(data, orgId, files) {
       };
     }
 
-    /* ---------------------------
+    /* =========================
        Insert Medicine
-    ----------------------------*/
+    ========================== */
 
     const { data: inserted, error: insertError } = await supabase
       .from("medicines")
@@ -95,17 +123,15 @@ export async function createMedicine(data, orgId, files) {
           approval_number: data.approval_number,
           manufacturing_license: data.manufacturing_license,
 
-          mrp: data.mrp,
-          cost_price: data.cost_price,
+          mrp: data.mrp ? Number(data.mrp) : null,
+          cost_price: data.cost_price ? Number(data.cost_price) : null,
 
           storage_conditions: data.storage_conditions,
           warnings: data.warnings,
           side_effects: data.side_effects,
 
-          /* Uploaded Docs */
           legal_document_url: medicalDocsUrl,
 
-          /* Verification */
           is_verified: false,
           verification_status: "pending"
         }
@@ -115,10 +141,6 @@ export async function createMedicine(data, orgId, files) {
 
     if (insertError) throw insertError;
 
-    /* ---------------------------
-       Success
-    ----------------------------*/
-
     return {
       success: true,
       status: 201,
@@ -127,7 +149,6 @@ export async function createMedicine(data, orgId, files) {
     };
 
   } catch (err) {
-
     console.error("Create medicine error:", err);
 
     return {

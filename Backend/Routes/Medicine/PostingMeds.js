@@ -1,7 +1,7 @@
 import express from "express";
 import { FindOrganization, FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
 import { upload } from "../../Middleware/Database/uploadfiles.js";
-import { createMedicineService } from "../../Database/Product/Medicines/Post/CreateMedicine.js";
+import { createMedicine } from "../../Database/Product/Medicines/Post/CreateMedicine.js";
 import { verifyMedicine } from "../../Database/Product/Medicines/Post/verifyMeds.js";
 
 const router = express.Router();
@@ -29,7 +29,7 @@ router.post(
       const files = req.files || {};
       const data = req.body; 
       const orgId = orgResult.data.id;
-      const result = await createMedicineService(
+      const result = await createMedicine(
         data,
         orgId,
         files

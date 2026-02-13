@@ -25,13 +25,16 @@ router.post("/auth/login", async (req, res) => {
       });
     }
     const { user, session } = data;
-    res.cookie("Pharbit_Token", session.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax", 
-      maxAge: 60 * 60 * 1000, // 1 hour
-      path: "/"
-    });
+res.cookie("Pharbit_Token", session.access_token, {
+  httpOnly: true,
+  secure: false,
+  sameSite: "lax",
+  maxAge: 60 * 60 * 1000,
+  path: "/"
+});
+
+console.log("Cookie should be set now");
+console.log("Headers being sent:", res.getHeaders());
 
     return res.status(200).json({
       message: "Login successful",

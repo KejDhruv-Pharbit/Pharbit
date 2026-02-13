@@ -1,4 +1,4 @@
-import supabase from "../../../../Middleware/Database/DatabaseConnect";
+import supabase from "../../../../Middleware/Database/DatabaseConnect.js";
 
 /**
  * Uploads files from multer to Supabase Storage
