@@ -19,16 +19,18 @@ export async function createAuthUser(
       password,
       email_confirm: true,
 
-      // 👇 This controls Display Name in Supabase
       user_metadata: {
         first_name: firstName,
         last_name: lastName,
         full_name: fullName,
-        name: fullName // (extra compatibility)
+        name: fullName
       }
     });
 
-  if (error) throw error;
+  if (error) {
+    console.error("FULL ERROR:", JSON.stringify(error, null, 2));
+    throw error;
+  }
 
   return data.user;
 }

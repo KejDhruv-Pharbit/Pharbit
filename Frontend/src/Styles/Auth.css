@@ -485,3 +485,33 @@
   }
   .auth-left { display: none; }
 }
+
+/* TOAST GLASSMORPHISM STYLE */
+.custom-toast {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  color: #1e293b !important;
+  border-radius: 100px !important; /* Pill shape to match your inputs */
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  padding: 12px 24px !important;
+}
+
+/* Specific icon colors */
+.custom-toast [role="status"] {
+  margin-right: 12px;
+}
+
+/* Animation refinement */
+@keyframes toastFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.custom-toast {
+  animation: toastFadeIn 0.3s ease-out;
+}

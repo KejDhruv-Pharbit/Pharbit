@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Auth.css";
+import toast, { Toaster } from "react-hot-toast";
 import phoneimg from "../assets/Phone.png";
 
+
+const url = import.meta.env.VITE_API_URL; 
 export default function Auth() {
   const navigate = useNavigate();
 
@@ -47,7 +50,7 @@ export default function Auth() {
 
     try {
       if (isLogin) {
-        const res = await fetch("http://localhost:5000/api/auth/login", {
+        const res = await fetch(`${url}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -57,10 +60,10 @@ export default function Auth() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        localStorage.setItem("token", data.token);
-        navigate("/dashboard");
+        toast.success("Employee Logged In ");
+        navigate("/");
       } else if (signupType === "user") {
-        const res = await fetch("http://localhost:5000/api/auth/signup", {
+        const res = await fetch(`${url}/auth/signup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -72,10 +75,10 @@ export default function Auth() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        alert("Account created. Please login.");
+        toast.success("Account created! Please login.");
         setIsLogin(true);
       } else {
-        const res = await fetch("http://localhost:5000/api/auth/employee-signup", {
+        const res = await fetch(`${url}/auth/accept-invite`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -85,17 +88,24 @@ export default function Auth() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        alert("Employee account activated.");
+        toast.success("Employee Verifed");
         setIsLogin(true);
       }
     } catch (err) {
-      setError(err.message || "Something went wrong");
+        setError(err.message || "Something went wrong");
+        toast.error(err.message);
     }
     setLoading(false);
   };
 
   return (
-    <div className="auth-container">
+      <div className="auth-container" >
+          <Toaster 
+      position="top-center"
+      toastOptions={{
+        className: 'custom-toast', // Matches the CSS I provided
+        duration: 4000,
+      }} />
       {/* LEFT SECTION - MOCKUP */}
       <div className="auth-left">
         <div className="phone-mockup">
