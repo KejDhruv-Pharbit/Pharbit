@@ -1,10 +1,7 @@
 import { useState } from "react";
 import "../Styles/Components/MedicalForm.css"
 
-/**
- * ArrayInput Component
- * Defined outside to prevent re-mounting on every keystroke.
- */
+const url = import.meta.env.VITE_API_URL;
 const ArrayInput = ({ label, field, temp, setTemp, form, addItem, removeItem }) => (
   <div className="array-box">
     <label>{label}</label>
@@ -132,7 +129,7 @@ export default function MedicalForm() {
         fd.append("medicineDocuments", file);
       });
 
-      await fetch("/addMeds", {
+      await fetch(`${url}/addMeds`, {
         method: "POST",
         body: fd,
         credentials: "include"
@@ -298,91 +295,139 @@ export default function MedicalForm() {
           </button>
         </div>
 
-        <div className="medicine-preview">
-          <div className="preview-card">
-            <h2>{form.name || "Medicine Name"}</h2>
-            <p><b>Drug Code:</b> {form.drug_code || "-"}</p>
-            <p><b>Composition:</b></p>
-            {form.composition.map((c, i) => (
-              <span key={i} className="preview-pill">{c}</span>
-            ))}
-            <p><b>MRP:</b> ₹{form.mrp || "-"}</p>
-            <p><b>Status:</b> Pending Verification</p>
-            <p><b>Documents:</b> {documents.length}</p>
-          </div>
-        </div>
-      </div>
-{showReview && (
-  <div className="review-modal">
-    <div className="modal">
-      <div className="modal-header">
-        <h2>Review Medicine Details</h2>
-      </div>
+   <div className="medicine-preview">
+  <div className="preview-card">
+    <div className="preview-header">
+      <h2>{form.name || "Medicine Name"}</h2>
+      <span className="status-badge">Pending Verification</span>
+    </div>
 
-      <div className="modal-body">
-        <div className="review-grid">
-          
-          {/* Section 1: Basic & Pricing */}
-          <div className="review-section">
-            <h4>General & Pricing</h4>
-            <div className="data-row"><span className="label">Name</span><span className="value">{form.name}</span></div>
-            <div className="data-row"><span className="label">Brand</span><span className="value">{form.brand_name || "-"}</span></div>
-            <div className="data-row"><span className="label">MRP</span><span className="value">₹{form.mrp}</span></div>
-            <div className="data-row"><span className="label">Cost</span><span className="value">₹{form.cost_price}</span></div>
-          </div>
+    <div className="preview-section">
+      <h4>Identities</h4>
+      <p><b>Brand:</b> {form.brand_name || "-"}</p>
+      <p><b>Drug Code:</b> {form.drug_code || "-"}</p>
+      <p><b>HSN Code:</b> {form.hsn_code || "-"}</p>
+    </div>
 
-          {/* Section 2: Medical Details */}
-          <div className="review-section">
-            <h4>Medical Info</h4>
-            <div className="data-row"><span className="label">Dosage</span><span className="value">{form.dosage_form}</span></div>
-            <div className="data-row"><span className="label">Strength</span><span className="value">{form.strength}</span></div>
-            <div className="data-row">
-              <span className="label">Composition</span>
-              <div className="modal-pills">
-                {form.composition.map((c, i) => <span key={i} className="modal-pill">{c}</span>)}
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3: Codes & Legal */}
-          <div className="review-section">
-            <h4>Compliance</h4>
-            <div className="data-row"><span className="label">Drug Code</span><span className="value">{form.drug_code}</span></div>
-            <div className="data-row"><span className="label">HSN Code</span><span className="value">{form.hsn_code}</span></div>
-            <div className="data-row"><span className="label">License</span><span className="value">{form.manufacturing_license || "-"}</span></div>
-          </div>
-
-          {/* Section 4: Files */}
-          <div className="review-section">
-                  <h4>Pre-Cautions</h4>
-                     <div className="data-row">
-              <span className="label">Warnings</span>
-              <div className="modal-pills">
-                {form.warnings.map((c, i) => <span key={i} className="modal-pill">{c}</span>)}
-              </div>
-                  </div>
-                  
-                   <div className="data-row">
-              <span className="label">Side-Effects</span>
-              <div className="modal-pills">
-                {form.side_effects.map((c, i) => <span key={i} className="modal-pill">{c}</span>)}
-              </div>
-            </div>
-            <div className="data-row"><span className="label">Documents</span><span className="value">{documents.length} Files</span></div>
-          </div>
-
-        </div>
-      </div>
-
-      <div className="modal-actions">
-        <button className="cancel-btn" onClick={closeReview}>Go Back</button>
-        <button className="confirm-btn" onClick={finalSubmit} disabled={loading}>
-          {loading ? "Submitting..." : "Confirm & Submit"}
-        </button>
+    <div className="preview-section">
+      <h4>Medical Specs</h4>
+      <p><b>Dosage:</b> {form.dosage_form || "-"}</p>
+      <p><b>Strength:</b> {form.strength || "-"}</p>
+      <p><b>Route:</b> {form.route_of_administration || "-"}</p>
+      
+      <p className="margin-top"><b>Composition:</b></p>
+      <div className="preview-pills">
+        {form.composition.length > 0 ? (
+          form.composition.map((c, i) => (
+            <span key={i} className="preview-pill">{c}</span>
+          ))
+        ) : <span className="text-muted">None added</span>}
       </div>
     </div>
+
+    <div className="preview-section">
+      <h4>Safety & Storage</h4>
+      <p><b>Conditions:</b> {form.storage_conditions.join(", ") || "-"}</p>
+      <p><b>Side Effects:</b> {form.side_effects.join(", ") || "-"}</p>
+      <p><b>Warnings:</b> {form.warnings.join(", ") || "-"}</p>
+    </div>
+
+    <div className="preview-section">
+      <h4>Financial & Legal</h4>
+      <div className="preview-grid">
+        <p><b>MRP:</b> ₹{form.mrp || "0"}</p>
+        <p><b>Cost:</b> ₹{form.cost_price || "0"}</p>
+      </div>
+      <p><b>License:</b> {form.manufacturing_license || "-"}</p>
+      <p><b>Approval:</b> {form.approval_number || "-"}</p>
+    </div>
+
+    <div className="preview-footer">
+      <p><b>Attached Documents:</b> {documents.length} Files</p>
+    </div>
   </div>
-)}
+</div>
+      </div>
+
+
+
+     {/* Modal Content */}
+
+      {showReview && (
+        <div className="review-modal">
+          <div className="modal">
+            <div className="modal-header">
+              <h2>Review Medicine Details</h2>
+            </div>
+
+            <div className="modal-body">
+              <div className="review-grid">
+
+                {/* Section 1: Basic & Pricing */}
+                <div className="review-section">
+                  <h4>General & Pricing</h4>
+                  <div className="data-row"><span className="label">Name</span><span className="value">{form.name}</span></div>
+                  <div className="data-row"><span className="label">Brand</span><span className="value">{form.brand_name || "-"}</span></div>
+                  <div className="data-row"><span className="label">MRP</span><span className="value">₹{form.mrp}</span></div>
+                  <div className="data-row"><span className="label">Cost</span><span className="value">₹{form.cost_price}</span></div>
+                </div>
+
+                {/* Section 2: Medical Details */}
+                <div className="review-section">
+                  <h4>Medical Info</h4>
+                  <div className="data-row"><span className="label">Dosage</span><span className="value">{form.dosage_form}</span></div>
+                  <div className="data-row"><span className="label">Strength</span><span className="value">{form.strength}</span></div>
+                  <div className="data-row">
+                    <span className="label">Composition</span>
+                    <div className="modal-pills">
+                      {form.composition.map((c, i) => <span key={i} className="modal-pill">{c}</span>)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 3: Codes & Legal */}
+                <div className="review-section">
+                  <h4>Compliance</h4>
+                  <div className="data-row"><span className="label">Drug Code</span><span className="value">{form.drug_code}</span></div>
+                  <div className="data-row"><span className="label">HSN Code</span><span className="value">{form.hsn_code}</span></div>
+                  <div className="data-row"><span className="label">License</span><span className="value">{form.manufacturing_license || "-"}</span></div>
+                </div>
+
+                {/* Section 4: Files */}
+                <div className="review-section">
+                  <h4>Pre-Cautions</h4>
+                  <div className="data-row">
+                    <span className="label">Warnings</span>
+                    <div className="modal-pills">
+                      {form.warnings.map((c, i) => <span key={i} className="modal-pill">{c}</span>)}
+                    </div>
+                  </div>
+
+                  <div className="data-row">
+                    <span className="label">Side-Effects</span>
+                    <div className="modal-pills">
+                      {form.side_effects.map((c, i) => <span key={i} className="modal-pill">{c}</span>)}
+                    </div>
+                  </div>
+                  <div className="data-row"><span className="label">Documents</span><span className="value">{documents.length} Files</span></div>
+                </div>
+
+              </div>
+            </div>
+
+            <div className="modal-actions">
+              <button className="cancel-btn" onClick={closeReview}>Go Back</button>
+              <button className="confirm-btn" onClick={finalSubmit} disabled={loading}>
+                {loading ? "Submitting..." : "Confirm & Submit"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+
     </div>
   );
 }
