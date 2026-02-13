@@ -1,17 +1,17 @@
-/* ================= GLOBAL & RESET ================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", "Segoe UI", sans-serif;
-}
 
 .medicine-page {
   min-height: 100vh;
   /* Soft radial gradient for a high-end feel */
-  background: radial-gradient(circle at top right, #fefce8, #f9fafb);
   padding: 40px 20px;
   color: #374151;
+  box-sizing: border-box;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+.medicine-page *,
+.medicine-page *::before,
+.medicine-page *::after {
+  box-sizing: border-box;
 }
 
 .medicine-page h1 {
