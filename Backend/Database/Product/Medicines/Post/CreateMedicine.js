@@ -1,13 +1,32 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect";
+import { uploadFiles } from "./uploadfiles";
 
-export async function createMedicine(data, orgId , files) {
+export async function createMedicine(data, orgId, files) {
   try {
 
+    /* ---------------------------
+       Upload Documents (Safe)
+    ----------------------------*/
 
-     const MedicalDocsUrl = await uploadFiles(
-    files?.medicineDocuments,
-    "Medicine-Documents"
-  );
+    let medicalDocsUrl = null;
+
+    if (files?.medicineDocuments?.length > 0) {
+      try {
+        medicalDocsUrl = await uploadFiles(
+          files.medicineDocuments,
+          "Medicine-Documents"
+        );
+      } catch (uploadErr) {
+        console.error("Upload failed:", uploadErr);
+
+        return {
+          success: false,
+          status: 400,
+          error: "Document upload failed"
+        };
+      }
+    }
+
     /* ---------------------------
        Validation
     ----------------------------*/
@@ -36,7 +55,6 @@ export async function createMedicine(data, orgId , files) {
       .from("medicines")
       .select("id")
       .eq("drug_code", data.drug_code)
-      .ilike("name", data.name)
       .eq("organization_id", orgId)
       .maybeSingle();
 
@@ -46,7 +64,7 @@ export async function createMedicine(data, orgId , files) {
       return {
         success: false,
         status: 409,
-        error: "Medicine with same name and drug code already exists"
+        error: "Medicine already exists"
       };
     }
 
@@ -84,9 +102,10 @@ export async function createMedicine(data, orgId , files) {
           warnings: data.warnings,
           side_effects: data.side_effects,
 
-          legal_document_url: data.legal_document_url,
+          /* Uploaded Docs */
+          legal_document_url: medicalDocsUrl,
 
-          // Verification
+          /* Verification */
           is_verified: false,
           verification_status: "pending"
         }
@@ -114,7 +133,7 @@ export async function createMedicine(data, orgId , files) {
     return {
       success: false,
       status: 500,
-      error: err.message
+      error: err.message || "Server error"
     };
   }
 }

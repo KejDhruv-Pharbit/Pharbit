@@ -6,38 +6,43 @@ import { verifyMedicine } from "../../Database/Product/Medicines/Post/verifyMeds
 
 const router = express.Router();
 
-router.post("/addMeds",upload.fields([
-  { name: "medicineDocuments", maxCount: 10 }
-]) ,  async (req, res) => {
-  try {
-    const authUser = await getAuthUser(req);
-    if (!authUser) {
-      return res.status(401).json({
-        error: "Unauthorized"
+router.post(
+  "/addMeds", upload.fields([
+    { name: "medicineDocuments", maxCount: 10 }
+  ]),
+  async (req, res) => {
+    try {
+      const authUser = await getAuthUser(req);
+
+      if (!authUser) {
+        return res.status(401).json({
+          error: "Unauthorized"
+        });
+      }
+      const orgResult = await FindOrganization(authUser.id);
+
+      if (!orgResult.success) {
+        return res.status(404).json({
+          error: orgResult.error
+        });
+      }
+      const files = req.files || {};
+      const data = req.body; 
+      const orgId = orgResult.data.id;
+      const result = await createMedicineService(
+        data,
+        orgId,
+        files
+      );
+      return res.status(result.status).json(result);
+    } catch (err) {
+      console.error("Add medicine error:", err);
+      return res.status(500).json({
+        error: err.message || "Internal server error"
       });
     }
-    const orgResult = await FindOrganization(authUser.id);
-    if (!orgResult.success) {
-      return res.status(404).json({
-        error: orgResult.error
-      });
-    }
-
-    const orgId = orgResult.data.id;
-    const files = req.files;
-    const result = await createMedicineService(req.body, orgId , files);
-
-    return res.status(result.status).json(result);
-
-  } catch (err) {
-
-    console.error("Add medicine error:", err);
-
-    return res.status(500).json({
-      error: "Internal server error"
-    });
   }
-}); 
+);
 
 
 router.put("/verifyMeds", async (req, res) => {
