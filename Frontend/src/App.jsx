@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import Auth from "./Pages/Auth"
 
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
   return (
     <>
       <Routes>
-         <Route index element={<h1>Hello</h1>} />
+          <Route path="/" element={<Auth/>} />
     </Routes>
     </>
   )
