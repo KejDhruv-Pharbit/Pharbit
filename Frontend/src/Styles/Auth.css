@@ -1,4 +1,4 @@
-/ * RESET */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -269,8 +269,16 @@ form button:disabled {
   }
 
   .phone-mockup {
-    width: 300px;
-    padding: 25px;
+    width: 360px;
+    padding: 0;
+  }
+
+  .phone-screen {
+    top: 10%;
+    left: 25%;
+    width: 50%;
+    height: 78%;
+    padding: 16px;
   }
 
   .auth-card {
@@ -287,6 +295,40 @@ form button:disabled {
 
   .auth-left p {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .phone-mockup {
+    width: 280px;
+  }
+
+  .phone-screen {
+    top: 11%;
+    left: 22%;
+    width: 56%;
+    height: 76%;
+    padding: 14px;
+  }
+
+  .phone-screen h3 {
+    font-size: 15px;
+  }
+
+  .phone-screen p {
+    font-size: 11px;
+  }
+
+  .phone-card {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .phone-btn {
+    width: 80%;
+    font-size: 12px;
+    padding: 8px;
   }
 }
 
@@ -354,7 +396,6 @@ form button:disabled {
 }
 
 .phone-btn {
-  margin-top: auto;
   width: 50%;
   padding: 10px;
   margin-bottom: 10px ;
