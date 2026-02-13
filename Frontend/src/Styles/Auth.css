@@ -336,7 +336,7 @@
 
 
 .auth-card form input {
-  width: 80%;
+  width: 90%;
   padding: 14px 22px;
   margin-bottom: 15px;
   border-radius: 100px; /* THE PILL LOOK */
@@ -389,4 +389,99 @@
 @media (max-width: 1024px) {
   .auth-left { display: none; }
   .auth-right { flex: 1; width: 100%; }
+}
+
+
+/* ================= UPDATED RESPONSIVE DESIGN ================= */
+
+/* TABLET LAYOUT (Same layout, just scaled down) */
+@media (max-width: 1200px) {
+  .auth-left {
+    flex: 1; /* Give more room to the form */
+  }
+  
+  .phone-mockup {
+    max-width: 500px; /* Scale down the phone image */
+  }
+
+  .auth-card {
+    max-width: 400px; /* Slimmer card for tablets */
+    padding: 30px;
+  }
+}
+
+/* SMALL TABLET / LARGE PHONE BREAKPOINT */
+@media (max-width: 992px) {
+  .auth-container {
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .phone-mockup {
+    max-width: 400px;
+  }
+  
+  .circle {
+    width: 45px; /* Smaller floating icons */
+    height: 45px;
+    font-size: 18px;
+  }
+}
+
+/* MOBILE VIEW (Phones) */
+@media (max-width: 768px) {
+  .auth-container {
+    /* Background adjustment for a cleaner mobile look */
+    background: radial-gradient(circle at top, #fff9e6, #f1f5f9);
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto; /* Allow scrolling if keyboard pops up */
+  }
+
+  .auth-left {
+    display: none; /* Hide phone mockup on mobile as requested */
+  }
+
+  .auth-right {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%; /* Take full width minus padding */
+    border-radius: 30px; /* Slightly less rounded for small screens */
+    padding: 30px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  }
+
+  .auth-card h2 {
+    font-size: 22px;
+  }
+
+  /* Fix for the 80% input width in your current code */
+  .auth-card form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .auth-card form input {
+    width: 80% !important; /* Forces inputs to be full width on mobile */
+  }
+  
+  .social-btns {
+    flex-direction: column; /* Stack Apple/Google buttons on small phones */
+    gap: 10px;
+  }
+}
+
+/* LANDSCAPE FIX (For phones held sideways) */
+@media (max-height: 500px) and (max-width: 900px) {
+  .auth-container {
+    height: auto;
+    padding: 40px 20px;
+  }
+  .auth-left { display: none; }
 }
