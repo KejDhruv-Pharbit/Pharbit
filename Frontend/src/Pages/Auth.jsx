@@ -148,7 +148,9 @@ export default function Auth() {
               : "Create your account to get started"}
           </p>
 
-          <div className="toggle">
+                  <div className="toggle">
+                      
+                      <div className={`slider-blob ${isLogin ? "left" : "right"}`}></div>
             <button
               className={isLogin ? "active" : ""}
               onClick={() => setIsLogin(true)}

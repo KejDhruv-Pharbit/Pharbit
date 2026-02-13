@@ -196,25 +196,62 @@
 }
 
 /* TOGGLE - PILL DESIGN */
+/* THE TOGGLE CONTAINER */
 .toggle {
   display: flex;
+  position: relative; /* Essential for the absolute blob */
   background: rgba(0, 0, 0, 0.05);
   padding: 5px;
   border-radius: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  height: 48px; /* Fixed height for consistent sliding */
+  z-index: 1;
 }
 
+/* THE SLIDING BLOB */
+.slider-blob {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: calc(50% - 5px); /* Half the width minus padding */
+  height: calc(100% - 10px);
+  background: white;
+  border-radius: 100px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth spring-like movement */
+  z-index: -1; /* Sits behind the button text */
+}
+
+/* BLOB POSITIONS */
+.slider-blob.left {
+  transform: translateX(0);
+}
+
+.slider-blob.right {
+  transform: translateX(100%);
+}
+
+/* BUTTONS */
 .toggle button {
   flex: 1;
-  padding: 10px;
-  border: none;
-  background: transparent;
-  border-radius: 100px;
+  background: transparent !important; 
+  border: none !important;      /* Force remove any inherited borders */
+  outline: none !important;     /* Removes the focus rectangle */
+  box-shadow: none !important;/* Always transparent now */
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
   color: var(--text-muted);
-  transition: 0.3s ease;
+  transition: color 0.4s ease;
+  z-index: 2;
+  outline: none;
 }
+
+/* TEXT COLOR CHANGE WHEN ACTIVE */
+.toggle button.active {
+  color: var(--text-main); /* Text turns dark when the white blob is behind it */
+}
+
 
 .toggle .active {
   background: white;
