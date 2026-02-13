@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Styles/Auth.css"
-import phoneimg from "../assets/Phone.png"
+import "../Styles/Auth.css";
+import phoneimg from "../assets/Phone.png";
 
 export default function Auth() {
-
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState(true);
@@ -28,7 +27,7 @@ export default function Auth() {
     if (urlToken) {
       setIsLogin(false);
       setSignupType("employee");
-      setForm(prev => ({ ...prev, token: urlToken }));
+      setForm((prev) => ({ ...prev, token: urlToken }));
     }
   }, []);
 
@@ -40,17 +39,14 @@ export default function Auth() {
     });
   };
 
-  /* Submit */
+  /* Submit Logic */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-
-      /* LOGIN */
       if (isLogin) {
-
         const res = await fetch("http://localhost:5000/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -59,20 +55,11 @@ export default function Auth() {
             password: form.password
           })
         });
-
         const data = await res.json();
-
         if (!res.ok) throw new Error(data.error);
-
         localStorage.setItem("token", data.token);
-
         navigate("/dashboard");
-      }
-
-
-      /* USER SIGNUP */
-      else if (signupType === "user") {
-
+      } else if (signupType === "user") {
         const res = await fetch("http://localhost:5000/api/auth/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -83,19 +70,11 @@ export default function Auth() {
             password: form.password
           })
         });
-
         const data = await res.json();
-
         if (!res.ok) throw new Error(data.error);
-
         alert("Account created. Please login.");
         setIsLogin(true);
-      }
-
-
-      /* EMPLOYEE SIGNUP */
-      else {
-
+      } else {
         const res = await fetch("http://localhost:5000/api/auth/employee-signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -104,135 +83,85 @@ export default function Auth() {
             password: form.password
           })
         });
-
         const data = await res.json();
-
         if (!res.ok) throw new Error(data.error);
-
         alert("Employee account activated.");
         setIsLogin(true);
       }
-
     } catch (err) {
       setError(err.message || "Something went wrong");
     }
-
     setLoading(false);
   };
 
-
-
   return (
     <div className="auth-container">
-
-
-      {/* LEFT SECTION */}
+      {/* LEFT SECTION - MOCKUP */}
       <div className="auth-left">
-
         <div className="phone-mockup">
-
-          {/* Phone Frame */}
-          <img
-            src={phoneimg}
-            alt="phone"
-            className="phone-frame"
-          />
-
-          {/* Phone Screen Content */}
+          <img src={phoneimg} alt="phone" className="phone-frame" />
+          
           <div className="phone-screen">
-
             <h3>PHARBIT</h3>
             <p>Verify Your Medicine</p>
-
-            <div className="phone-card">
-              <span>💊 Scan Medicine</span>
-            </div>
-
-            <div className="phone-card">
-              <span>🔗 Token ID</span>
-            </div>
-
-            <div className="phone-card">
-              <span>🏪 Nearby Stores</span>
-            </div>
-
-            <button className="phone-btn">
-              Find Store
-            </button>
-
+            <div className="phone-card"><span>💊 Scan Medicine</span></div>
+            <div className="phone-card"><span>🔗 Token ID</span></div>
+            <div className="phone-card"><span>🏪 Nearby Stores</span></div>
+            <button className="phone-btn">Find Store</button>
           </div>
 
-          {/* Floating Icons */}
           <div className="circle c1">💊</div>
           <div className="circle c2">🔗</div>
           <div className="circle c3">🏪</div>
           <div className="circle c4">📍</div>
-
         </div>
-
       </div>
 
-
-      {/* RIGHT SECTION */}
+      {/* RIGHT SECTION - AUTH CARD */}
       <div className="auth-right">
-
         <div className="auth-card">
+          <h2>
+            {isLogin
+              ? "Welcome Back"
+              : signupType === "employee"
+              ? "Activate Account"
+              : "Create an account"}
+          </h2>
+          <p className="subtitle">Sign up and get 30 day free trial</p>
 
-          <h2>{isLogin ? "Sign In" : "Sign Up"}</h2>
-
-
-          {/* Toggle */}
           <div className="toggle">
-
             <button
               className={isLogin ? "active" : ""}
               onClick={() => setIsLogin(true)}
             >
               Login
             </button>
-
             <button
               className={!isLogin ? "active" : ""}
               onClick={() => setIsLogin(false)}
             >
               Signup
             </button>
-
           </div>
 
-
-          {/* Signup Type */}
           {!isLogin && (
-            <div className="signup-type">
-
-              <label>
-                <input
-                  type="radio"
-                  value="user"
-                  checked={signupType === "user"}
-                  onChange={() => setSignupType("user")}
-                />
-                User
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  value="employee"
-                  checked={signupType === "employee"}
-                  onChange={() => setSignupType("employee")}
-                />
+            <div className="signup-toggle">
+              <span className={signupType === "user" ? "active" : ""}>User</span>
+              <div
+                className={`toggle-switch ${signupType === "employee" ? "right" : ""}`}
+                onClick={() =>
+                  setSignupType(signupType === "user" ? "employee" : "user")
+                }
+              >
+                <div className="toggle-ball"></div>
+              </div>
+              <span className={signupType === "employee" ? "active" : ""}>
                 Employee
-              </label>
-
+              </span>
             </div>
           )}
 
-
-          {/* Form */}
           <form onSubmit={handleSubmit}>
-
-            {/* LOGIN EMAIL */}
             {isLogin && (
               <input
                 type="email"
@@ -243,8 +172,6 @@ export default function Auth() {
               />
             )}
 
-
-            {/* USER SIGNUP */}
             {!isLogin && signupType === "user" && (
               <>
                 <input
@@ -253,7 +180,6 @@ export default function Auth() {
                   onChange={handleChange}
                   required
                 />
-
                 <input
                   name="lastName"
                   placeholder="Last Name"
@@ -270,8 +196,6 @@ export default function Auth() {
               </>
             )}
 
-
-            {/* EMPLOYEE SIGNUP */}
             {!isLogin && signupType === "employee" && (
               <input
                 name="token"
@@ -282,8 +206,6 @@ export default function Auth() {
               />
             )}
 
-
-            {/* COMMON */}
             <input
               type="password"
               name="password"
@@ -292,21 +214,19 @@ export default function Auth() {
               required
             />
 
-
-            {/* ERROR */}
             {error && <p className="error">{error}</p>}
 
-
-            <button disabled={loading}>
+            <button disabled={loading} className="submit-btn">
               {loading ? "Please wait..." : "Submit"}
             </button>
-
           </form>
 
+          <div className="social-btns">
+            <button className="social-btn">🍎 Apple</button>
+            <button className="social-btn">🌐 Google</button>
+          </div>
         </div>
-
       </div>
-
     </div>
   );
 }
