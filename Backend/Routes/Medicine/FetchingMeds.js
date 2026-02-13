@@ -20,14 +20,15 @@ router.get("/medicines", async (req, res) => {
       });
     }
     if (status === "pending") {
-      const roleResult = await FindRole(authUser.id);
-      if (!roleResult?.data) {
+        const roleResult = await FindRole(authUser.id);
+        console.log(roleResult); 
+      if (!roleResult?.role) {
         return res.status(403).json({
           error: "Role not found"
         });
       }
 
-      if (roleResult.data.role !== "admin") {
+      if (roleResult.role !== "admin") {
         return res.status(403).json({
           error: "Admin access required"
         });
@@ -70,8 +71,8 @@ router.get("/Orgmeds", async (req, res) => {
         error: "Organization not found"
       });
     }
-
-    if (orgdata.data.role !== "manager") {
+      console.log(orgdata); 
+    if (orgdata.role !== "manager") {
       return res.status(403).json({
         error: "Only Manager can access the Meds"
       });

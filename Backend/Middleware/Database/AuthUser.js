@@ -40,7 +40,7 @@ export const FindOrganization = async (userId) => {
   try {
     const { data: employee, error: empError } = await supabase
       .from("employees")
-      .select("org_id")
+      .select("org_id , role ")
       .eq("auth_id", userId)
       .single();
 
@@ -60,7 +60,8 @@ export const FindOrganization = async (userId) => {
 
     return {
       success: true,
-      data: organization
+      data: organization , 
+      role : employee.role 
     };
   } catch (err) {
 
