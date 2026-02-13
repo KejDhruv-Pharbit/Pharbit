@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../Styles/Auth.css";
 import toast, { Toaster } from "react-hot-toast";
 import phoneimg from "../assets/Phone.png";
+import { FaApple } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 
 const url = import.meta.env.VITE_API_URL; 
@@ -243,9 +245,15 @@ export default function Auth() {
           </form>
 
           <div className="social-btns">
-            <button className="social-btn"> Apple</button>
-            <button className="social-btn"> Google</button>
-          </div>
+  <button type="button" className="social-btn">
+    <FaApple style={{ fontSize: "1.2rem", color: "#000" }} />
+    <span>Apple</span>
+  </button>
+  <button type="button" className="social-btn">
+    <FcGoogle style={{ fontSize: "1.2rem" }} />
+    <span>Google</span>
+  </button>
+</div>
         </div>
       </div>
     </div>
