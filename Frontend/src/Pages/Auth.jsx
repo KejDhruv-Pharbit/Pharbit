@@ -127,7 +127,13 @@ export default function Auth() {
               ? "Activate Account"
               : "Create an account"}
           </h2>
-          <p className="subtitle">Sign up and get 30 day free trial</p>
+          <p className="subtitle">
+            {isLogin
+              ? "Login to continue to your dashboard"
+              : signupType === "employee"
+              ? "Use your employee token to activate your account"
+              : "Create your account to get started"}
+          </p>
 
           <div className="toggle">
             <button
@@ -222,8 +228,8 @@ export default function Auth() {
           </form>
 
           <div className="social-btns">
-            <button className="social-btn">🍎 Apple</button>
-            <button className="social-btn">🌐 Google</button>
+            <button className="social-btn"> Apple</button>
+            <button className="social-btn"> Google</button>
           </div>
         </div>
       </div>

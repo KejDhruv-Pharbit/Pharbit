@@ -327,6 +327,48 @@
   text-align: center;
 }
 
+
+.auth-card form input {
+  width: 80%;
+  padding: 14px 22px;
+  margin-bottom: 15px;
+  border-radius: 100px; /* THE PILL LOOK */
+  border: 1px solid #edf2f7;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+
+.auth-card form input:focus {
+  outline: none;
+  background: white;
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 4px rgba(252, 211, 77, 0.15);
+}
+
+/* SUBMIT BUTTON - WARM YELLOW */
+
+.auth-card form button {
+  width: 100%;
+  padding: 15px;
+  background: var(--primary-yellow);
+  border: none;
+  border-radius: 100px;
+  color: #451a03; /* Dark brown text for contrast */
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 10px 20px rgba(252, 211, 77, 0.3);
+  transition: 0.3s;
+}
+
+
+.auth-card form button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 1024px) {
