@@ -53,7 +53,6 @@ router.put("/verifyMeds", async (req, res) => {
     }
 
     const roleResult = await FindRole(authUser.id);
-    console.log(roleResult.role);
     if (roleResult.role !== "admin") {
       return res.status(403).json({
         error: "Admin access required"

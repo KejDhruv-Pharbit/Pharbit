@@ -55,9 +55,7 @@ router.get("/medicines", async (req, res) => {
 
 router.get("/Orgmeds", async (req, res) => {
   try {
-
     const authUser = await getAuthUser(req);
-
     if (!authUser) {
       return res.status(401).json({
         error: "Unauthorized"
@@ -71,7 +69,6 @@ router.get("/Orgmeds", async (req, res) => {
         error: "Organization not found"
       });
     }
-      console.log(orgdata); 
     if (orgdata.role !== "manager") {
       return res.status(403).json({
         error: "Only Manager can access the Meds"
