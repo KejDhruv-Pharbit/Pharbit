@@ -42,7 +42,7 @@ export async function InviteEmployee(data, employee) {
 
     if (error) throw error;
 
-    const link = `http://localhost:5173/join?token=${token}`;
+    const link = `http://localhost:5173/?token=${token}`;
 
     console.log("INVITE LINK:", link);
 
