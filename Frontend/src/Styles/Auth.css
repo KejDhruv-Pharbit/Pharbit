@@ -271,25 +271,32 @@
 }
 
 /* SUBMIT BUTTON */
-.submit-btn {
+ .submit-btn {
   width: 100%;
   padding: 14px;
-  background: var(--primary-yellow);
-  border: none;
+
+  background: rgba(252, 211, 77, 0.12); /* very light yellow */
+  border: 2px solid var(--primary-yellow);
+
   border-radius: 100px;
-  color: #451a03;
+
+  color: #92400e; /* dark amber text */
+
   font-weight: 600;
   font-size: 16px;
+
   cursor: pointer;
   margin-top: 10px;
-  box-shadow: 0 10px 20px rgba(252, 211, 77, 0.3);
-  transition: 0.3s ease;
+
+  box-shadow: none;
+
+  transition: all 0.3s ease;
 }
 
 .submit-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 12px 24px rgba(252, 211, 77, 0.4);
+  background: rgba(252, 211, 77, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(252, 211, 77, 0.25);
 }
 
 /* SOCIAL BUTTONS */
@@ -352,22 +359,30 @@
 .auth-card form button {
   width: 100%;
   padding: 15px;
-  background: var(--primary-yellow);
-  border: none;
+
+  background: rgba(252, 211, 77, 0.12); /* very light yellow */
+  border: 2px solid var(--primary-yellow);
+
   border-radius: 100px;
-  color: #451a03; /* Dark brown text for contrast */
+
+  color: #92400e;
+
   font-weight: 600;
   font-size: 16px;
+
   cursor: pointer;
   margin-top: 10px;
-  box-shadow: 0 10px 20px rgba(252, 211, 77, 0.3);
-  transition: 0.3s;
+
+  box-shadow: none;
+
+  transition: all 0.3s ease;
 }
 
 
 .auth-card form button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
+  background: rgba(252, 211, 77, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(252, 211, 77, 0.25);
 }
 /* ================= RESPONSIVE ================= */
 
