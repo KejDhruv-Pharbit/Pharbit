@@ -38,7 +38,7 @@ export default function MedicineCard({ data, onUpdate }) {
   {/* Section 1: Pharma Details */}
   <div className="pending-modal-section">
     <span className="pending-section-title">Pharma Details</span>
-    <Info label="Manufacturer" value={data.organization_id} />
+    <Info label="Manufacturer" value={data.organization.name} />
     <Info label="Dosage Form" value={data.dosage_form} />
     <Info label="Strength" value={data.strength} />
     <Info label="Route" value={data.route_of_administration} />

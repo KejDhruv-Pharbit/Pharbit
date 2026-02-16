@@ -1,13 +1,45 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect.js";
 
 const FindMedicine = async (status) => {
-  if (status === undefined || status === null) {
+  if (!status) {
     throw new Error("Verification status is required");
   }
   const { data, error } = await supabase
     .from("medicines")
-    .select("*")
+    .select(`
+      id,
+      organization_id,
+      name,
+      brand_name,
+      composition,
+      dosage_form,
+      strength,
+      route_of_administration,
+      drug_code,
+      hsn_code,
+      schedule,
+      manufacturing_license,
+      approval_number,
+      legal_document_url,
+      is_verified,
+      verified_by,
+      verified_at,
+      mrp,
+      cost_price,
+      storage_conditions,
+      warnings,
+      side_effects,
+      is_active,
+      created_at,
+      updated_at,
+      category,
+      verification_status,
+      organization:organization_id (
+        name
+      )
+    `)
     .eq("verification_status", status);
+
   if (error) throw error;
   return data;
 };
