@@ -53,14 +53,14 @@ export default function MedicineCard({ data, onUpdate }) {
         </div>
 
         <div className="pending-card-actions">
-          <button 
+          <button
             className="pending-btn pending-approve-btn"
             disabled={isProcessing}
             onClick={() => handleVerify("accepted")}
           >
             {isProcessing ? "..." : "Approve"}
           </button>
-          <button 
+          <button
             className="pending-btn pending-reject-btn"
             disabled={isProcessing}
             onClick={() => handleVerify("rejected")}
@@ -162,7 +162,7 @@ export default function MedicineCard({ data, onUpdate }) {
                   {data.storage_conditions?.length > 0 ? (
                     data.storage_conditions.map((sc, i) => (
                       <span key={i} className="pending-tag" style={{ background: "#eff6ff", color: "#1e40af", border: "none" }}>
-                         {sc}
+                        {sc}
                       </span>
                     ))
                   ) : (
@@ -178,7 +178,7 @@ export default function MedicineCard({ data, onUpdate }) {
               )}
 
               {/* Modal Footer Actions */}
-            {/* <div className="pending-card-actions" style={{ marginTop: "30px", borderTop: "1px solid #eee", paddingTop: "20px" }}>
+              {/* <div className="pending-card-actions" style={{ marginTop: "30px", borderTop: "1px solid #eee", paddingTop: "20px" }}>
                 <button 
                   className="pending-btn pending-approve-btn" 
                   disabled={isProcessing}
@@ -193,7 +193,7 @@ export default function MedicineCard({ data, onUpdate }) {
                 >
                   {isProcessing ? "Processing..." : "Reject Medicine"} 
                 </button>
-              </div> */ } 
+              </div> */ }
             </div>
           </div>
         </div>

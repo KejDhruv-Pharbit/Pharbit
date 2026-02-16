@@ -22,8 +22,8 @@ app.use(cors({
   credentials: true
 }));
 
-app.use("/", Organization); 
-app.use("/", Autherization); 
+app.use("/", Organization);
+app.use("/", Autherization);
 app.use("/", Employee)
 app.use("/", Medicines);
 app.use("/", FetchMeds);

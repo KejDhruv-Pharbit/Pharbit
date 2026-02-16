@@ -60,8 +60,8 @@ export const FindOrganization = async (userId) => {
 
     return {
       success: true,
-      data: organization , 
-      role : employee.role 
+      data: organization,
+      role: employee.role
     };
   } catch (err) {
 

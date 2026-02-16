@@ -20,8 +20,8 @@ router.get("/medicines", async (req, res) => {
       });
     }
     if (status === "pending") {
-        const roleResult = await FindRole(authUser.id);
-        console.log(roleResult); 
+      const roleResult = await FindRole(authUser.id);
+      console.log(roleResult);
       if (!roleResult?.role) {
         return res.status(403).json({
           error: "Role not found"
@@ -49,7 +49,7 @@ router.get("/medicines", async (req, res) => {
       error: "Failed to fetch medicines"
     });
   }
-}); 
+});
 
 
 

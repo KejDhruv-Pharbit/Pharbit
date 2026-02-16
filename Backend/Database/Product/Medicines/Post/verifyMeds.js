@@ -1,7 +1,7 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect.js";
 import { FindMeds } from "../Get/FindMedicines.js";
 
-export async function verifyMedicine(medicineId, adminId = null , status) {
+export async function verifyMedicine(medicineId, adminId = null, status) {
   try {
 
     if (!medicineId) {
@@ -12,7 +12,7 @@ export async function verifyMedicine(medicineId, adminId = null , status) {
       };
     }
 
-     if (!status) {
+    if (!status) {
       return {
         success: false,
         status: 400,
@@ -23,7 +23,7 @@ export async function verifyMedicine(medicineId, adminId = null , status) {
     const result = await FindMeds(medicineId);
 
     if (!result.success) {
-      return result; 
+      return result;
     }
 
     const medicine = result.data;

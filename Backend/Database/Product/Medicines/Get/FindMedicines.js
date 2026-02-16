@@ -51,7 +51,7 @@ const FindOrganizationMeds = async (orgId) => {
   const { data, error } = await supabase
     .from("medicines")
     .select("*")
-    .eq("organization_id", orgId); 
+    .eq("organization_id", orgId);
 
   if (error) throw error;
   return data;
@@ -67,9 +67,9 @@ const FindMeds = async (id) => {
     .from("medicines")
     .select("*")
     .eq("id", id)
-    .maybeSingle(); 
+    .maybeSingle();
   if (error) {
-    throw error; 
+    throw error;
   }
   if (!data) {
     return {

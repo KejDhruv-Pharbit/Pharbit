@@ -6,7 +6,7 @@ import { verifyMedicine } from "../../Database/Product/Medicines/Post/verifyMeds
 
 const router = express.Router();
 
-router.post(  "/addMeds", upload.fields([ { name: "medicineDocuments", maxCount: 10 } ]),
+router.post("/addMeds", upload.fields([{ name: "medicineDocuments", maxCount: 10 }]),
   async (req, res) => {
     try {
       const authUser = await getAuthUser(req);
@@ -66,7 +66,7 @@ router.put("/verifyMeds", async (req, res) => {
         error: "Medicine ID is required"
       });
     }
-    const result = await verifyMedicine(medicineId, authUser.id , status);
+    const result = await verifyMedicine(medicineId, authUser.id, status);
     return res.status(result.status).json(result);
 
   } catch (err) {

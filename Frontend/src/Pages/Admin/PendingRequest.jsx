@@ -38,9 +38,6 @@ export default function PendingRequests() {
     URL.revokeObjectURL(url);
   };
 
-
-  
-
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -70,7 +67,7 @@ export default function PendingRequests() {
 
     // 1. Tab Filtering
     if (activeTab === "High Priority") {
-      result = result.filter(req => 
+      result = result.filter(req =>
         ["Schedule H", "Schedule H1", "Schedule X"].includes(req.schedule)
       );
     } else if (activeTab === "Expiring Soon") {
@@ -82,8 +79,8 @@ export default function PendingRequests() {
     // 2. Search Logic (Name, Brand, Code, ID)
     if (searchTerm) {
       const lowTerm = searchTerm.toLowerCase();
-      result = result.filter(req => 
-        req.name?.toLowerCase().includes(lowTerm) || 
+      result = result.filter(req =>
+        req.name?.toLowerCase().includes(lowTerm) ||
         req.brand_name?.toLowerCase().includes(lowTerm) ||
         req.drug_code?.toLowerCase().includes(lowTerm) ||
         req._id?.toLowerCase().includes(lowTerm) ||
@@ -133,19 +130,19 @@ export default function PendingRequests() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        
+
         {/* Date Filter */}
-        <input 
-          type="date" 
-          className="pending-action-btn" 
+        <input
+          type="date"
+          className="pending-action-btn"
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
         />
 
         {/* Price Filter */}
-        <input 
-          type="number" 
-          placeholder="Max Price (EUR)" 
+        <input
+          type="number"
+          placeholder="Max Price (EUR)"
           className="pending-action-btn"
           style={{ width: '130px' }}
           value={maxPrice}
@@ -184,10 +181,10 @@ export default function PendingRequests() {
           </div>
         ) : filteredRequests.length > 0 ? (
           filteredRequests.map((req) => (
-            <RequestCard 
-              key={req._id || req.id} 
-              data={req} 
-              onUpdate={fetchRequests} 
+            <RequestCard
+              key={req._id || req.id}
+              data={req}
+              onUpdate={fetchRequests}
             />
           ))
         ) : (
