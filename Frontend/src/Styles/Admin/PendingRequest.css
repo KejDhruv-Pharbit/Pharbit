@@ -644,3 +644,53 @@
     padding: 10px 5px;
   }
 }
+
+
+/* ============================================================
+   RESPONSIVE HEADER REFINEMENT
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .pending-header-bar {
+    flex-direction: column; /* Stack Title and Badge */
+    align-items: center;    /* Center for mobile aesthetic */
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0; /* Soft card look for header */
+  }
+
+  .pending-header-bar h1 {
+    font-size: 22px; /* Slightly smaller for mobile */
+    line-height: 1.2;
+  }
+
+  .pending-count-badge {
+    width: fit-content;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 20px; /* Pill shape looks better on mobile */
+  }
+
+  /* Adjust Tab row to center-align on mobile */
+  .pending-tab-row {
+    justify-content: center;
+    overflow-x: auto;
+    width: 100%;
+    padding: 4px 0;
+  }
+}
+
+/* Extra Small (Phones under 400px) */
+@media (max-width: 400px) {
+  .pending-header-bar h1 {
+    font-size: 19px;
+  }
+  
+  .pending-page-container {
+    padding: 16px; /* Tighten page padding for more screen real estate */
+  }
+}
