@@ -407,3 +407,240 @@
   border: 2px dashed #e2e8f0;
   color: #64748b;
 }
+
+/* ============================================================
+   RESPONSIVE OVERRIDES
+   ============================================================ */
+
+/* ============================================================
+   REFINED RESPONSIVE CSS
+   ============================================================ */
+
+/* Medium Screens (Tablets) */
+@media (max-width: 992px) {
+  .pending-modal-content {
+    width: 90%;
+    max-height: 85vh;
+  }
+}
+
+/* Mobile Devices (Phones) */
+@media (max-width: 768px) {
+  
+  /* --- 1. SEARCH ROW REFINEMENT --- */
+  .pending-search-row {
+    flex-direction: column; /* Stack vertically */
+    align-items: center;    /* Center everything */
+    gap: 15px;
+  }
+
+  .pending-search-input {
+    width: 100%; /* Bar takes full width */
+    text-align: left;
+  }
+
+  /* Container for buttons to keep them in one line/wrapped below search */
+  .pending-search-row > button, 
+  .pending-search-row > input[type="date"],
+  .pending-search-row > input[type="number"] {
+    width: auto;
+    flex: 1;
+    min-width: 120px; /* Ensures buttons don't get too small */
+    justify-content: center;
+    display: flex;
+  }
+
+  /* --- 2. MODAL VERTICAL STACKING --- */
+  .pending-modal-overlay {
+    align-items: flex-end; /* Modern bottom-sheet feel for mobile */
+  }
+
+  .pending-modal-content {
+    width: 100%;
+    height: 92vh; /* Slight gap at top to show background */
+    border-radius: 24px 24px 0 0; /* Rounded top corners */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pending-modal-header {
+    padding: 20px;
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .pending-modal-body {
+    display: flex;
+    flex-direction: column; /* FORCED VERTICAL STACK */
+    gap: 20px;
+    padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Remove all grid layouts for mobile body */
+  .pending-modal-grid-3,
+  .pending-modal-grid-2,
+  .pending-modal-body {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pending-modal-section {
+    width: 100%;
+    padding: 16px;
+    background: #fcfcfd;
+    box-sizing: border-box;
+  }
+
+  /* Ensure child data rows stack vertically */
+  .pending-safety-grid,
+  .pending-modal-section div[style*="display: flex"],
+  .pending-modal-section div[style*="display: grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+
+  /* --- 3. MODAL FOOTER REFINEMENT --- */
+  .pending-modal-footer {
+    flex-direction: column; /* Stack buttons vertically for thumb reach */
+    padding: 20px;
+    gap: 12px;
+    background: white;
+    border-top: 1px solid #f1f5f9;
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+  }
+
+  .pending-modal-footer .pending-btn,
+  .pending-modal-footer .pending-doc-link-btn {
+    width: 100%;
+    flex: none !important;
+    height: 52px; /* Larger hit area */
+    font-size: 15px;
+  }
+
+  /* --- 4. CARDS & GRID --- */
+  .pending-card-grid {
+    grid-template-columns: 1fr; /* Single column */
+    gap: 16px;
+  }
+
+  .pending-header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+/* Landscape fix for tiny height phones */
+@media (max-height: 500px) and (max-width: 768px) {
+  .pending-modal-content {
+    height: 100vh;
+    border-radius: 0;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE GRID REFINEMENT
+   ============================================================ */
+
+@media (max-width: 768px) {
+  
+  /* --- 1. SEARCH ROW 2x2 GRID --- */
+  .pending-search-row {
+    flex-direction: column; 
+    gap: 12px;
+  }
+
+  .pending-search-input {
+    width: 100%;
+  }
+
+  /* Container for the filter buttons */
+  /* If you wrapped them in a div, target that, otherwise target the row behavior */
+  .pending-search-row {
+    display: grid;
+    grid-template-columns: 1fr; /* Search bar on top */
+  }
+
+  /* We'll use a wrapper-less approach by targeting the buttons/inputs */
+  .pending-search-row > .pending-action-btn,
+  .pending-search-row > input[type="date"],
+  .pending-search-row > input[type="number"] {
+    display: none; /* Hide original flow to reorganize */
+  }
+
+  /* Update the row to behave as a grid */
+  .pending-search-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* The 2x2 Grid */
+    gap: 10px;
+  }
+
+  .pending-search-input {
+    grid-column: span 2; /* Search bar takes full width of the 2 columns */
+    display: block !important;
+  }
+
+  .pending-search-row > .pending-action-btn,
+  .pending-search-row > input {
+    display: flex !important;
+    width: 100% !important;
+    margin: 0;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  /* --- 2. MODAL FOOTER 2x2 GRID --- */
+  .pending-modal-footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; /* 2x2 for actions */
+    gap: 10px;
+    padding: 20px;
+    background: white;
+  }
+
+  .pending-doc-link-btn {
+    grid-column: span 2; /* Documents usually look better full width at top */
+    order: -1;
+  }
+
+  .pending-modal-footer .pending-btn {
+    width: 100% !important;
+    flex: none !important;
+    height: 48px;
+    margin: 0;
+  }
+
+  /* --- 3. MODAL BODY STACKING --- */
+  .pending-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .pending-modal-section {
+    grid-template-columns: 1fr !important; /* Force stack */
+    display: block !important;
+  }
+
+  .pending-data-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+}
+
+/* Extra Small screen button text shrink */
+@media (max-width: 400px) {
+  .pending-search-row .pending-action-btn {
+    font-size: 11px;
+    padding: 10px 5px;
+  }
+}
