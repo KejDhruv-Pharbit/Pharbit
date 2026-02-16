@@ -10,6 +10,10 @@ export default function PendingRequests() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("All");
 
+  // New Filter States
+  const [maxPrice, setMaxPrice] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -39,30 +43,49 @@ export default function PendingRequests() {
 
     // 1. Tab Filtering
     if (activeTab === "High Priority") {
-      // Logic: Schedule H1, X, or Narctotics are usually high priority
       result = result.filter(req => 
         ["Schedule H", "Schedule H1", "Schedule X"].includes(req.schedule)
       );
     } else if (activeTab === "Expiring Soon") {
-      // Logic: Created more than 7 days ago and still pending
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       result = result.filter(req => new Date(req.created_at) < sevenDaysAgo);
     }
 
-    // 2. Search Logic
+    // 2. Search Logic (Name, Brand, Code, ID)
     if (searchTerm) {
       const lowTerm = searchTerm.toLowerCase();
       result = result.filter(req => 
         req.name?.toLowerCase().includes(lowTerm) || 
+        req.brand_name?.toLowerCase().includes(lowTerm) ||
         req.drug_code?.toLowerCase().includes(lowTerm) ||
         req._id?.toLowerCase().includes(lowTerm) ||
-        req.brand_name?.toLowerCase().includes(lowTerm)
+        req.id?.toLowerCase().includes(lowTerm)
       );
     }
 
+    // 3. Price Filter
+    if (maxPrice) {
+      result = result.filter(req => Number(req.mrp) <= Number(maxPrice));
+    }
+
+    // 4. Date Filter
+    if (dateFilter) {
+      result = result.filter(req => {
+        const reqDate = new Date(req.created_at).toISOString().split('T')[0];
+        return reqDate === dateFilter;
+      });
+    }
+
     return result;
-  }, [requests, searchTerm, activeTab]);
+  }, [requests, searchTerm, activeTab, maxPrice, dateFilter]);
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setMaxPrice("");
+    setDateFilter("");
+    setActiveTab("All");
+  };
 
   return (
     <div className="pending-page-container">
@@ -78,13 +101,32 @@ export default function PendingRequests() {
       <div className="pending-search-row">
         <input
           type="text"
-          placeholder="Search by Medicine, Brand, or ID..."
+          placeholder="Search Name, Brand, or ID..."
           className="pending-search-input"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button className="pending-action-btn" onClick={() => setSearchTerm("")}>Clear</button>
-        <button className="pending-action-btn">Export CSV</button>
+        
+        {/* Date Filter */}
+        <input 
+          type="date" 
+          className="pending-action-btn" 
+          value={dateFilter}
+          onChange={(e) => setDateFilter(e.target.value)}
+        />
+
+        {/* Price Filter */}
+        <input 
+          type="number" 
+          placeholder="Max Price ₹" 
+          className="pending-action-btn"
+          style={{ width: '130px' }}
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+        />
+
+        <button className="pending-action-btn" onClick={resetFilters}>Reset</button>
+        <button className="pending-action-btn" style={{ background: '#0f172a', color: '#fff' }}>Export CSV</button>
       </div>
 
       {/* Tabs */}
@@ -118,7 +160,7 @@ export default function PendingRequests() {
         ) : (
           <div className="pending-empty-state">
             <h3>No requests match your criteria</h3>
-            <p>Try adjusting your search or filters.</p>
+            <p>Try adjusting your filters or search terms.</p>
           </div>
         )}
       </div>
