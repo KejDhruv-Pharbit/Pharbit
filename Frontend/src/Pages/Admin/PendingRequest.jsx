@@ -56,7 +56,8 @@ export default function PendingRequests() {
       result = result.filter(req => 
         req.name?.toLowerCase().includes(lowTerm) || 
         req.drug_code?.toLowerCase().includes(lowTerm) ||
-        req._id?.toLowerCase().includes(lowTerm)
+        req._id?.toLowerCase().includes(lowTerm) ||
+        req.brand_name?.toLowerCase().includes(lowTerm)
       );
     }
 
