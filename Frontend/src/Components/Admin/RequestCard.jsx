@@ -12,7 +12,7 @@ export default function MedicineCard({ data, onUpdate }) {
 
         <div className="pending-card-meta">
           <div className="pending-meta-item"><label>Brand</label><span>{data.brand_name || "N/A"}</span></div>
-          <div className="pending-meta-item"><label>Price</label><span>₹{data.mrp}</span></div>
+          <div className="pending-meta-item"><label>Drug Code</label><span>{data.drug_code}</span></div>
         </div>
 
         <div className="pending-card-actions">
@@ -22,55 +22,104 @@ export default function MedicineCard({ data, onUpdate }) {
         </div>
       </div>
 
-      {open && (
-        <div className="pending-modal-overlay" onClick={() => setOpen(false)}>
-          <div className="pending-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="pending-modal-header">
-              <div>
-                <small style={{ color: '#facc15' }}>RECORD ID: {data._id?.slice(-6)}</small>
-                <h2 style={{ margin: 0 }}>{data.name}</h2>
-              </div>
-              <button onClick={() => setOpen(false)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>✖</button>
-            </div>
-
-            <div className="pending-modal-body">
-              <div className="pending-modal-section">
-                <span className="pending-section-title">Administration</span>
-                <Info label="Form" value={data.dosage_form} />
-                <Info label="Strength" value={data.strength} />
-                <Info label="Route" value={data.route_of_administration} />
-              </div>
-
-              <div className="pending-modal-section">
-                <span className="pending-section-title">Compliance</span>
-                <Info label="Drug Code" value={data.drug_code} />
-                <Info label="Schedule" value={data.schedule} />
-                <Info label="HSN" value={data.hsn_code} />
-              </div>
-
-              <div className="pending-modal-section">
-                <span className="pending-section-title">Inventory</span>
-                <Info label="MRP" value={`₹${data.mrp}`} />
-                <Info label="Cost" value={`₹${data.cost_price}`} />
-                <Info label="Verified" value={data.is_verified ? "Yes" : "No"} />
-              </div>
-
-              <div className="pending-modal-section pending-full-width">
-                <span className="pending-section-title">Composition</span>
-                {data.composition?.map((c, i) => <span key={i} className="pending-tag">{c}</span>)}
-              </div>
-
-              <div className="pending-modal-section pending-full-width">
-                <span className="pending-section-title">Safety Information</span>
-                <div style={{ display: 'flex', gap: '40px' }}>
-                   <div><label style={{fontSize: '10px', color: '#94a3b8'}}>Warnings</label><div>{data.warnings?.join(", ") || "None"}</div></div>
-                   <div><label style={{fontSize: '10px', color: '#94a3b8'}}>Side Effects</label><div>{data.side_effects?.join(", ") || "None"}</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
+     {open && (
+  <div className="pending-modal-overlay" onClick={() => setOpen(false)}>
+    <div className="pending-modal-content" onClick={(e) => e.stopPropagation()}>
+      
+      <div className="pending-modal-header">
+        <div>
+          <span className="pending-record-id">REQ-{data.id?.slice(-8).toUpperCase()}</span>
+          <h2>{data.name}</h2>
         </div>
-      )}
+        <button className="pending-close-x" onClick={() => setOpen(false)}>✕</button>
+      </div>
+
+     <div className="pending-modal-body">
+  {/* Section 1: Pharma Details */}
+  <div className="pending-modal-section">
+    <span className="pending-section-title">Pharma Details</span>
+    <Info label="Manufacturer" value={data.organization_id} />
+    <Info label="Dosage Form" value={data.dosage_form} />
+    <Info label="Strength" value={data.strength} />
+    <Info label="Route" value={data.route_of_administration} />
+  </div>
+
+  {/* Section 2: Regulatory */}
+  <div className="pending-modal-section">
+    <span className="pending-section-title">Regulatory</span>
+    <Info label="Drug Code" value={data.drug_code} />
+    <Info label="HSN Code" value={data.hsn_code} />
+    <Info label="Schedule" value={data.schedule} />
+    <Info label="Created On" value={new Date(data.created_at).toLocaleDateString()} />
+  </div>
+
+  {/* Section 3: Commercial */}
+  <div className="pending-modal-section">
+    <span className="pending-section-title">Commercial</span>
+    <Info label="Retail MRP" value={`₹${data.mrp}`} />
+    <Info label="Cost Price" value={`₹${data.cost_price}`} />
+    <div className="pending-data-row">
+      <label>Status</label>
+      <span style={{ color: '#d97706' }}>● Verification Pending</span>
+    </div>
+  </div>
+
+  {/* Section 4: Composition (Full Width) */}
+  <div className="pending-modal-section pending-full-width">
+    <span className="pending-section-title">Active Composition</span>
+    <div className="pending-tag-wrapper">
+      {data.composition?.map((item, i) => (
+        <span key={i} className="pending-tag">{item}</span>
+      ))}
+    </div>
+  </div>
+
+  {/* NEW Section 5: Safety & Side Effects (Full Width) */}
+  <div className="pending-modal-section pending-full-width">
+    <span className="pending-section-title">Safety & Side Effects</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+      <div className="pending-data-row">
+        <label>Side Effects</label>
+        <div className="pending-tag-wrapper" style={{marginTop: '8px'}}>
+          {data.side_effects?.length > 0 
+            ? data.side_effects.map((se, i) => <span key={i} className="pending-tag" style={{borderColor: '#fee2e2'}}>{se}</span>)
+            : <span>No major side effects reported.</span>}
+        </div>
+      </div>
+      <div className="pending-data-row">
+        <label>Critical Warnings</label>
+        <div className="pending-tag-wrapper" style={{marginTop: '8px'}}>
+          {data.warnings?.length > 0 
+            ? data.warnings.map((w, i) => <span key={i} className="pending-tag" style={{borderColor: '#fef3c7', color: '#92400e'}}>{w}</span>)
+            : <span>No specific warnings provided.</span>}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* NEW Section 6: Storage (Full Width) */}
+  <div className="pending-modal-section pending-full-width">
+    <span className="pending-section-title">Storage Conditions</span>
+    <div className="pending-tag-wrapper">
+      {data.storage_conditions?.length > 0 
+        ? data.storage_conditions.map((sc, i) => (
+            <span key={i} className="pending-tag" style={{background: '#eff6ff', color: '#1e40af', border: 'none'}}>
+              ❄️ {sc}
+            </span>
+          ))
+        : <span>Standard room temperature storage.</span>}
+    </div>
+  </div>
+
+  {data.legal_document_url && (
+    <a href={data.legal_document_url} target="_blank" rel="noreferrer" className="pending-doc-btn">
+      📄 View Government Authorization & Legal Documents
+    </a>
+  )}
+</div>
+    </div>
+  </div>
+)}
     </>
   );
 }
