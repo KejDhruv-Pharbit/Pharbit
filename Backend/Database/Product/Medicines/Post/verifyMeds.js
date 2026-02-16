@@ -1,7 +1,7 @@
 import supabase from "../../../../Middleware/Database/DatabaseConnect.js";
 import { FindMeds } from "../Get/FindMedicines.js";
 
-export async function verifyMedicine(medicineId, adminId = null) {
+export async function verifyMedicine(medicineId, adminId = null , status) {
   try {
 
     if (!medicineId) {
@@ -9,6 +9,14 @@ export async function verifyMedicine(medicineId, adminId = null) {
         success: false,
         status: 400,
         error: "Medicine ID is required"
+      };
+    }
+
+     if (!status) {
+      return {
+        success: false,
+        status: 400,
+        error: "status is required"
       };
     }
 
@@ -32,7 +40,7 @@ export async function verifyMedicine(medicineId, adminId = null) {
       .from("medicines")
       .update({
         is_verified: true,
-        verification_status: "approved",
+        verification_status: status,
         verified_at: new Date().toISOString(),
         verified_by: adminId
       })

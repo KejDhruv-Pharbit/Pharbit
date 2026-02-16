@@ -59,13 +59,14 @@ router.put("/verifyMeds", async (req, res) => {
       });
     }
     const medicineId = req.query.id;
+    const status = req.query.status;
 
     if (!medicineId) {
       return res.status(400).json({
         error: "Medicine ID is required"
       });
     }
-    const result = await verifyMedicine(medicineId, authUser.id);
+    const result = await verifyMedicine(medicineId, authUser.id , status);
     return res.status(result.status).json(result);
 
   } catch (err) {
