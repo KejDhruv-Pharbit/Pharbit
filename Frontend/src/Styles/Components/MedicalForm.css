@@ -396,3 +396,67 @@ section h3 {
   border: none;
   color: #111827;
 }
+
+
+/* ============================================================
+   FIXED RESPONSIVE MODAL
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .modal {
+    width: 95%; /* Use percentage instead of fixed width */
+    max-height: 95vh; /* Allow more height on mobile */
+    border-radius: 24px; /* Slightly smaller radius for mobile */
+  }
+
+  .modal-header {
+    padding: 20px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .review-grid {
+    grid-template-columns: 1fr; /* Stack the two columns vertically */
+    gap: 16px;
+  }
+
+  .modal-actions {
+    padding: 20px;
+    flex-direction: column-reverse; /* Stack buttons: Cancel below Confirm */
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Adjust data rows for small screens to prevent overlap */
+  .data-row {
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .data-row .value {
+    text-align: left; /* Align value to left when stacked */
+    margin-top: 2px;
+  }
+}
+
+/* Fix for very short screens (landscape phones) */
+@media (max-height: 600px) {
+  .modal {
+    max-height: 98vh;
+  }
+  
+  .modal-header {
+    padding: 15px 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 18px;
+  }
+}
