@@ -14,6 +14,33 @@ export default function PendingRequests() {
   const [maxPrice, setMaxPrice] = useState("");
   const [dateFilter, setDateFilter] = useState("");
 
+  // Export CSV
+  const exportToCSV = () => {
+    if (!filteredRequests.length) return;
+
+    const headers = Object.keys(filteredRequests[0]);
+
+    const rows = filteredRequests.map(obj =>
+      headers.map(h => `"${(obj[h] ?? "").toString().replace(/"/g, '""')}"`).join(",")
+    );
+
+    const csvContent =
+      headers.join(",") + "\n" + rows.join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "pending_medicines.csv";
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+
+  
+
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -118,7 +145,7 @@ export default function PendingRequests() {
         {/* Price Filter */}
         <input 
           type="number" 
-          placeholder="Max Price ₹" 
+          placeholder="Max Price (EUR)" 
           className="pending-action-btn"
           style={{ width: '130px' }}
           value={maxPrice}
@@ -126,7 +153,13 @@ export default function PendingRequests() {
         />
 
         <button className="pending-action-btn" onClick={resetFilters}>Reset</button>
-        <button className="pending-action-btn" style={{ background: '#0f172a', color: '#fff' }}>Export CSV</button>
+        <button
+          className="pending-action-btn"
+          style={{ background: '#0f172a', color: '#fff' }}
+          onClick={exportToCSV}
+        >
+          Export CSV
+        </button>
       </div>
 
       {/* Tabs */}
