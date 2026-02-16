@@ -178,7 +178,7 @@ export default function MedicineCard({ data, onUpdate }) {
               )}
 
               {/* Modal Footer Actions */}
-              <div className="pending-card-actions" style={{ marginTop: "30px", borderTop: "1px solid #eee", paddingTop: "20px" }}>
+            {/* <div className="pending-card-actions" style={{ marginTop: "30px", borderTop: "1px solid #eee", paddingTop: "20px" }}>
                 <button 
                   className="pending-btn pending-approve-btn" 
                   disabled={isProcessing}
@@ -191,9 +191,9 @@ export default function MedicineCard({ data, onUpdate }) {
                   disabled={isProcessing}
                   onClick={() => handleVerify("rejected")}
                 >
-                  {isProcessing ? "Processing..." : "Reject Medicine"}
+                  {isProcessing ? "Processing..." : "Reject Medicine"} 
                 </button>
-              </div>
+              </div> */ } 
             </div>
           </div>
         </div>
