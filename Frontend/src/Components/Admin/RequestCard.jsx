@@ -106,8 +106,8 @@ export default function MedicineCard({ data, onUpdate }) {
               {/* Section 3: Commercial */}
               <div className="pending-modal-section">
                 <span className="pending-section-title">Commercial</span>
-                <Info label="Retail MRP" value={`₹${data.mrp}`} />
-                <Info label="Cost Price" value={`₹${data.cost_price}`} />
+                <Info label="Retail MRP" value={`EUR ${data.mrp}`} />
+                <Info label="Cost Price" value={`EUR ${data.cost_price}`} />
                 <div className="pending-data-row">
                   <label>Status</label>
                   <span style={{ color: "#d97706" }}>● Verification Pending</span>
@@ -162,7 +162,7 @@ export default function MedicineCard({ data, onUpdate }) {
                   {data.storage_conditions?.length > 0 ? (
                     data.storage_conditions.map((sc, i) => (
                       <span key={i} className="pending-tag" style={{ background: "#eff6ff", color: "#1e40af", border: "none" }}>
-                        ❄️ {sc}
+                         {sc}
                       </span>
                     ))
                   ) : (
