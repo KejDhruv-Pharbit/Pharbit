@@ -387,3 +387,116 @@
   cursor: pointer;
 }
 
+
+
+
+
+
+/* ================= MEDICINE FORM: MOBILE (≤480px) ================= */
+@media (max-width: 480px) {
+
+  /* Page Padding */
+  .medicine-page {
+    margin-top: 80px;
+    padding: 16px 12px;
+  }
+
+  /* Header Stack */
+  .page-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+.header-content h1 {
+  font-size: 24px;
+  text-align: center;
+  width: 100%;
+}
+.header-content p {
+  text-align: center;
+}
+  /* Hide Step Labels (Keep Circles) */
+  .step-label {
+    display: none;
+  }
+
+  .step-wizard {
+    gap: 20px;
+  }
+
+  /* Single Column Layout */
+  .medicine-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Hide Preview on Mobile */
+  .medicine-preview-sticky {
+    display: none;
+  }
+
+  /* Form Container */
+  .medicine-form-container {
+    padding: 20px;
+    border-radius: 20px;
+    min-height: auto;
+  }
+
+  /* Form Grid → Stack */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+  /* Inputs */
+  .field input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  /* Tags Input */
+  .array-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .add-tag-btn {
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Navigation Buttons */
+  .form-navigation {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .nav-btn-primary,
+  .nav-btn-secondary,
+  .nav-btn-submit {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  /* Upload Box */
+  .upload-box {
+    padding: 20px;
+    font-size: 13px;
+  }
+
+  /* Preview Pills (if reused) */
+  .preview-tag-pill {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}
