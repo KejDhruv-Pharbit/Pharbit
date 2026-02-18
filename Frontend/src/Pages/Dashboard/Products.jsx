@@ -108,9 +108,9 @@ export default function Products() {
                       className={filterStatus === "all" ? "active" : ""}
                     >All Items</button>
                     <button 
-                      onClick={() => {setFilterStatus("approved"); setIsSortOpen(false); setCurrentPage(1)}} 
-                      className={filterStatus === "approved" ? "active" : ""}
-                    >Approved</button>
+                      onClick={() => {setFilterStatus("accepted"); setIsSortOpen(false); setCurrentPage(1)}} 
+                      className={filterStatus === "accepted" ? "active" : ""}
+                    >Accepted</button>
                     <button 
                       onClick={() => {setFilterStatus("pending"); setIsSortOpen(false); setCurrentPage(1)}} 
                       className={filterStatus === "pending" ? "active" : ""}
