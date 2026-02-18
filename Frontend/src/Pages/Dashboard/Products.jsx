@@ -87,7 +87,7 @@ export default function Products() {
                     </td>
                     <td className="m-brand">{med.brand_name}</td>
                     <td><span className="m-tag">{med.dosage_form}</span></td>
-                    <td className="m-price">₹{med.mrp}</td>
+                  <td className="m-price">€{med.mrp}</td>
                     <td>
                       <div className={`m-status ${med.verification_status === "approved" || med.verification_status === "accepted" ? "is-ok" : "is-wait"}`}>
                         {med.verification_status}
