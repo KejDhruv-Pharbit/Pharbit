@@ -4,6 +4,7 @@ const FindMedicine = async (status) => {
   if (!status) {
     throw new Error("Verification status is required");
   }
+
   const { data, error } = await supabase
     .from("medicines")
     .select(`
@@ -44,10 +45,12 @@ const FindMedicine = async (status) => {
   return data;
 };
 
+
 const FindOrganizationMeds = async (orgId) => {
   if (!orgId) {
     throw new Error("Organization ID is required");
   }
+
   const { data, error } = await supabase
     .from("medicines")
     .select("*")
@@ -58,19 +61,44 @@ const FindOrganizationMeds = async (orgId) => {
 };
 
 
-const FindMeds = async (id) => {
+const FindOrganizationMedsEmployee = async (orgId, userId, role) => {
+  if (!orgId) {
+    throw new Error("Organization ID is required");
+  }
 
+  if (!role) {
+    throw new Error("Role is required");
+  }
+
+  let query = supabase
+    .from("medicines")
+    .select("*")
+    .eq("organization_id", orgId);
+
+  if (role === "employee") {
+    query = query.eq("verified_by", userId);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+  return data;
+};
+
+
+const FindMeds = async (id) => {
   if (!id) {
     throw new Error("Medicine ID is required");
   }
+
   const { data, error } = await supabase
     .from("medicines")
     .select("*")
     .eq("id", id)
     .maybeSingle();
-  if (error) {
-    throw error;
-  }
+
+  if (error) throw error;
+
   if (!data) {
     return {
       success: false,
@@ -78,6 +106,7 @@ const FindMeds = async (id) => {
       error: "Medicine not found"
     };
   }
+
   return {
     success: true,
     status: 200,
@@ -89,5 +118,6 @@ const FindMeds = async (id) => {
 export {
   FindMedicine,
   FindMeds,
-  FindOrganizationMeds
+  FindOrganizationMeds,
+  FindOrganizationMedsEmployee   
 };

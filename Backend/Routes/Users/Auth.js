@@ -172,6 +172,7 @@ router.get("/auth/me", async (req, res) => {
       });
     }
     const employee = await UserDetails(authUser.id);
+    console.log(employee); 
     return res.status(200).json({
       message: "User fetched successfully",
       employee

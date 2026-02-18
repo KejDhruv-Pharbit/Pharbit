@@ -13,6 +13,8 @@ export const UserDetails = async (authId) => {
     .select(`
       email , 
       role,
+      first_name , 
+      last_name ,
       organizations (
         name,
         type,

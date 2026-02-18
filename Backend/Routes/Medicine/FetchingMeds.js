@@ -1,5 +1,5 @@
 import express from "express";
-import { FindMedicine, FindOrganizationMeds } from "../../Database/Product/Medicines/Get/FindMedicines.js";
+import { FindMedicine, FindOrganizationMeds, FindOrganizationMedsEmployee } from "../../Database/Product/Medicines/Get/FindMedicines.js";
 import { FindOrganization, FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
 
 const router = express.Router();
@@ -56,6 +56,7 @@ router.get("/medicines", async (req, res) => {
 router.get("/Orgmeds", async (req, res) => {
   try {
     const authUser = await getAuthUser(req);
+
     if (!authUser) {
       return res.status(401).json({
         error: "Unauthorized"
@@ -69,14 +70,21 @@ router.get("/Orgmeds", async (req, res) => {
         error: "Organization not found"
       });
     }
-    if (orgdata.role !== "manager") {
+
+    // ✅ Allow only manager & employee
+    if (!["manager", "employee"].includes(orgdata.role)) {
       return res.status(403).json({
-        error: "Only Manager can access the Meds"
+        error: "Access denied"
       });
     }
 
     const orgId = orgdata.data.org_id || orgdata.data.id;
-    const medicines = await FindOrganizationMeds(orgId);
+
+    const medicines = await FindOrganizationMedsEmployee(
+      orgId,
+      authUser.id,
+      orgdata.role
+    );
 
     return res.status(200).json({
       success: true,
@@ -92,7 +100,9 @@ router.get("/Orgmeds", async (req, res) => {
       error: "Failed to fetch medicines"
     });
   }
-});
+}); 
+
+
 
 
 
