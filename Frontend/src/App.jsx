@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import Auth from "./Pages/Auth";
-import MedicalForm from "./Components/MedicalForm";
+import MedicalForm from "./Layout/Dashboard/MedicalForm";
 import PendingRequests from "./Pages/Admin/PendingRequest";
 
 // Import your Layout and Pages
