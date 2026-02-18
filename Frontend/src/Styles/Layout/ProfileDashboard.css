@@ -1,8 +1,18 @@
-/* Main Layout */
 .profile-dashboard-container {
   display: flex;
-  min-height: 100vh;
-  background: #eef7f7;
+  width: 100%;
+  margin: 0 ;
+  padding: 0 ;
+  /* The Gradient: Blue starts at the far left and transitions to White */
+  background: linear-gradient(
+    110deg, 
+    #dbeafe 0%,    /* Soft light blue at the start */
+    #f8fafc 40%,   /* Transitioning to very light gray/white */
+    #ffffff 100%   /* Pure white for the main content area */
+  );
+  
+  /* Ensures the background stays fixed if you scroll */
+  background-attachment: fixed;
 }
 
 
@@ -12,11 +22,6 @@
 
   padding: 32px;
 
-  overflow-y: auto;
 }
 
 
-/* Children Content Wrapper */
-.profile-dashboard-content {
-  margin-top: 20px;
-}

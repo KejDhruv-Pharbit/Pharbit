@@ -1,71 +1,75 @@
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  Settings,
-  PowerOff,
-  FileBarChart
+  LayoutGrid,      // Dashboard
+  Box,             // Inventory
+  Layers,          // Batches
+  PlusCircle,      // Add Products
+  History,         // History
+  LogOut,          // Logout
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
-
 import "../../Styles/Components/Sidebar.css";
 
-const API = import.meta.env.VITE_API_BASE;
-
 export default function Sidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await fetch(`${API}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch (err) {
-      console.error("Logout failed", err);
-    } finally {
-      navigate("/");
-    }
+  const navItems = [
+    { to: "/Dashboard", icon: LayoutGrid, label: "Dashboard" },
+    { to: "/Dashboard/products", icon: Box, label: "Inventory" },
+    { to: "/Dashboard/batches", icon: Layers, label: "Batches" },
+    { to: "/Dashboard/add-product", icon: PlusCircle, label: "Add Products" },
+    { to: "/Dashboard/history", icon: History, label: "History" },
+  ];
+
+  const handleLogout = () => {
+    // Your logout logic
+    navigate("/");
   };
 
-  const navItem = (to, Icon, label, end = false) => (
-    <NavLink to={to} end={end} className="nav-link">
-      {({ isActive }) => (
-        <button className={`nav-btn ${isActive ? "active" : ""}`}>
-          <Icon size={18} />
-          <span>{label}</span>
-        </button>
-      )}
-    </NavLink>
-  );
-
   return (
-    <aside className="sidebar">
-
-      {/* Logo */}
-      <div className="sidebar-logo">
-        <h2>Pharbit</h2>
+    <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+      {/* Sidebar Header with Pharbit Logo */}
+      <div className="sidebar-header">
+        <div className="logo-section">
+          <div className="logo-icon-box">
+            <div className="logo-symbol" />
+          </div>
+          {!isCollapsed && <span className="logo-text">Pharbit</span>}
+        </div>
+        <button className="collapse-btn" onClick={() => setIsCollapsed(!isCollapsed)}>
+          {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
       </div>
 
       {/* Navigation */}
-      <nav className="sidebar-nav">
-
-        {navItem("/Dashboard", LayoutDashboard, "Dashboard", true)}
-        {navItem("/Dashboard/products", Package, "Products")}
-        {navItem("/Dashboard/orders", ShoppingCart, "Orders")}
-        {navItem("/Dashboard/reports", FileBarChart, "Reports")}
-        {navItem("/Dashboard/settings", Settings, "Settings")}
-
-      </nav>
-
-      {/* Logout */}
-      <div className="sidebar-footer">
-        <button className="logout-btn" onClick={handleLogout}>
-          <PowerOff size={18} />
-          <span>Logout</span>
-        </button>
+      <div className="nav-container">
+        {!isCollapsed && <p className="nav-subtitle">MAIN MENU</p>}
+        <nav className="sidebar-nav">
+          {navItems.map((item) => (
+            <NavLink key={item.to} to={item.to} className="nav-link">
+              {({ isActive }) => (
+                <div className={`nav-item ${isActive ? "active" : ""}`}>
+                  <item.icon className="icon-style" size={22} strokeWidth={2} />
+                  {!isCollapsed && <span className="label-text">{item.label}</span>}
+                  {item.badge && !isCollapsed && <span className="nav-badge">{item.badge}</span>}
+                  {item.badge && isCollapsed && <div className="badge-dot" />}
+                </div>
+              )}
+            </NavLink>
+          ))}
+        </nav>
       </div>
 
+      {/* Footer / Logout */}
+      <div className="sidebar-footer">
+        <button className="logout-action" onClick={handleLogout}>
+          <LogOut size={22} strokeWidth={2} />
+          {!isCollapsed && <span>Logout</span>}
+        </button>
+      </div>
     </aside>
   );
 }

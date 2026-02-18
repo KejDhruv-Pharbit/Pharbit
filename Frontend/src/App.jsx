@@ -25,8 +25,8 @@ function App() {
         <Route path="products" element={<Products/>} />
         
         {/* Add placeholders for other sidebar links so they don't break */}
-        <Route path="orders" element={<div className="p-6">Orders Management coming soon...</div>} />
-        <Route path="reports" element={<div className="p-6">Analytics & Reports coming soon...</div>} />
+        <Route path="add-product"  element={<MedicalForm />}/>
+        <Route path="Batches" element={<div className="p-6">Batches coming soon...</div>} />
         <Route path="settings" element={<div className="p-6">Account Settings</div>} />
       </Route>
     </Routes>
