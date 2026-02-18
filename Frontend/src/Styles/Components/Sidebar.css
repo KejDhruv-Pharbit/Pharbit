@@ -161,8 +161,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s;
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .logout-action:hover {
-  background: rgba(239, 68, 68, 0.08);
+  background: rgba(239, 68, 68, 0.20);
 }
