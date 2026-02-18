@@ -66,7 +66,7 @@ export default function Products() {
             <h1>Inventory</h1>
           </div>
           <div className="header-meta">
-            <button className="profile-header-add-btn">+ Add Product</button>
+
           </div>
         </header>
 

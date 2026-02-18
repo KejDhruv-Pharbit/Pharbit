@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Search, Bell } from "lucide-react";
+import { Search, Plus } from "lucide-react"; // Added Plus icon
 import "../../Styles/Components/Header.css";
 
 const url = import.meta.env.VITE_API_URL;
 
-export default function Header({  onSearch, searchVal }) {
+export default function Header({ onSearch, searchVal }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -24,25 +24,31 @@ export default function Header({  onSearch, searchVal }) {
 
   return (
     <div className="profile-header-container">
-      {/* Search Input Area */}
-      <div className="search-wrapper">
-        <Search size={18} className="search-icon" />
-        <input
-          type="text"
-          placeholder="Search products, codes, or brands..."
-          className="profile-header-search"
-          value={searchVal}
-          onChange={(e) => onSearch(e.target.value)}
-        />
+      {/* Search + Add Action Area */}
+      <div className="header-left-actions">
+        <div className="search-wrapper">
+          <Search size={18} className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search products, codes, or brands..."
+            className="profile-header-search"
+            value={searchVal}
+            onChange={(e) => onSearch(e.target.value)}
+          />
+        </div>
+        
+        <button className="header-add-btn" title="Add New Product">
+          <Plus size={20} strokeWidth={3} />
+          <span>Add Product</span>
+        </button>
       </div>
 
       <div className="profile-header-right">
-     
-
-        {/* Profile Section */}
         {user ? (
           <div className="profile-header-profile">
-            <div className="profile-header-avatar">{firstLetter}</div>
+            <div className="profile-header-avatar">
+              {firstLetter}
+            </div>
             <div className="profile-header-info">
               <p className="profile-header-name">{user.first_name} {user.last_name}</p>
               <p className="profile-header-email">{user.email}</p>
