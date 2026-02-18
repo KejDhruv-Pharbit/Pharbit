@@ -14,7 +14,7 @@ export default function ProfileDashboard() {
 
       <main className="profile-dashboard-main">
 
-        <Header />
+      
 
         <div className="profile-dashboard-content">
           <Outlet />   {/* ✅ REQUIRED */}

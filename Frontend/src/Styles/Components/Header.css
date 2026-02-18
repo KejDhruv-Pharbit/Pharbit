@@ -1,134 +1,151 @@
-/* Main Container */
 .profile-header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin-bottom: 32px;
-  padding: 0 16px;
+  padding: 10px 0;
+  margin-bottom: 30px;
+  width: 100%;
 }
 
+/* --- Search Bar Refinement --- */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 350px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-/* Search */
+.search-wrapper:focus-within {
+  width: 450px; /* Expands when clicking to search */
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  color: #94a3b8;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
 .profile-header-search {
-  width: 280px;
-  padding: 10px 16px;
-
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-
+  width: 100%;
+  padding: 14px 20px 14px 50px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
   font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+  outline: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
 
-  transition: all 0.2s ease;
+.profile-header-search::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
 }
 
 .profile-header-search:focus {
-  outline: none;
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  border-color: #1d4ed8;
+  box-shadow: 0 8px 25px rgba(29, 78, 216, 0.08);
 }
 
+.profile-header-search:focus + .search-icon {
+  color: #1d4ed8;
+}
 
-/* Right Section */
+/* --- Profile Section Refinement --- */
 .profile-header-right {
   display: flex;
   align-items: center;
   gap: 24px;
 }
 
-
-/* Add Product Button */
-.profile-header-add-btn {
-  background: #059669;
-  color: white;
-
-  padding: 10px 20px;
-
-  border: none;
-  border-radius: 12px;
-
-  font-weight: 500;
-  font-size: 14px;
-
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.profile-header-add-btn:hover {
-  background: #047857;
-}
-
-
-/* Profile Section */
 .profile-header-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 8px 18px 8px 8px; /* Extra space on right for text */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.profile-header-profile:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
 
-/* Avatar */
 .profile-header-avatar {
-  width: 40px;
-  height: 40px;
-
-  border-radius: 50%;
-  background: #059669;
-
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  color: white;
-  font-weight: bold;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px; /* Squircle look */
+  font-weight: 800;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
 }
 
-
-/* User Info */
 .profile-header-info {
   display: flex;
   flex-direction: column;
 }
 
 .profile-header-name {
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
   margin: 0;
+  line-height: 1.2;
 }
 
 .profile-header-email {
-  font-size: 13px;
-  color: #6b7280;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
   margin: 0;
 }
 
-
-/* Loading Skeleton */
+/* --- Loading States --- */
 .profile-header-loading {
   display: flex;
   align-items: center;
   gap: 12px;
+  opacity: 0.6;
 }
 
 .profile-header-loading-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #e5e7eb;
-}
-
-.profile-header-loading-text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  width: 44px;
+  height: 44px;
+  background: #e2e8f0;
+  border-radius: 15px;
+  animation: pulse 1.5s infinite;
 }
 
 .profile-header-loading-text div {
-  height: 10px;
-  background: #e5e7eb;
-  border-radius: 6px;
-  width: 120px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.profile-header-loading-text div:first-child { width: 80px; height: 12px; margin-bottom: 6px; }
+.profile-header-loading-text div:last-child { width: 120px; height: 10px; }
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
