@@ -111,7 +111,7 @@
 }
 
 .active .icon-style {
-  color: #1d4ed8; /* Electric Blue Accent */
+  color: #1e3a8a; /* Dark Blue Accent */
   opacity: 1;
 }
 
@@ -123,7 +123,7 @@
 /* Badge Styling */
 .nav-badge {
   margin-left: auto;
-  background: #1d4ed8;
+  background: #1e3a8a;
   color: white;
   font-size: 11px;
   font-weight: 600;
@@ -137,7 +137,7 @@
   right: 12px;
   width: 8px;
   height: 8px;
-  background: #1d4ed8;
+  background: #1e3a8a;
   border-radius: 50%;
   border: 2px solid white;
 }
