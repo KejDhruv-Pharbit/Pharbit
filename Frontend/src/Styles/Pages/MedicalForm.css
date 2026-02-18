@@ -72,8 +72,8 @@
 }
 
 .step-item.active .step-number {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #018ee8;
+  border-color: #0e345d;
   color: white;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
@@ -190,7 +190,7 @@
 
 .add-tag-btn {
   padding: 0 20px;
-  background: #0f172a;
+  background: #0e345d;
   color: white;
   border: none;
   border-radius: 12px;
@@ -238,7 +238,7 @@
 
 .nav-btn-primary,
 .nav-btn-submit {
-  background: #2563eb;
+  background: #018ee8;
   color: white;
   border: none;
   padding: 14px 28px;
@@ -267,7 +267,7 @@
 
 .nav-btn-primary:hover,
 .nav-btn-submit:hover {
-  background: #1d4ed8;
+  background: #0e345d;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
 }
@@ -288,7 +288,7 @@
 }
 
 .preview-card-header {
-  background: #0f172a;
+  background: #0e345d;
   padding: 24px;
   color: white;
 }
@@ -353,7 +353,7 @@
 .preview-price {
   font-size: 20px;
   font-weight: 800;
-  color: #2563eb;
+  color: #018ee8;
   margin: 0;
 }
 

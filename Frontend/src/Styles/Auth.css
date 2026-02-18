@@ -2,7 +2,7 @@
 
 .auth-container {
   /* Variables scoped only to this container */
-  --primary-yellow: #fcd34d;
+  --primary-yellow: #018fe84b;
   --text-main: #1e293b;
   --text-muted: #64748b;
   --glass: rgba(255, 255, 255, 0.75);
@@ -12,7 +12,7 @@
   height: 100vh;
   width: 100%;
   /* Premium radial background from your reference */
-  background: radial-gradient(circle at top right, #fff9e6, #f1f5f9);
+  background: radial-gradient(circle at top right, #018fe8c5, #f1f5f9);
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
@@ -75,7 +75,7 @@
   left: 31%;
   width: 33%;
   height: 75%;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(250, 204, 21, 0.12) 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #018fe818 100%);
   border-radius: 30px;
   /* Slightly higher for modern phone frames */
   padding: 20px;
@@ -145,7 +145,7 @@
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  box-shadow: 0 10px 25px rgba(250, 204, 21, 0.3);
+  box-shadow: 0 10px 25px #022237;
   animation: float 4s ease-in-out infinite;
   z-index: 5;
 }
@@ -368,7 +368,7 @@
   width: 100%;
   padding: 14px;
 
-  background: rgba(252, 211, 77, 0.12);
+  background: #018fe8e8;
   /* very light yellow */
   border: 2px solid var(--primary-yellow);
 
@@ -389,9 +389,9 @@
 }
 
 .submit-btn:hover {
-  background: rgba(252, 211, 77, 0.25);
+  background: rgba(77, 162, 252, 0.25);
   transform: translateY(-1px);
-  box-shadow: 0 6px 15px rgba(252, 211, 77, 0.25);
+  box-shadow: 0 6px 15px rgba(23, 117, 224, 0.25);
 }
 
 /* SOCIAL BUTTONS */
@@ -456,13 +456,13 @@
   width: 100%;
   padding: 15px;
 
-  background: rgba(252, 211, 77, 0.12);
+  background: #018fe80d;
   /* very light yellow */
   border: 2px solid var(--primary-yellow);
 
   border-radius: 100px;
 
-  color: #595a4c;
+  color: #0e345d;
 
   font-weight: 600;
   font-size: 16px;
@@ -477,9 +477,9 @@
 
 
 .auth-card form button:hover {
-  background: rgba(252, 211, 77, 0.25);
+  background: #018fe859;
   transform: translateY(-1px);
-  box-shadow: 0 6px 15px rgba(252, 211, 77, 0.25);
+  box-shadow: 0 6px 15px #018fe86e;
 }
 
 /* ================= RESPONSIVE ================= */

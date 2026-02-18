@@ -1,27 +1,53 @@
+/* --- Base Styles --- */
 .profile-dashboard-container {
   display: flex;
   width: 100%;
-  margin: 0 ;
-  padding: 0 ;
-  /* The Gradient: Blue starts at the far left and transitions to White */
+  margin: 0;
+  padding: 0;
   background: linear-gradient(
     110deg, 
-    #dbeafe 0%,    /* Soft light blue at the start */
-    #f8fafc 40%,   /* Transitioning to very light gray/white */
-    #ffffff 100%   /* Pure white for the main content area */
+    #dbeafe 0%,    
+    #f8fafc 40%,   
+    #ffffff 100%   
   );
-  
-  /* Ensures the background stays fixed if you scroll */
   background-attachment: fixed;
+  min-height: 100vh; /* Ensures background covers full height */
 }
 
-
-/* Main Content Area */
 .profile-dashboard-main {
   flex: 1;
-
-  padding: 32px;
-
+  padding: 32px; /* Default desktop padding */
+  transition: padding 0.3s ease;
 }
 
+/* --- Responsiveness --- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .profile-dashboard-main {
+    padding: 24px; /* Slightly tighter for tablets */
+  }
+}
+
+
+
+/* Small Phones */
+@media (max-width: 480px) {
+
+    .profile-dashboard-container {
+    /* Optional: You can change the gradient angle for mobile 
+       if the blue feels too heavy on one side */
+    background: linear-gradient(180deg, #dbeafe 0%, #ffffff 30%);
+  }
+
+  .profile-dashboard-main {
+    /* CRITICAL: Reduce this so your 2x2 cards have room to breathe */
+    padding: 12px; 
+    width: 100%;
+    overflow-x: hidden; /* Prevent accidental side-scrolling */
+  }
+  .profile-dashboard-main {
+    padding: 8px; /* Maximum space for your inventory cards */
+  }
+}
 

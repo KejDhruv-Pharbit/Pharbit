@@ -18,7 +18,7 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(""); 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
 
   // Sort & Filter States
   const [filterStatus, setFilterStatus] = useState("all"); 
@@ -66,7 +66,7 @@ export default function Products() {
   const currentItems = filteredMedicines.slice(indexOfFirstItem, indexOfLastItem);
 
   const getPageNumbers = () => {
-    const maxVisible = 3;
+    const maxVisible = 4;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     let end = Math.min(totalPages, start + maxVisible - 1);
     if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1);

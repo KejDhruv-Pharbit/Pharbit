@@ -163,3 +163,53 @@
   letter-spacing: 0.8px;
   margin-top: 3px;
 }
+
+/* ================= HEADER: SMALL PHONES (≤480px) ================= */
+@media (max-width: 480px) {
+
+  /* Keep header in one row */
+  .profile-header-container {
+    margin-top: 85px ;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* Only left actions visible */
+  .header-left-actions {
+    width: 100%;
+    gap: 8px;
+  }
+
+  /* Hide profile section */
+  .profile-header-profile {
+    display: none;
+  }
+
+  /* Search shrinks */
+  .search-wrapper {
+    width: 100%;
+    flex: 1;
+  }
+
+  .search-wrapper:focus-within {
+    width: 100%;
+  }
+
+  /* Smaller input */
+  .profile-header-search {
+    font-size: 12px;
+    padding: 10px 14px 10px 40px;
+    border-radius: 12px;
+  }
+
+  /* Compact add button */
+  .header-add-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+}

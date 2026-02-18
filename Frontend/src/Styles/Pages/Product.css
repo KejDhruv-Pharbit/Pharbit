@@ -355,3 +355,173 @@
 .is-ok { background: #ecfdf5; color: #059669; } /* Approved */
 .is-wait { background: #fffbeb; color: #b45309; } /* Pending */
 .is-rejected { background: #fef2f2; color: #dc2626; } /* Rejected */
+
+/* ================= RESPONSIVE ================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+
+  .inventory-view {
+    padding: 24px;
+  }
+
+  .inventory-top-bar {
+    padding: 20px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .modern-table th,
+  .modern-table td {
+    padding: 14px 20px;
+  }
+
+  .pagination-footer {
+    padding: 18px 24px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+}
+
+
+/* ================= MOBILE GRID TRANSFORMATION (2x2) ================= */
+/* ================= TIGHT COMPACT MOBILE GRID (2x2) ================= */
+
+@media (max-width: 480px) {
+
+
+
+  /* Top Bar - Mobile Single Line */
+.inventory-top-bar {
+  display: flex;
+  flex-direction: row !important;   /* Force horizontal */
+  justify-content: space-between;   /* Push apart */
+  align-items: center;
+  padding: 14px 10px;
+  gap: 10px;
+}
+
+/* Title smaller for mobile */
+.title-area h1 {
+  font-size: 18px;
+}
+
+/* If count chip exists next to title */
+.count-chip {
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+/* Filter / Sort Button */
+.sort-trigger-btn {
+  padding: 8px 12px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+  .inventory-view {
+    max-width: 700px ;
+    padding: 10px;
+  }
+
+  .inventory-glass-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  /* 1. Tighten the Grid */
+  .modern-table tbody {
+    display: grid;
+    grid-template-columns: 1fr ;
+    gap: 8px; /* Smaller gap between cards */
+  }
+   .modern-table thead {
+  display: none ; 
+  }
+
+  /* 2. Shrink the Card Container */
+  .modern-table tr {
+    
+    width: 90%;
+  max-width: 90%;
+    display: flex !important;
+    flex-direction: column;
+    background: #ffffff;
+    padding: 12px; /* Reduced from 20px */
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    min-height: auto; /* Allow it to shrink */
+  }
+
+  /* 3. Global Cell Shrink */
+  .modern-table td {
+    padding: 2px 0 !important; /* Minimal vertical space */
+    min-height: unset;
+  }
+
+  /* 4. Identity Section (Name & Code) */
+  .modern-table td:first-child {
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 6px;
+    padding-bottom: 6px !important;
+  }
+
+  .med-identity .m-name {
+    font-size: 13px; /* Smaller font */
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .med-identity .m-code {
+    font-size: 9px;
+    margin-top: 2px;
+  }
+
+  /* 5. Pricing & Labels */
+  /* If you have price in a data-label, make it inline */
+  .modern-table td::before {
+    font-size: 8px; /* Tiny labels */
+    margin-bottom: 0;
+  }
+
+  .m-brand, .m-tag {
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* 6. Compact Badges */
+  .m-status {
+    padding: 2px 6px;
+    font-size: 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+  }
+
+  /* 7. Action Button - Thin & Integrated */
+  .view-link {
+    margin-top: 8px;
+    padding: 6px;
+    font-size: 11px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Hide specific unnecessary data-labels on mobile to save height */
+  /* .modern-table td[data-label="Brand"]::before { display: none; } */
+}
+
+/* Extra Small Phones (Single Column if screen is tiny) */
+@media (max-width: 380px) {
+  .modern-table tbody {
+    grid-template-columns: 1fr;
+  }
+}
