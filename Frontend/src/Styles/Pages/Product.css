@@ -144,9 +144,9 @@
 }
 
 .view-link:hover {
-  border-color: #1e3a8a;
-  color: #1e3a8a;
-  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.18);
+  border-color: #0e345d;
+  color: #0e345d;
+  box-shadow: 0 4px 12px #0e345d56;
   transform: translateY(-1px);
 }
 

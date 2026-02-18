@@ -169,9 +169,18 @@ export default function Products() {
                     <td><span className="m-tag">{med.dosage_form}</span></td>
                     <td className="m-price">€{med.mrp}</td>
                     <td>
-                      <div className={`m-status ${med.verification_status === "approved" || med.verification_status === "accepted" ? "is-ok" : "is-wait"}`}>
-                        {med.verification_status}
-                      </div>
+                    <div
+  className={`m-status ${
+    med.verification_status === "approved" ||
+    med.verification_status === "accepted"
+      ? "is-ok"
+      : med.verification_status === "rejected"
+      ? "is-rejected"
+      : "is-wait"
+  }`}
+>
+  {med.verification_status}
+</div>
                     </td>
                     <td>
                       <button onClick={() => setSelected(med)} className="view-link">View Details</button>
