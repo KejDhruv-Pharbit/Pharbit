@@ -12,7 +12,6 @@
   box-sizing: border-box;
 }
 
-/* ================= STEP WIZARD (NEW) ================= */
 .page-header {
   max-width: 1300px;
   margin: 0 auto 40px;
@@ -182,7 +181,7 @@
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-/* ================= ARRAY TAGS ================= */
+
 .array-row {
   display: flex;
   gap: 10px;
@@ -409,14 +408,16 @@
     margin-bottom: 24px;
   }
 
-.header-content h1 {
-  font-size: 24px;
-  text-align: center;
-  width: 100%;
-}
-.header-content p {
-  text-align: center;
-}
+  .header-content h1 {
+    font-size: 24px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .header-content p {
+    text-align: center;
+  }
+
   /* Hide Step Labels (Keep Circles) */
   .step-label {
     display: none;

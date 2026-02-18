@@ -119,5 +119,5 @@ export {
   FindMedicine,
   FindMeds,
   FindOrganizationMeds,
-  FindOrganizationMedsEmployee   
+  FindOrganizationMedsEmployee
 };

@@ -7,21 +7,21 @@ import "../../Styles/Layout/ProfileDashboard.css";
 
 export default function ProfileDashboard() {
 
-  return (
-    <div className="profile-dashboard-container">
+    return (
+        <div className="profile-dashboard-container">
 
-      <Sidebar />
+            <Sidebar />
 
-      <main className="profile-dashboard-main">
+            <main className="profile-dashboard-main">
 
-      
 
-        <div className="profile-dashboard-content">
-          <Outlet />   {/* ✅ REQUIRED */}
+
+                <div className="profile-dashboard-content">
+                    <Outlet />   {/* ✅ REQUIRED */}
+                </div>
+
+            </main>
+
         </div>
-
-      </main>
-
-    </div>
-  );
+    );
 }

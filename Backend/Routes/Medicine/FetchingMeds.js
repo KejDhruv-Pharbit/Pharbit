@@ -100,7 +100,7 @@ router.get("/Orgmeds", async (req, res) => {
       error: "Failed to fetch medicines"
     });
   }
-}); 
+});
 
 
 
