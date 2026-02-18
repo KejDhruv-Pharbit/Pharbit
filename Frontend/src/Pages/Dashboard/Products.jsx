@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import ViewModal from "../../Components/Dashboard/ViewModal";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronDown, 
+  Filter, 
+  ArrowUpDown 
+} from "lucide-react";
 import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
 
@@ -10,9 +16,14 @@ export default function Products() {
   const [medicines, setMedicines] = useState([]);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState(""); // Search State
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+
+  // Sort & Filter States
+  const [filterStatus, setFilterStatus] = useState("all"); 
+  const [sortKey, setSortKey] = useState("name"); 
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   useEffect(() => {
     const fetchMedicines = async () => {
@@ -30,12 +41,24 @@ export default function Products() {
     fetchMedicines();
   }, []);
 
-  // Filter Logic based on Search Query
-  const filteredMedicines = medicines.filter((med) =>
-    med.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    med.drug_code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    med.brand_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter Logic based on Search Query AND Status
+  const filteredMedicines = medicines
+    .filter((med) => {
+      const matchesSearch = 
+        med.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        med.drug_code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        med.brand_name.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesStatus = filterStatus === "all" || 
+        med.verification_status.toLowerCase() === filterStatus.toLowerCase();
+        
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (sortKey === "price") return a.mrp - b.mrp;
+      if (sortKey === "date") return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      return a.name.localeCompare(b.name);
+    });
 
   const totalPages = Math.ceil(filteredMedicines.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -54,7 +77,6 @@ export default function Products() {
 
   return (
     <div className="inventory-view">
-      {/* Pass search state and med count to Header */}
       <Header 
         onSearch={setSearchQuery} 
         searchVal={searchQuery}
@@ -65,8 +87,57 @@ export default function Products() {
           <div className="title-area">
             <h1>Inventory</h1>
           </div>
+          
           <div className="header-meta">
+            <div className="sort-dropdown-container">
+              <button 
+                className="sort-trigger-btn" 
+                onClick={() => setIsSortOpen(!isSortOpen)}
+              >
+                <Filter size={16} />
+                <span>Sort & Filter</span>
+                <ChevronDown size={14} className={isSortOpen ? "rotate" : ""} />
+              </button>
 
+              {isSortOpen && (
+                <div className="sort-menu-dropdown">
+                  <div className="menu-section">
+                    <p className="menu-label">Filter Status</p>
+                    <button 
+                      onClick={() => {setFilterStatus("all"); setIsSortOpen(false); setCurrentPage(1)}} 
+                      className={filterStatus === "all" ? "active" : ""}
+                    >All Items</button>
+                    <button 
+                      onClick={() => {setFilterStatus("approved"); setIsSortOpen(false); setCurrentPage(1)}} 
+                      className={filterStatus === "approved" ? "active" : ""}
+                    >Approved</button>
+                    <button 
+                      onClick={() => {setFilterStatus("pending"); setIsSortOpen(false); setCurrentPage(1)}} 
+                      className={filterStatus === "pending" ? "active" : ""}
+                    >Pending</button>
+                    <button 
+                      onClick={() => {setFilterStatus("rejected"); setIsSortOpen(false); setCurrentPage(1)}} 
+                      className={filterStatus === "rejected" ? "active" : ""}
+                    >Rejected</button>
+                  </div>
+                  
+                  <div className="menu-divider"></div>
+                  
+                  <div className="menu-section">
+                    <p className="menu-label">Sort By</p>
+                    <button onClick={() => {setSortKey("name"); setIsSortOpen(false)}} className={sortKey === "name" ? "active" : ""}>
+                      <ArrowUpDown size={12} /> Name (A-Z)
+                    </button>
+                    <button onClick={() => {setSortKey("price"); setIsSortOpen(false)}} className={sortKey === "price" ? "active" : ""}>
+                      <ArrowUpDown size={12} /> Price: Low to High
+                    </button>
+                    <button onClick={() => {setSortKey("date"); setIsSortOpen(false)}} className={sortKey === "date" ? "active" : ""}>
+                      <ArrowUpDown size={12} /> Date Added
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -103,12 +174,12 @@ export default function Products() {
                       </div>
                     </td>
                     <td>
-                      <button onClick={() => setSelected(med)} className="view-link">View</button>
+                      <button onClick={() => setSelected(med)} className="view-link">View Details</button>
                     </td>
                   </tr>
                 ))
               ) : (
-                <tr><td colSpan="6" className="empty-msg">No medicines match your search.</td></tr>
+                <tr><td colSpan="6" className="empty-msg">No medicines match your search or filters.</td></tr>
               )}
             </tbody>
           </table>
