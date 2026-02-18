@@ -1,209 +1,216 @@
-/* Main Card */
-.dashboard-products-card {
-  background: #ffffff;
-
-  border-radius: 20px;
-  padding: 24px;
-
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+/* Container & Layout */
+.inventory-view {
+  padding: 40px;
+  max-width: 1250px;
+  margin: 0 auto;
+  animation: fadeIn 0.6s ease-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* Header */
-.dashboard-products-header {
+.inventory-glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 32px;
+  box-shadow: 
+    0 4px 24px -1px rgba(0, 0, 0, 0.02),
+    0 25px 50px -12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Refinement */
+.inventory-top-bar {
+  padding: 30px 45px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
 
-.dashboard-products-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1e293b;
+.title-area h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
 }
 
-.dashboard-products-header span {
-  background: #f1f5f9;
-
-  padding: 6px 12px;
-
-  border-radius: 20px;
-
-  font-size: 13px;
-  font-weight: 500;
-
-  color: #64748b;
+.count-chip {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1d4ed8;
+  background: #ffffff;
+  padding: 8px 18px;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(29, 78, 216, 0.1);
 }
 
-
-/* Table Wrapper */
-.dashboard-products-table-wrapper {
-  overflow-x: auto;
-}
-
-
-/* Table */
-.dashboard-products-table {
+/* Modern Table Aesthetic */
+.modern-table {
   width: 100%;
   border-collapse: collapse;
-
-  font-size: 14px;
 }
 
+.modern-table th {
+  padding: 18px 45px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #64748b;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.3);
+}
 
-/* Head */
-.dashboard-products-table thead {
+.modern-table td {
+  padding: 22px 45px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+/* Row Hover Lift */
+.modern-table tr { transition: all 0.3s ease; }
+
+.modern-table tr:hover td {
+  background: rgba(255, 255, 255, 0.6);
+  color: #000;
+}
+
+.modern-table tr:hover {
+  transform: scale(1.002);
+}
+
+/* Text Styling */
+.med-identity .m-name { 
+  display: block; 
+  font-weight: 700; 
+  color: #1e293b; 
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+.med-identity .m-code { 
+  font-size: 11px; 
+  color: #94a3b8; 
+  font-family: 'JetBrains Mono', monospace; 
+}
+
+.m-brand { color: #475569; font-weight: 600; font-size: 14px; }
+
+.m-tag {
+  background: #f1f5f9;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+/* Status Badges */
+.m-status {
+  display: inline-flex;
+  padding: 5px 14px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.is-ok { background: #dcfce7; color: #166534; }
+.is-wait { background: #fef9c3; color: #854d0e; }
+
+/* View Button */
+.view-link {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view-link:hover {
+  border-color: #1d4ed8;
+  color: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Sliding Pagination Footer */
+.pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 45px;
+  background: rgba(255, 255, 255, 0.4);
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.page-info { font-size: 13px; color: #64748b; font-weight: 600; }
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-numbers { 
+  display: flex; 
+  gap: 6px; 
+  background: rgba(0, 0, 0, 0.04);
+  padding: 5px;
+  border-radius: 14px;
+}
+
+.num-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.num-btn.active {
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.pag-btn {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.pag-btn:hover:not(:disabled) {
+  border-color: #1d4ed8;
+  color: #1d4ed8;
   background: #f8fafc;
 }
 
-.dashboard-products-table th {
-  text-align: left;
-
-  padding: 12px 16px;
-
-  font-weight: 600;
-  color: #64748b;
-
-  border-bottom: 1px solid #e5e7eb;
-}
-
-
-/* Rows */
-.dashboard-products-table tbody tr {
-  border-bottom: 1px solid #f1f5f9;
-
-  transition: background 0.2s ease;
-}
-
-.dashboard-products-table tbody tr:hover {
-  background: rgba(5, 150, 105, 0.05);
-}
-
-
-/* Cells */
-.dashboard-products-table td {
-  padding: 16px;
-  color: #475569;
-}
-
-
-/* Name + Code */
-.dashboard-products-name {
-  font-weight: 500;
-  color: #334155;
-}
-
-.dashboard-products-code {
-  font-size: 11px;
-  color: #9ca3af;
-  font-family: monospace;
-}
-
-
-/* Price */
-.dashboard-products-price {
-  font-weight: 700;
-  color: #1e293b;
-}
-
-
-/* Status */
-.dashboard-products-status {
-  display: inline-block;
-
-  padding: 4px 8px;
-
-  border-radius: 6px;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  text-transform: uppercase;
-}
-
-.dashboard-products-status.approved {
-  background: #ecfdf5;
-  color: #059669;
-  border: 1px solid #a7f3d0;
-}
-
-.dashboard-products-status.pending {
-  background: #fffbeb;
-  color: #b45309;
-  border: 1px solid #fde68a;
-}
-
-
-/* View Button */
-.dashboard-products-view-btn {
-  background: #ecfdf5;
-  color: #059669;
-
-  border: none;
-
-  padding: 6px 14px;
-
-  border-radius: 10px;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-}
-
-.dashboard-products-view-btn:hover {
-  background: #059669;
-  color: #ffffff;
-}
-
-
-/* Loading */
-.dashboard-products-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 60px 0;
-}
-
-.dashboard-products-loading p {
-  color: #9ca3af;
-  font-size: 13px;
-}
-
-
-/* Spinner */
-.dashboard-products-spinner {
-  width: 32px;
-  height: 32px;
-
-  border: 4px solid #a7f3d0;
-  border-top-color: transparent;
-
-  border-radius: 50%;
-
-  animation: dashboard-spin 1s linear infinite;
-}
-
-@keyframes dashboard-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
-/* Empty */
-.dashboard-products-empty {
-  padding: 40px 0;
-
-  text-align: center;
-
-  color: #9ca3af;
-  font-size: 14px;
-}
+.pag-btn:disabled { opacity: 0.3; cursor: not-allowed; }

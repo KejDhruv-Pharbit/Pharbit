@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react";
-
-import ProfileDashboard from "../../Layout/Dashboard/profiledashboard";
 import ViewModal from "../../Components/Dashboard/ViewModal";
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../../Styles/Pages/Product.css";
 
 const url = import.meta.env.VITE_API_URL;
 
 export default function Products() {
-
   const [medicines, setMedicines] = useState([]);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
 
   const fetchMedicines = async () => {
     try {
       setLoading(true);
-
-      const res = await fetch(`${url}/Orgmeds`, {
-        credentials: "include",
-      });
-
+      const res = await fetch(`${url}/Orgmeds`, { credentials: "include" });
       const result = await res.json();
-
-      if (result.success && result.data) {
-        setMedicines(result.data);
-      }
-        
-        console.log(medicines); 
-
+      if (result.success && result.data) setMedicines(result.data);
     } catch (err) {
       console.error("Failed to fetch medicines:", err);
     } finally {
@@ -37,148 +26,126 @@ export default function Products() {
     }
   };
 
+  useEffect(() => { fetchMedicines(); }, []);
 
-  useEffect(() => {
-    fetchMedicines();
-  }, []);
+  const totalPages = Math.ceil(medicines.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = medicines.slice(indexOfFirstItem, indexOfLastItem);
 
+  // --- SLIDING WINDOW PAGINATION LOGIC ---
+  const getPageNumbers = () => {
+    const maxVisible = 3 ;
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(totalPages, start + maxVisible - 1);
 
-    return (
-       <>
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
 
+    const pages = [];
+    for (let i = start; i <= end; i++) pages.push(i);
+    return pages;
+  };
 
-      <div className="dashboard-products-card">
+  return (
+    <div className="inventory-view">
+      <div className="inventory-glass-card">
+        {/* Balanced Header */}
+        <header className="inventory-top-bar">
+          <div className="title-area">
+            <h1>Inventory</h1>
+          </div>
+          <div className="header-meta">
+            <span className="count-chip">{medicines.length} Total Medicines</span>
+          </div>
+        </header>
 
-        {/* Header */}
-        <div className="dashboard-products-header">
-
-          <h2>Inventory List</h2>
-
-          <span>
-            Total Items: {medicines.length}
-          </span>
-
-        </div>
-
-
-        {/* Table */}
-        <div className="dashboard-products-table-wrapper">
-
-          <table className="dashboard-products-table">
-
+        <div className="table-responsive">
+          <table className="modern-table">
             <thead>
               <tr>
-                <th>Medicine Name</th>
-                <th>Brand</th>
-                <th>Form</th>
-                <th>MRP</th>
+                <th>Medicine & Code</th>
+                <th>Manufacturer</th>
+                <th>Format</th>
+                <th>Price</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th></th>
               </tr>
             </thead>
-
-
             <tbody>
-
-              {/* Loading */}
-              {loading && (
-                <tr>
-                  <td colSpan="6">
-
-                    <div className="dashboard-products-loading">
-
-                      <div className="dashboard-products-spinner"></div>
-
-                      <p>Loading medicines...</p>
-
-                    </div>
-
-                  </td>
-                </tr>
-              )}
-
-
-              {/* Data */}
-              {!loading && medicines.length > 0 &&
-                medicines.map((med) => (
-
-                  <tr key={med.id}>
-
+              {loading ? (
+                <tr><td colSpan="6" className="status-cell"><div className="loader" /></td></tr>
+              ) : currentItems.length > 0 ? (
+                currentItems.map((med) => (
+                  <tr key={med.id} className="fade-in-row">
                     <td>
-                      <div className="dashboard-products-name">
-                        {med.name}
-                      </div>
-
-                      <div className="dashboard-products-code">
-                        {med.drug_code}
+                      <div className="med-identity">
+                        <span className="m-name">{med.name}</span>
+                        <span className="m-code">{med.drug_code}</span>
                       </div>
                     </td>
-
-                    <td>{med.brand_name}</td>
-
-                    <td>{med.dosage_form}</td>
-
-                    <td className="dashboard-products-price">
-                      ₹{med.mrp}
-                    </td>
-
+                    <td className="m-brand">{med.brand_name}</td>
+                    <td><span className="m-tag">{med.dosage_form}</span></td>
+                    <td className="m-price">₹{med.mrp}</td>
                     <td>
-
-                      <span
-                        className={`dashboard-products-status ${
-                          med.verification_status === "approved" ||
-                          med.verification_status === "accepted"
-                            ? "approved"
-                            : "pending"
-                        }`}
-                      >
+                      <div className={`m-status ${med.verification_status === "approved" || med.verification_status === "accepted" ? "is-ok" : "is-wait"}`}>
                         {med.verification_status}
-
-                      </span>
-
+                      </div>
                     </td>
-
                     <td>
-
-                      <button
-                        onClick={() => setSelected(med)}
-                        className="dashboard-products-view-btn"
-                      >
-                        View Details
-                      </button>
-
+                      <button onClick={() => setSelected(med)} className="view-link">View</button>
                     </td>
-
                   </tr>
-
-                ))}
-
-
-              {/* Empty */}
-              {!loading && medicines.length === 0 && (
-                <tr>
-                  <td colSpan="6" className="dashboard-products-empty">
-                    No medicines found in the inventory.
-                  </td>
-                </tr>
+                ))
+              ) : (
+                <tr><td colSpan="6" className="empty-msg">No inventory records found.</td></tr>
               )}
-
             </tbody>
-
           </table>
-
         </div>
 
+        {/* SLIDING PAGINATION FOOTER */}
+        {!loading && medicines.length > itemsPerPage && (
+          <footer className="pagination-footer">
+            <p className="page-info">
+              Showing <b>{indexOfFirstItem + 1}-{Math.min(indexOfLastItem, medicines.length)}</b> of {medicines.length}
+            </p>
+            
+            <div className="pagination-controls">
+              <button 
+                disabled={currentPage === 1} 
+                onClick={() => setCurrentPage(prev => prev - 1)}
+                className="pag-btn"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              
+              <div className="page-numbers">
+                {getPageNumbers().map((num) => (
+                  <button 
+                    key={num} 
+                    onClick={() => setCurrentPage(num)}
+                    className={`num-btn ${currentPage === num ? 'active' : ''}`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+
+              <button 
+                disabled={currentPage === totalPages} 
+                onClick={() => setCurrentPage(prev => prev + 1)}
+                className="pag-btn"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </footer>
+        )}
       </div>
 
-
-      {/* Modal */}
-      <ViewModal
-        open={!!selected}
-        medicine={selected}
-        onClose={() => setSelected(null)}
-      />
-
-  </>
+      <ViewModal open={!!selected} medicine={selected} onClose={() => setSelected(null)} />
+    </div>
   );
 }
