@@ -4,6 +4,8 @@
   max-width: 1250px;
   margin: 0 auto;
   animation: fadeIn 0.6s ease-out;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -20,7 +22,7 @@
   box-shadow: 
     0 4px 24px -1px rgba(0, 0, 0, 0.02),
     0 25px 50px -12px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
@@ -273,7 +275,7 @@
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   padding: 12px;
-  z-index: 1000;
+  z-index: 9999;
   animation: dropdownSlide 0.3s ease-out;
 }
 
