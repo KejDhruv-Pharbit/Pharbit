@@ -8,7 +8,8 @@ import {
     History,         // History
     LogOut,          // Logout
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    User
 } from "lucide-react";
 import "../../Styles/Components/Sidebar.css";
 
@@ -21,7 +22,7 @@ export default function Sidebar() {
         { to: "/Dashboard/products", icon: Box, label: "Inventory" },
         { to: "/Dashboard/batches", icon: Layers, label: "Batches" },
         { to: "/Dashboard/add-product", icon: PlusCircle, label: "Add Products" },
-        { to: "/Dashboard/history", icon: History, label: "History" },
+        { to: "/Dashboard/Employee", icon: User, label: "Invite Employee" },
     ];
 
     const handleLogout = () => {

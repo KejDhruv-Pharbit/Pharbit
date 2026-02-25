@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+.invite-employee-wrapper {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  /* Fixed: Changed to flex-1 and min-height to fill the dashboard space */
+  display: flex;
+  flex: 1; 
+  min-height: calc(100vh - 48px); /* Adjust based on padding */
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.invite-employee-card {
+  background: white; /* Changed from rgba to solid white for cleaner contrast against the light dashboard */
+  width: 100%;
+  max-width: 520px; /* Slightly wider for better breathing room */
+  padding: 40px;
+  border-radius: 24px;
+  /* Fixed: Softer shadow to match the professional Sidebar look */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.invite-employee-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.invite-employee-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.invite-employee-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.invite-employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.invite-employee-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.invite-employee-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invite-employee-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  margin-left: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.invite-employee-input, 
+.invite-employee-select {
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  background: #f8fafc; /* Subtle background for inputs */
+  color: #1e293b;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.invite-employee-input:focus, 
+.invite-employee-select:focus {
+  border-color: #6366f1;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+}
+
+.invite-employee-button {
+  margin-top: 8px;
+  padding: 16px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.invite-employee-button:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+}
+
+.invite-employee-button:active {
+  transform: translateY(0);
+}

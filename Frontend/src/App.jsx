@@ -6,6 +6,7 @@ import PendingRequests from "./Pages/Admin/PendingRequest";
 // Import your Layout and Pages
 import ProfileDashboard from "./Layout/Dashboard/profiledashboard";
 import Products from "./Pages/Dashboard/Products";
+import InviteEmployee from "./Pages/Dashboard/InviteEmployee";
 
 
 function App() {
@@ -20,14 +21,12 @@ function App() {
       <Route path="/Dashboard" element={<ProfileDashboard />}>
         {/* This renders at /Dashboard */}
         <Route index element={<div className="p-6">Welcome to Pharbit Dashboard</div>} />
-
         {/* This renders at /Dashboard/products */}
         <Route path="products" element={<Products />} />
-
         {/* Add placeholders for other sidebar links so they don't break */}
         <Route path="add-product" element={<MedicalForm />} />
         <Route path="Batches" element={<div className="p-6">Batches coming soon...</div>} />
-        <Route path="settings" element={<div className="p-6">Account Settings</div>} />
+        {/* <Route path="Employee" element={<InviteEmployee/>} /> */} 
       </Route>
     </Routes>
   );
