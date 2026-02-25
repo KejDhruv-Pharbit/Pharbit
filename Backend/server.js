@@ -9,6 +9,7 @@ import Autherization from "./Routes/Users/Auth.js"
 import Employee from "./Routes/Users/Employee.js"
 import Medicines from "./Routes/Medicine/PostingMeds.js"
 import FetchMeds from "./Routes/Medicine/FetchingMeds.js"
+import MintMeds from "./Routes/Medicine/MintingMedicine.js"
 dotenv.config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use("/", Autherization);
 app.use("/", Employee)
 app.use("/", Medicines);
 app.use("/", FetchMeds);
+app.use("/", MintMeds);
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

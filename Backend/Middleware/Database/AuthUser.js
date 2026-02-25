@@ -9,8 +9,6 @@ export const getAuthUser = async (req) => {
 };
 
 
-
-
 export const FindUser = async (userId) => {
   const { data, error } = await supabase
     .from("employees")
@@ -43,7 +41,7 @@ export const FindOrganization = async (userId) => {
       .select("org_id , role ")
       .eq("auth_id", userId)
       .single();
-
+    console.log(employee); 
     if (empError || !employee) {
       throw new Error("Employee not linked to any organization");
     }
@@ -57,7 +55,7 @@ export const FindOrganization = async (userId) => {
     if (orgError || !organization) {
       throw new Error("Organization not found");
     }
-
+    
     return {
       success: true,
       data: organization,

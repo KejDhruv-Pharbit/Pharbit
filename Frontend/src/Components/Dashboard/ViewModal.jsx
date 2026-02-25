@@ -1,10 +1,54 @@
+import { useState } from "react";
 import "../../Styles/Components/ViewModal.css";
-import { Pill, ShieldCheck, AlertTriangle, Zap } from "lucide-react";
+import { Pill, ShieldCheck, AlertTriangle, Zap, Loader2 } from "lucide-react";
 
 export default function ViewModal({ open, onClose, medicine }) {
+  const [isMinting, setIsMinting] = useState(false);
+const url = import.meta.env.VITE_API_URL; 
   if (!open || !medicine) return null;
 
   const isApproved = medicine.verification_status === "approved" || medicine.verification_status === "accepted";
+
+const handleMint = async () => {
+    // Note: We don't check for window.ethereum anymore because 
+    // the backend is signing the transaction with the stored key.
+
+    try {
+      setIsMinting(true);
+
+      // 1. Call your Backend to execute the minting
+      // We changed the endpoint name to reflect that it's actually MINTING now, not just preparing.
+      const response = await fetch(`${url}/auto-mint`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          medicineId: medicine.id, 
+          pricePerToken: medicine.mrp, 
+          supply: 100, 
+        }),
+        credentials: "include" 
+      });
+
+      const result = await response.json();
+
+      // 2. Handle errors from the backend (like insufficient gas or decryption failure)
+      if (!response.ok) {
+        throw new Error(result.error || "Blockchain transaction failed");
+      }
+
+      // 3. Success! The backend returns the transaction hash directly.
+      console.log("Minting Successful:", result);
+      alert(`Successfully Minted! \nTransaction Hash: ${result.transactionHash}`);
+      
+      onClose(); // Close the modal
+      
+    } catch (error) {
+      console.error("Minting failed:", error);
+      alert(error.message || "An error occurred during server-side minting");
+    } finally {
+      setIsMinting(false);
+    }
+  };
 
   return (
     <div className="dashboard-modal-overlay" onClick={onClose}>
@@ -82,12 +126,20 @@ export default function ViewModal({ open, onClose, medicine }) {
         {/* Action Footer */}
         <div className="dashboard-modal-actions">
           {isApproved && (
-            <button className="mint-btn">
-              <Zap size={18} fill="currentColor" />
-              Mint Medicine
+            <button 
+                className="mint-btn" 
+                onClick={handleMint}
+                disabled={isMinting}
+            >
+              {isMinting ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Zap size={18} fill="currentColor" />
+              )}
+              {isMinting ? "Processing..." : "Mint Medicine"}
             </button>
           )}
-          <button onClick={onClose} className="dashboard-modal-close-btn">
+          <button onClick={onClose} className="dashboard-modal-close-btn" disabled={isMinting}>
             Close Details
           </button>
         </div>
