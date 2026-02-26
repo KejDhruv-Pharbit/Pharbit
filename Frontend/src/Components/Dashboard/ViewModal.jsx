@@ -4,43 +4,56 @@ import { Pill, ShieldCheck, AlertTriangle, Zap, Loader2 } from "lucide-react";
 
 export default function ViewModal({ open, onClose, medicine }) {
   const [isMinting, setIsMinting] = useState(false);
-const url = import.meta.env.VITE_API_URL; 
+  const url = import.meta.env.VITE_API_URL;
+
   if (!open || !medicine) return null;
 
   const isApproved = medicine.verification_status === "approved" || medicine.verification_status === "accepted";
 
-const handleMint = async () => {
-    // Note: We don't check for window.ethereum anymore because 
-    // the backend is signing the transaction with the stored key.
-
+  const handleMint = async () => {
     try {
       setIsMinting(true);
 
-      // 1. Call your Backend to execute the minting
-      // We changed the endpoint name to reflect that it's actually MINTING now, not just preparing.
+      // --- STATIC BATCH DATA ---
+      // These match the 'batches' table constraints (date strings and numbers)
+      const staticBatchData = {
+        supply: 500,                                     // Maps to batch_quantity
+        manufacturingDate: new Date().toISOString().split('T')[0], // Today's date (YYYY-MM-DD)
+        expiryDate: "2027-12-31",                       // Static future date
+        warehouseLocation: "Central Distribution Hub"   // Static location
+      };
+
+      // 1. Call Backend to execute minting and database sync
       const response = await fetch(`${url}/auto-mint`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          medicineId: medicine.id, 
-          pricePerToken: medicine.mrp, 
-          supply: 100, 
+          medicineId: medicine.id,
+          pricePerToken: medicine.mrp,
+          supply: staticBatchData.supply,
+          manufacturingDate: staticBatchData.manufacturingDate,
+          expiryDate: staticBatchData.expiryDate,
+          warehouseLocation: staticBatchData.warehouseLocation
         }),
-        credentials: "include" 
+        credentials: "include"
       });
 
       const result = await response.json();
 
-      // 2. Handle errors from the backend (like insufficient gas or decryption failure)
+      // 2. Handle errors
       if (!response.ok) {
         throw new Error(result.error || "Blockchain transaction failed");
       }
 
-      // 3. Success! The backend returns the transaction hash directly.
-      console.log("Minting Successful:", result);
-      alert(`Successfully Minted! \nTransaction Hash: ${result.transactionHash}`);
+      // 3. Success Feedback
+      console.log("Minting & DB Sync Successful:", result);
+      alert(
+        `Success!\n` +
+        `Batch ID: ${result.batchId}\n` +
+        `Tx Hash: ${result.transactionHash.substring(0, 20)}...`
+      );
       
-      onClose(); // Close the modal
+      onClose(); 
       
     } catch (error) {
       console.error("Minting failed:", error);
@@ -136,7 +149,7 @@ const handleMint = async () => {
               ) : (
                 <Zap size={18} fill="currentColor" />
               )}
-              {isMinting ? "Processing..." : "Mint Medicine"}
+              {isMinting ? "Minting Batch..." : "Mint Medicine Batch"}
             </button>
           )}
           <button onClick={onClose} className="dashboard-modal-close-btn" disabled={isMinting}>

@@ -7,12 +7,13 @@ import { getAuthUser } from "../../Middleware/Database/AuthUser.js";
 import { FindOrganization } from "../../Middleware/Database/AuthUser.js";
 import { OrgDetails } from "../../Database/Users/Organization/FindOrganization.js";
 import { decrypt } from "../../Middleware/Database/EncryptDecrypt.js";
+import { createBatch } from "../../Database/Transfer/Batches/CreateBatch.js";
 
 dotenv.config();
 const router = express.Router();
 
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
-const RPC_URL = process.env.SEPOLIA_RPC_URL; 
+const RPC_URL = process.env.SEPOLIA_RPC_URL;
 
 const generateMetadataHash = (medicineData) => {
     const payload = JSON.stringify({
@@ -23,11 +24,10 @@ const generateMetadataHash = (medicineData) => {
     });
     return ethers.keccak256(ethers.toUtf8Bytes(payload));
 };
-
 router.post('/auto-mint', async (req, res) => {
     try {
-        const { medicineId, pricePerToken, supply } = req.body;
-        
+        const { medicineId, pricePerToken, supply, manufacturingDate, expiryDate, warehouseLocation } = req.body;
+
         // 1. Auth & Verification
         const authUser = await getAuthUser(req);
         if (!authUser) return res.status(401).json({ error: "Unauthorized" });
@@ -35,21 +35,18 @@ router.post('/auto-mint', async (req, res) => {
         const orgResult = await FindOrganization(authUser.id);
         if (!orgResult.success) return res.status(404).json({ error: orgResult.error });
 
-        const meds = await FindMeds(medicineId); 
-        if (!meds) return res.status(404).json({ error: "Medicine not found" });
+        const meds = await FindMeds(medicineId);
+        if (!meds || !meds.data) return res.status(404).json({ error: "Medicine not found" });
 
-        // Ownership check
         if (meds.data.organization_id !== orgResult.data.id) {
-            return res.status(403).json({ error: "You don't own this medicine record" }); 
+            return res.status(403).json({ error: "You don't own this medicine record" });
         }
 
-        // 2. Get Organization Details (Wallet & Encrypted Keys)
+        // 2. Get Organization Details
         const organizationData = await OrgDetails(orgResult.data.id);
-        
-        // 3. Map flattened DB columns to the object format expected by decrypt()
-        // Your table columns: wallet_encrypted, wallet_iv, wallet_tag
+
         if (!organizationData.wallet_encrypted || !organizationData.wallet_iv || !organizationData.wallet_tag) {
-            return res.status(400).json({ error: "Organization wallet keys are incomplete in database" });
+            return res.status(400).json({ error: "Organization wallet keys are incomplete" });
         }
 
         const encryptionPayload = {
@@ -58,39 +55,70 @@ router.post('/auto-mint', async (req, res) => {
             tag: organizationData.wallet_tag
         };
 
-        // 4. Decrypt Private Key
+        // 3. Decrypt & Setup Contract
         const privateKey = decrypt(encryptionPayload);
-        console.log("private key " ,  privateKey); 
-        // 5. Setup Provider and Signer
         const provider = new ethers.JsonRpcProvider(RPC_URL);
         const signer = new ethers.Wallet(privateKey, provider);
         const contract = new ethers.Contract(CONTRACT_ADDRESS, abi.abi || abi, signer);
 
-        // 6. Generate Hash & Execute Transaction
+        // 4. Execute Transaction
         const metadataHash = generateMetadataHash(meds.data);
-
         console.log(`🚀 Executing Mint for Org: ${organizationData.wallet_address}`);
 
-        // Call the smart contract function
         const tx = await contract.mintBatch(
             BigInt(supply),
-            BigInt(pricePerToken || 0), 
+            BigInt(pricePerToken || 0),
             metadataHash
         );
 
-        // 7. Wait for transaction to be mined (blocks confirmation)
+        // 5. Wait for transaction to be mined
         const receipt = await tx.wait();
+
+        /* ============================================================
+           NEW: EXTRACT BATCH ID FROM EVENTS & SYNC TO DATABASE
+        ============================================================ */
+        
+        // Find the 'BatchMinted' event in the receipt logs
+        const eventSignature = contract.interface.getEvent("BatchMinted");
+        const log = receipt.logs.find(l => l.topics[0] === eventSignature.topicHash);
+        
+        if (!log) {
+            throw new Error("BatchMinted event not found in transaction logs");
+        }
+
+        const parsedLog = contract.interface.parseLog(log);
+        const blockchainBatchId = parsedLog.args.batchId.toString();
+
+        // Prepare data for the createBatch function
+        const batchPayload = {
+            medicine_id: medicineId,
+            batch_number: blockchainBatchId, // As per your requirement: batch_id = mint_id
+            blockchain_tx_hash: receipt.hash,
+            blockchain_network: "Sepolia",
+            manufacturing_date: manufacturingDate || new Date().toISOString().split('T')[0],
+            expiry_date: expiryDate,
+            batch_quantity: supply,
+            warehouse_location: warehouseLocation || "Main Warehouse"
+        };
+
+        // Call your DB helper
+        const dbResult = await createBatch(batchPayload, orgResult.data.id);
+
+        if (!dbResult.success) {
+            return res.status(207).json({
+                success: true,
+                message: "Minted on blockchain, but failed to sync to database.",
+                transactionHash: receipt.hash,
+                dbError: dbResult.error
+            });
+        }
 
         res.status(200).json({
             success: true,
-            message: "Batch minted successfully via server-side signing",
+            message: "Batch minted and recorded in database successfully",
             transactionHash: receipt.hash,
-            blockNumber: receipt.blockNumber,
-            details: {
-                medicineName: meds.data.name,
-                metadataHash: metadataHash,
-                mintedTo: organizationData.wallet_address
-            }
+            batchId: blockchainBatchId,
+            dbRecord: dbResult.data
         });
 
     } catch (error) {
@@ -98,5 +126,4 @@ router.post('/auto-mint', async (req, res) => {
         res.status(500).json({ error: "Blockchain execution failed: " + error.message });
     }
 });
-
 export default router;
