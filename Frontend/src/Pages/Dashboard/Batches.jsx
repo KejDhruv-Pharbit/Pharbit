@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ViewModal from "../../Components/Dashboard/ViewModal";
+import BatchViewModal from "../../Components/Dashboard/BatchViewModal";
 import {
     ChevronLeft,
     ChevronRight,
@@ -182,7 +182,11 @@ export default function Batches() {
                     </footer>
                 )}
             </div>
-            <ViewModal open={!!selected} medicine={selected} onClose={() => setSelected(null)} />
+            <BatchViewModal 
+  open={!!selected} 
+  batch={selected} 
+  onClose={() => setSelected(null)} 
+/>
         </div>
     );
 }
