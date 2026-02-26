@@ -10,6 +10,7 @@ import Employee from "./Routes/Users/Employee.js"
 import Medicines from "./Routes/Medicine/PostingMeds.js"
 import FetchMeds from "./Routes/Medicine/FetchingMeds.js"
 import MintMeds from "./Routes/Medicine/MintingMedicine.js"
+import Batches from "./Routes/Batches/FetchingBatch.js"
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/", Employee)
 app.use("/", Medicines);
 app.use("/", FetchMeds);
 app.use("/", MintMeds);
+app.use("/", Batches);
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
