@@ -72,6 +72,7 @@ const FindOrganizationBatch = async (orgId) => {
         is_quality_verified,
         warehouse_location,
         created_at,
+        is_active ,
         medicines:medicine_id (
           id,
           name,
@@ -85,7 +86,6 @@ const FindOrganizationBatch = async (orgId) => {
         )
       `)
       .eq("organization_id", orgId)
-      .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;

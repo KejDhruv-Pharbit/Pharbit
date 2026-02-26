@@ -7,6 +7,7 @@ import PendingRequests from "./Pages/Admin/PendingRequest";
 import ProfileDashboard from "./Layout/Dashboard/profiledashboard";
 import Products from "./Pages/Dashboard/Products";
 import InviteEmployee from "./Pages/Dashboard/InviteEmployee";
+import Batches from "./Pages/Dashboard/Batches";
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
         <Route path="products" element={<Products />} />
         {/* Add placeholders for other sidebar links so they don't break */}
         <Route path="add-product" element={<MedicalForm />} />
-        <Route path="Batches" element={<div className="p-6">Batches coming soon...</div>} />
+        <Route path="Batches" element={<Batches/>} />
         {/* <Route path="Employee" element={<InviteEmployee/>} /> */} 
       </Route>
     </Routes>
