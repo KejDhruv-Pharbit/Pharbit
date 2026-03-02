@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { MapPin, Package, Truck, Globe, Info, Clock, ChevronRight } from "lucide-react";
+import { MapPin, Package, Truck, Globe, Info, Clock, Thermometer, ShieldCheck } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -35,7 +35,7 @@ function RecenterMap({ coords }) {
     useEffect(() => {
         if (coords.length > 0) {
             const bounds = L.latLngBounds(coords);
-            map.fitBounds(bounds, { padding: [80, 80] });
+            map.fitBounds(bounds, { padding: [100, 100] });
         }
     }, [coords, map]);
     return null;
@@ -70,34 +70,69 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                                 <span className={`shipment-modal-tag status-${shipmentData.status.toLowerCase()}`}>
                                     {shipmentData.status}
                                 </span>
-                                <span className="shipment-modal-tag-id">#{shipmentData.batch?.blockchain_mint_id}</span>
+                                <span className="shipment-modal-tag-id">Batch #{shipmentData.batch?.blockchain_mint_id}</span>
                             </div>
                         </div>
                     </header>
 
                     <div className="shipment-modal-scroll-area">
+                        {/* SECTION 1: SHIPMENT OVERVIEW */}
+                        <div className="shipment-modal-section">
+                            <div className="section-title">
+                                <Info size={16} />
+                                <h3>Shipment Overview</h3>
+                            </div>
+                            <div className="shipment-modal-overview-grid">
+                                <div className="overview-card">
+                                    <Package size={18} />
+                                    <div>
+                                        <label>Quantity</label>
+                                        <p>{shipmentData.medicines_amount} Units</p>
+                                    </div>
+                                </div>
+                                <div className="overview-card">
+                                    <Thermometer size={18} />
+                                    <div>
+                                        <label>Storage Temp</label>
+                                        <p>{latestLog?.temperature || "Ambient"}</p>
+                                    </div>
+                                </div>
+                                <div className="overview-card wide">
+                                    <ShieldCheck size={18} />
+                                    <div>
+                                        <label>Composition</label>
+                                        <p>{shipmentData.batch?.medicines?.composition?.join(", ")}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* SECTION 2: ROUTE SUMMARY */}
                         <div className="shipment-modal-summary-card">
                             <div className="shipment-modal-route-item">
                                 <div className="route-dot start"></div>
                                 <div className="route-info">
-                                    <label>Origin</label>
+                                    <label>Origin (Manufacturer)</label>
                                     <p>{originLog?.organization?.name}</p>
+                                    <span>{originLog?.organization?.address?.city}, {originLog?.organization?.address?.country}</span>
                                 </div>
                             </div>
                             <div className="route-connector-line"></div>
                             <div className="shipment-modal-route-item">
                                 <div className="route-dot end"></div>
                                 <div className="route-info">
-                                    <label>Destination / Current</label>
+                                    <label>Current Location</label>
                                     <p>{latestLog?.organization?.name}</p>
+                                    <span>{latestLog?.organization?.address?.city}, {latestLog?.organization?.address?.country}</span>
                                 </div>
                             </div>
                         </div>
 
+                        {/* SECTION 3: AUDIT TRAIL */}
                         <div className="shipment-modal-timeline-section">
                             <div className="section-title">
                                 <Clock size={16} />
-                                <h3>Chain of Custody</h3>
+                                <h3>Audit Trail (Blockchain)</h3>
                             </div>
                             
                             <div className="shipment-modal-timeline">
@@ -109,10 +144,11 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                                         </div>
                                         <div className="timeline-content">
                                             <div className="timeline-header">
-                                                <h4>{log.action}</h4>
+                                                <h4>{log.action.replace(/_/g, ' ')}</h4>
                                                 <span>{new Date(log.created_at).toLocaleDateString()}</span>
                                             </div>
-                                            <p className="timeline-notes">"{log.notes}"</p>
+                                            <p className="timeline-org-name">{log.organization?.name}</p>
+                                            <p className="timeline-notes">{log.notes}</p>
                                             <div className="timeline-footer">
                                                 <MapPin size={12} />
                                                 <span>{log.organization?.address?.city}, {log.organization?.address?.country}</span>
@@ -136,7 +172,7 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         />
                         <RecenterMap coords={allCoords} />
-                        <Polyline positions={allCoords} color="#3b82f6" weight={3} dashArray="8, 12" />
+                        <Polyline positions={allCoords} color="#3b82f6" weight={4} dashArray="10, 15" />
 
                         {chronologicalLogs.map((log, idx) => {
                             const isFirst = idx === 0;
@@ -160,7 +196,10 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                             );
                         })}
                     </MapContainer>
-                    <div className="map-badge">Live Tracking Enabled</div>
+                    <div className="map-badge">
+                        <div className="live-indicator"></div>
+                        Live Supply Chain Tracking
+                    </div>
                 </div>
             </div>
         </div>
