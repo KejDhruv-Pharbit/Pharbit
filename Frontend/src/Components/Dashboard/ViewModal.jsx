@@ -52,9 +52,9 @@ export default function ViewModal({ open, onClose, medicine }) {
         `Batch ID: ${result.batchId}\n` +
         `Tx Hash: ${result.transactionHash.substring(0, 20)}...`
       );
-      
-      onClose(); 
-      
+
+      onClose();
+
     } catch (error) {
       console.error("Minting failed:", error);
       alert(error.message || "An error occurred during server-side minting");
@@ -66,7 +66,7 @@ export default function ViewModal({ open, onClose, medicine }) {
   return (
     <div className="dashboard-modal-overlay" onClick={onClose}>
       <div className="dashboard-modal-container" onClick={(e) => e.stopPropagation()}>
-        
+
         {/* Header Section */}
         <div className="dashboard-modal-header">
           <div className="modal-title-group">
@@ -139,10 +139,10 @@ export default function ViewModal({ open, onClose, medicine }) {
         {/* Action Footer */}
         <div className="dashboard-modal-actions">
           {isApproved && (
-            <button 
-                className="mint-btn" 
-                onClick={handleMint}
-                disabled={isMinting}
+            <button
+              className="mint-btn"
+              onClick={handleMint}
+              disabled={isMinting}
             >
               {isMinting ? (
                 <Loader2 size={18} className="animate-spin" />

@@ -2,7 +2,7 @@
 .dashboard-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6); 
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -13,8 +13,13 @@
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* --- Container --- */
@@ -34,8 +39,15 @@
 }
 
 @keyframes modalSlideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* --- Header & Status Tags --- */
@@ -71,7 +83,9 @@
   color: #2563eb;
 }
 
-.separator { color: #cbd5e1; }
+.separator {
+  color: #cbd5e1;
+}
 
 .dashboard-modal-code {
   font-family: 'JetBrains Mono', monospace;
@@ -125,7 +139,9 @@
   margin-top: 8px;
 }
 
-.blue-icon { color: #3b82f6; }
+.blue-icon {
+  color: #3b82f6;
+}
 
 .dashboard-modal-label {
   font-size: 11px;
@@ -142,7 +158,9 @@
 }
 
 /* --- Tags & Lists --- */
-.modal-section { margin-bottom: 24px; }
+.modal-section {
+  margin-bottom: 24px;
+}
 
 .dashboard-modal-section-title {
   font-size: 13px;
@@ -226,7 +244,10 @@
   transition: 0.2s;
 }
 
-.mint-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+.mint-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
 
 .dashboard-modal-close-btn {
   background: transparent;
@@ -238,7 +259,10 @@
   cursor: pointer;
 }
 
-.dashboard-modal-close-btn:hover { background: #f8fafc; color: #0f172a; }
+.dashboard-modal-close-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
 
 .dashboard-modal-footer-meta {
   display: flex;

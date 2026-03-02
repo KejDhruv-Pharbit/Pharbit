@@ -20,7 +20,7 @@ export default function Products() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
-       const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
+    const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
 
     // Sort & Filter States
     const [filterStatus, setFilterStatus] = useState("all");
@@ -79,14 +79,14 @@ export default function Products() {
 
     return (
         <div className="inventory-view">
-          <Header
-            onSearch={setSearchQuery} searchVal={searchQuery}
-            onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
-          />
-      <CreateShipmentModal
-  isOpen={isShipmentModalOpen}
-  onClose={() => setIsShipmentModalOpen(false)}
-/>
+            <Header
+                onSearch={setSearchQuery} searchVal={searchQuery}
+                onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+            />
+            <CreateShipmentModal
+                isOpen={isShipmentModalOpen}
+                onClose={() => setIsShipmentModalOpen(false)}
+            />
 
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
@@ -177,11 +177,11 @@ export default function Products() {
                                         <td>
                                             <div
                                                 className={`m-status ${med.verification_status === "approved" ||
-                                                        med.verification_status === "accepted"
-                                                        ? "is-ok"
-                                                        : med.verification_status === "rejected"
-                                                            ? "is-rejected"
-                                                            : "is-wait"
+                                                    med.verification_status === "accepted"
+                                                    ? "is-ok"
+                                                    : med.verification_status === "rejected"
+                                                        ? "is-rejected"
+                                                        : "is-wait"
                                                     }`}
                                             >
                                                 {med.verification_status}

@@ -80,15 +80,15 @@ export default function Batches() {
     return (
         <div className="inventory-view">
 
-<Header
-  onSearch={setSearchQuery} searchVal={searchQuery}
-  onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
-/>
+            <Header
+                onSearch={setSearchQuery} searchVal={searchQuery}
+                onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+            />
 
-<CreateShipmentModal
-  isOpen={isShipmentModalOpen}
-  onClose={() => setIsShipmentModalOpen(false)}
-/>
+            <CreateShipmentModal
+                isOpen={isShipmentModalOpen}
+                onClose={() => setIsShipmentModalOpen(false)}
+            />
 
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
@@ -158,7 +158,7 @@ export default function Batches() {
                                                 {batch.expiry_date}
                                             </span>
                                         </td>
-                                
+
                                         <td className="m-brand">{batch.warehouse_location || "N/A"}</td>
                                         <td>
                                             <div className={`m-status ${batch.is_active ? "is-ok" : "is-rejected"}`}>
@@ -192,11 +192,11 @@ export default function Batches() {
                     </footer>
                 )}
             </div>
-            <BatchViewModal 
-  open={!!selected} 
-  batch={selected} 
-  onClose={() => setSelected(null)} 
-/>
+            <BatchViewModal
+                open={!!selected}
+                batch={selected}
+                onClose={() => setSelected(null)}
+            />
         </div>
     );
 }

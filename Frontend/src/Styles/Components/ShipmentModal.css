@@ -15,7 +15,8 @@
 
 .shipment-modal-container {
     background: white;
-    width: 95%; /* Increased for better visibility */
+    width: 95%;
+    /* Increased for better visibility */
     max-width: 1400px;
     height: 90vh;
     border-radius: 32px;
@@ -27,7 +28,8 @@
 
 /* Left Sidebar */
 .shipment-modal-left-panel {
-    width: 480px; /* Wider sidebar for detailed logs */
+    width: 480px;
+    /* Wider sidebar for detailed logs */
     background: white;
     display: flex;
     flex-direction: column;
@@ -86,9 +88,20 @@
 }
 
 /* Status Variations */
-.status-created { background: #dcfce7; color: #15803d; }
-.status-forwarded { background: #dbeafe; color: #1e40af; }
-.status-redeemed { background: #fef3c7; color: #92400e; }
+.status-created {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-forwarded {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-redeemed {
+    background: #fef3c7;
+    color: #92400e;
+}
 
 .shipment-modal-tag-id {
     font-size: 11px;
@@ -357,9 +370,20 @@
 }
 
 @keyframes blink {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Custom Markers & Animations */
@@ -371,8 +395,13 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.marker-pin.origin { background: #10b981; }
-.marker-pin.current { background: #3b82f6; }
+.marker-pin.origin {
+    background: #10b981;
+}
+
+.marker-pin.current {
+    background: #3b82f6;
+}
 
 .pulse::after {
     content: "";
@@ -386,8 +415,15 @@
 }
 
 @keyframes marker-pulse {
-    0% { transform: translate(-25%, -25%) scale(0.6); opacity: 1; }
-    100% { transform: translate(-25%, -25%) scale(2.2); opacity: 0; }
+    0% {
+        transform: translate(-25%, -25%) scale(0.6);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-25%, -25%) scale(2.2);
+        opacity: 0;
+    }
 }
 
 /* Popup Styling */

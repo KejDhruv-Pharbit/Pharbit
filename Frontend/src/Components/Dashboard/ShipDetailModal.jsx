@@ -47,20 +47,20 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
     const chronologicalLogs = [...(shipmentData.shipment_logs || [])].sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
     );
-    
-    const displayLogs = [...chronologicalLogs].reverse(); 
+
+    const displayLogs = [...chronologicalLogs].reverse();
     const latestLog = displayLogs[0];
     const originLog = chronologicalLogs[0];
 
     const allCoords = chronologicalLogs.map(log => [
-        parseFloat(log.organization.long), 
+        parseFloat(log.organization.long),
         parseFloat(log.organization.lat)
     ]);
 
     return (
         <div className="shipment-modal-overlay" onClick={onClose}>
             <div className="shipment-modal-container" onClick={e => e.stopPropagation()}>
-                
+
                 <div className="shipment-modal-left-panel">
                     <header className="shipment-modal-header">
                         <button className="shipment-modal-back-btn" onClick={onClose}>←</button>
@@ -97,7 +97,7 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                                         <p>{latestLog?.temperature || "Ambient"}</p>
                                     </div>
                                 </div>
-            
+
                             </div>
                         </div>
 
@@ -128,7 +128,7 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                                 <Clock size={16} />
                                 <h3>Audit Trail (Blockchain)</h3>
                             </div>
-                            
+
                             <div className="shipment-modal-timeline">
                                 {displayLogs.map((log, index) => (
                                     <div className="shipment-modal-timeline-item" key={log.id}>
@@ -156,9 +156,9 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                 </div>
 
                 <div className="shipment-modal-right-panel">
-                    <MapContainer 
-                        center={allCoords.length > 0 ? allCoords[allCoords.length - 1] : [0, 0]} 
-                        zoom={6} 
+                    <MapContainer
+                        center={allCoords.length > 0 ? allCoords[allCoords.length - 1] : [0, 0]}
+                        zoom={6}
                         zoomControl={false}
                         className="shipment-leaflet-container"
                     >
@@ -174,9 +174,9 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                             const pos = [parseFloat(log.organization.long), parseFloat(log.organization.lat)];
 
                             return (
-                                <Marker 
-                                    key={log.id} 
-                                    position={pos} 
+                                <Marker
+                                    key={log.id}
+                                    position={pos}
                                     icon={isLast ? CurrentIcon : (isFirst ? OriginIcon : DefaultIcon)}
                                 >
                                     <Popup className="shipment-custom-popup">

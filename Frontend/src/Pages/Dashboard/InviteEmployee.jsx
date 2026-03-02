@@ -37,7 +37,7 @@ const InviteEmployee = () => {
         alert(`Error: ${err.message || 'Failed to send invite'}`);
       }
     } catch (error) {
-      alert('Network error. Is the server running at port 6090?' , error );
+      alert('Network error. Is the server running at port 6090?', error);
     } finally {
       setLoading(false);
     }
@@ -106,9 +106,9 @@ const InviteEmployee = () => {
             </select>
           </div>
 
-          <button 
-            className="invite-employee-button" 
-            type="submit" 
+          <button
+            className="invite-employee-button"
+            type="submit"
             disabled={loading}
           >
             {loading ? 'Sending Invite...' : 'Send Invitation'}

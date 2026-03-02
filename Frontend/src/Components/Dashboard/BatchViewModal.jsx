@@ -7,14 +7,14 @@ export default function BatchViewModal({ open, onClose, batch }) {
 
   // Destructure medicine details from the nested object
   const medicine = batch.medicines || {};
-  
+
   // Blockchain Explorer Link (Assuming Sepolia)
   const txUrl = `https://sepolia.etherscan.io/tx/${batch.blockchain_tx_hash}`;
 
   return (
     <div className="dashboard-modal-overlay" onClick={onClose}>
       <div className="dashboard-modal-container" onClick={(e) => e.stopPropagation()}>
-        
+
         {/* Header Section */}
         <div className="dashboard-modal-header">
           <div className="modal-title-group">

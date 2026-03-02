@@ -55,7 +55,7 @@ router.get("/organization", async (req, res) => {
     try {
         const organizations = await getAllOrganizations();
         return res.status(200).json(organizations);
-        
+
     } catch (err) {
         // This will catch both Supabase errors and connection issues
         console.error("Fetch organization error:", err);

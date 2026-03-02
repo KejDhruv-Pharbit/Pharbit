@@ -21,7 +21,7 @@ export const OrgDetails = async (OrgId) => {
 export const getAllOrganizations = async () => {
   const { data, error } = await supabase
     .from("organizations")
-    .select("id ,  name, address ") 
+    .select("id ,  name, address ")
     .order("name", { ascending: true })
   if (error) {
     console.error("Error fetching organizations:", error.message);
