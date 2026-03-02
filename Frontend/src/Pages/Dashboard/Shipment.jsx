@@ -18,7 +18,7 @@ export default function Shipment() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 4;
        const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("newest");
