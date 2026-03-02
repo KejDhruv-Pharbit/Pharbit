@@ -97,13 +97,7 @@ export default function ShipmentDetailModal({ isOpen, shipmentData, onClose }) {
                                         <p>{latestLog?.temperature || "Ambient"}</p>
                                     </div>
                                 </div>
-                                <div className="overview-card wide">
-                                    <ShieldCheck size={18} />
-                                    <div>
-                                        <label>Composition</label>
-                                        <p>{shipmentData.batch?.medicines?.composition?.join(", ")}</p>
-                                    </div>
-                                </div>
+            
                             </div>
                         </div>
 
