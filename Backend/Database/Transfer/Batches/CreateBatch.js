@@ -2,10 +2,7 @@ import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export async function createBatch(data, orgId) {
   try {
-    /* =========================
-       Validation & Normalization
-    ========================== */
-    // Ensure we have the required IDs and numbers
+
     if (!data.medicine_id || !data.batch_number) {
       return {
         success: false,
@@ -14,13 +11,8 @@ export async function createBatch(data, orgId) {
       };
     }
 
-    // According to your requirement: batch_number and blockchain_mint_id are the same
     const mintId = data.batch_number;
 
-    /* =========================
-       Duplicate Check
-       Checks both the medicine/batch combo AND the unique blockchain IDs
-    ========================== */
     const { data: existingBatch, error: checkError } = await supabase
       .from("batches")
       .select("id, batch_number, blockchain_mint_id")
@@ -38,7 +30,7 @@ export async function createBatch(data, orgId) {
     }
 
     /* =========================
-       Insert Batch
+       Insert Batch (UNCHANGED)
     ========================== */
     const { data: inserted, error: insertError } = await supabase
       .from("batches")
@@ -46,26 +38,21 @@ export async function createBatch(data, orgId) {
         {
           organization_id: orgId,
           medicine_id: data.medicine_id,
-          
-          // Blockchain IDs
-          blockchain_mint_id: mintId, 
+
+          blockchain_mint_id: mintId,
           blockchain_tx_hash: data.blockchain_tx_hash,
           blockchain_network: data.blockchain_network || "mainnet",
 
-          // Batch Info
           batch_number: data.batch_number,
           manufacturing_date: data.manufacturing_date,
           expiry_date: data.expiry_date,
-          
-          // Quantities (Ensuring they are Numbers for the DB constraints)
-          batch_quantity: Number(data.batch_quantity),
-          remaining_quantity: Number(data.batch_quantity), // Starts equal to total
 
-          // Status & Quality
-          is_quality_verified: true, // Required by your 'check_quality_verified' constraint
+          batch_quantity: Number(data.batch_quantity),
+          remaining_quantity: Number(data.batch_quantity),
+
+          is_quality_verified: true,
           is_active: true,
-          
-          // Location/Misc
+
           warehouse_location: data.warehouse_location || null,
         },
       ])
@@ -73,13 +60,76 @@ export async function createBatch(data, orgId) {
       .single();
 
     if (insertError) {
-      // Handle specific constraint violations
       if (insertError.code === "23505") {
-        return { success: false, status: 409, error: "Unique constraint violation (Batch/Mint ID already exists)" };
+        return {
+          success: false,
+          status: 409,
+          error: "Unique constraint violation (Batch/Mint ID already exists)",
+        };
       }
       throw insertError;
     }
 
+    /* ============================================================
+       NEW: INSERT SERIAL NUMBERS (IF PROVIDED)
+    ============================================================ */
+
+    if (data.serial_numbers && Array.isArray(data.serial_numbers)) {
+
+      const serialNumbers = data.serial_numbers.map(s => s.trim());
+
+      // 1️⃣ Validate count matches batch_quantity
+      if (serialNumbers.length !== Number(data.batch_quantity)) {
+        return {
+          success: false,
+          status: 400,
+          error: "Serial count must match batch quantity",
+        };
+      }
+
+      // 2️⃣ Check duplicates inside CSV
+      const unique = new Set(serialNumbers);
+      if (unique.size !== serialNumbers.length) {
+        return {
+          success: false,
+          status: 400,
+          error: "Duplicate serial numbers detected",
+        };
+      }
+
+      // 3️⃣ Prepare payload
+      const serialPayload = serialNumbers.map(serial => ({
+        serial_number: serial,
+        batch_id: inserted.id,
+        shipment_id: null,
+      }));
+
+      // 4️⃣ Insert in chunks (safe for Supabase limits)
+      const chunkSize = 500;
+
+      for (let i = 0; i < serialPayload.length; i += chunkSize) {
+        const chunk = serialPayload.slice(i, i + chunkSize);
+
+        const { error: serialError } = await supabase
+          .from("batch_serials")
+          .insert(chunk);
+
+        if (serialError) {
+
+          // Rollback batch if serial insert fails
+          await supabase
+            .from("batches")
+            .delete()
+            .eq("id", inserted.id);
+
+          throw serialError;
+        }
+      }
+    }
+
+    /* =========================
+       Final Success Response
+    ========================== */
     return {
       success: true,
       status: 201,
