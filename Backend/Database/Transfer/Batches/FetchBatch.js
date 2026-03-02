@@ -155,7 +155,7 @@ const FindBatchbyId = async (id) => {
 };
 
 export {
-    FindBatch,
-    FindOrganizationBatch,
-    FindBatchbyId
+  FindBatch,
+  FindOrganizationBatch,
+  FindBatchbyId
 };

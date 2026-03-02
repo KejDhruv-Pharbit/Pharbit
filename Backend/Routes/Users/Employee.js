@@ -8,40 +8,40 @@ import { EmployeeRegistration } from "../../Database/Users/Organization/Employee
 const router = express.Router();
 
 router.post("/org/invite", async (req, res) => {
-    try {
-        const authUser = await getAuthUser(req);
-        if (!authUser) {
-            return res.status(401).json({
-                error: "Unauthorized"
-            });
-        }
-        const employee = await FindUser(authUser.id);
-        if (!employee) {
-            return res.status(403).json({
-                error: "Not an employee"
-            });
-        }
-        console.log(employee.role);
-        if (!["manager", "owner", "admin"].includes(employee.role)) {
-            return res.status(403).json({
-                error: "You are not allowed to invite"
-            });
-        }
-        const result = await InviteEmployee(
-            req.body,
-            employee
-        );
-        res.status(200).json({
-            message: "Invite sent successfully",
-            data: result
-        });
-
-    } catch (err) {
-        console.error("Invite error:", err);
-        res.status(400).json({
-            error: err.message
-        });
+  try {
+    const authUser = await getAuthUser(req);
+    if (!authUser) {
+      return res.status(401).json({
+        error: "Unauthorized"
+      });
     }
+    const employee = await FindUser(authUser.id);
+    if (!employee) {
+      return res.status(403).json({
+        error: "Not an employee"
+      });
+    }
+    console.log(employee.role);
+    if (!["manager", "owner", "admin"].includes(employee.role)) {
+      return res.status(403).json({
+        error: "You are not allowed to invite"
+      });
+    }
+    const result = await InviteEmployee(
+      req.body,
+      employee
+    );
+    res.status(200).json({
+      message: "Invite sent successfully",
+      data: result
+    });
+
+  } catch (err) {
+    console.error("Invite error:", err);
+    res.status(400).json({
+      error: err.message
+    });
+  }
 });
 
 
@@ -60,11 +60,11 @@ router.post("/auth/accept-invite", async (req, res) => {
     const invite = await findInviteByToken(token);
 
     // 2. Create auth user
-      const authUser = await createAuthUser(
+    const authUser = await createAuthUser(
       invite.email,
-          password , 
-       invite.first_name,
-      invite.last_name , 
+      password,
+      invite.first_name,
+      invite.last_name,
     );
 
     // 3. Create employee
@@ -73,8 +73,8 @@ router.post("/auth/accept-invite", async (req, res) => {
       orgId: invite.org_id,
       email: invite.email,
       role: invite.role,
-       firstName: invite.first_name,
-      lastName : invite.last_name
+      firstName: invite.first_name,
+      lastName: invite.last_name
     });
 
     await markInviteUsed(invite.id);

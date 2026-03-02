@@ -21,7 +21,7 @@ router.get("/OrgBatches", async (req, res) => {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    const orgId = orgdata.data.id; 
+    const orgId = orgdata.data.id;
     const batches = await FindOrganizationBatch(orgId);
 
     return res.status(200).json({
@@ -43,7 +43,7 @@ router.get("/FetchBatches", async (req, res) => {
     if (!authUser) return res.status(401).json({ error: "Unauthorized" });
 
     const batches = await FindBatch();
-    
+
     return res.status(200).json({
       success: true,
       count: batches.length,

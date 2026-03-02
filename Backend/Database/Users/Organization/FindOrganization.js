@@ -1,4 +1,4 @@
-import supabase from "../../../Middleware/Database/DatabaseConnect.js"; 
+import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export const OrgDetails = async (OrgId) => {
   if (!OrgId) {
@@ -15,5 +15,5 @@ export const OrgDetails = async (OrgId) => {
   }
 
   // Employee found
- return data 
+  return data
 };

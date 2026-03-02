@@ -98,45 +98,43 @@ export async function createShipment(data, orgId) {
 
     const orgAddress = organization?.address || null;
 
-
-
-
     /* =========================
-   4️⃣ Allocate Serial Numbers
-========================== */
+      4️⃣ Allocate Serial Numbers
+    ========================== */
 
-// 1️⃣ Fetch available serials
-const { data: availableSerials, error: serialFetchError } = await supabase
-  .from("batch_serials")
-  .select("serial_number")
-  .eq("batch_id", data.batch_id)
-  .is("shipment_id", null)
-  .eq("is_locked", false)
-  .limit(requestedAmount);
 
-if (serialFetchError) throw serialFetchError;
+    // 1️⃣ Fetch available serials
+    const { data: availableSerials, error: serialFetchError } = await supabase
+      .from("batch_serials")
+      .select("serial_number")
+      .eq("batch_id", data.batch_id)
+      .is("shipment_id", null)
+      .eq("is_locked", false)
+      .limit(requestedAmount);
 
-if (!availableSerials || availableSerials.length < requestedAmount) {
-  return {
-    success: false,
-    status: 400,
-    error: "Not enough unallocated serial numbers available",
-  };
-}
+    if (serialFetchError) throw serialFetchError;
 
-// 2️⃣ Extract serial numbers
-const serialNumbersToAssign = availableSerials.map(s => s.serial_number);
+    if (!availableSerials || availableSerials.length < requestedAmount) {
+      return {
+        success: false,
+        status: 400,
+        error: "Not enough unallocated serial numbers available",
+      };
+    }
 
-// 3️⃣ Assign shipment_id to them
-const { error: serialUpdateError } = await supabase
-  .from("batch_serials")
-  .update({
-    shipment_id: shipment.id, 
-    is_locked: true 
-  })
-  .in("serial_number", serialNumbersToAssign);
+    // 2️⃣ Extract serial numbers
+    const serialNumbersToAssign = availableSerials.map(s => s.serial_number);
 
-if (serialUpdateError) throw serialUpdateError; 
+    // 3️⃣ Assign shipment_id to them
+    const { error: serialUpdateError } = await supabase
+      .from("batch_serials")
+      .update({
+        shipment_id: shipment.id,
+        is_locked: true
+      })
+      .in("serial_number", serialNumbersToAssign);
+
+    if (serialUpdateError) throw serialUpdateError;
 
     /* =========================
        5️⃣ Create Shipment Log

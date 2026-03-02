@@ -35,5 +35,5 @@ export const UserDetails = async (authId) => {
   }
 
   // Employee found
- return data 
+  return data
 };

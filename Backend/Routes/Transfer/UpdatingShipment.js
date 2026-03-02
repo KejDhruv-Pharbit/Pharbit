@@ -18,7 +18,6 @@ router.post("/scan-shipment", async (req, res) => {
                 error: "Tracking code is required",
             });
         }
-
         /* =========================
            1️⃣ AUTH
         ========================== */
@@ -29,7 +28,6 @@ router.post("/scan-shipment", async (req, res) => {
                 error: "Unauthorized",
             });
         }
-
         const orgResult = await FindOrganization(authUser.id);
         if (!orgResult.success) {
             return res.status(404).json({
