@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import { FindOrganization, getAuthUser } from "../../Middleware/Database/AuthUser";
-import { FindShipment, FindShipmentForDestination, FindShipmentForSource } from "../../Database/Transfer/Shipment/GetShipment";
+import { FindOrganization, getAuthUser } from "../../Middleware/Database/AuthUser.js";
+import { FindShipment, FindShipmentForDestination, FindShipmentForSource } from "../../Database/Transfer/Shipment/GetShipment.js";
 
 
 dotenv.config();

@@ -11,6 +11,11 @@ import Medicines from "./Routes/Medicine/PostingMeds.js"
 import FetchMeds from "./Routes/Medicine/FetchingMeds.js"
 import MintMeds from "./Routes/Medicine/MintingMedicine.js"
 import Batches from "./Routes/Batches/FetchingBatch.js"
+import CreateShipment from "./Routes/Transfer/CreatingShipment.js"
+import FetchShipment from "./Routes/Transfer/GettingShipment.js"
+import PassShip from "./Routes/Transfer/PassingShipment.js"
+import RedeemShip from "./Routes/Transfer/RedeemShipment.js"
+import UpdateShip from "./Routes/Transfer/UpdatingShipment.js"
 dotenv.config();
 
 const app = express();
@@ -31,6 +36,12 @@ app.use("/", Medicines);
 app.use("/", FetchMeds);
 app.use("/", MintMeds);
 app.use("/", Batches);
+app.use("/", CreateShipment);
+app.use("/", FetchShipment);
+app.use("/", PassShip);
+app.use("/", RedeemShip);
+app.use("/" , UpdateShip)
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

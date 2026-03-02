@@ -7,8 +7,8 @@ import { getAuthUser } from "../../Middleware/Database/AuthUser.js";
 import { FindOrganization } from "../../Middleware/Database/AuthUser.js";
 import { OrgDetails } from "../../Database/Users/Organization/FindOrganization.js";
 import { decrypt } from "../../Middleware/Database/EncryptDecrypt.js";
-import { createShipment } from "../../Database/Transfer/Shipments/CreateShipment.js";
-import { FindBatchById } from "../../Database/Transfer/Batches/FindBatchById.js";
+import { createShipment } from "../../Database/Transfer/Shipment/CreateShipment.js";
+import { FindBatchbyId } from "../../Database/Transfer/Batches/FetchBatch.js";
 
 dotenv.config();
 const router = express.Router();

@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 import { getAuthUser } from "../../Middleware/Database/AuthUser.js";
 import { FindOrganization } from "../../Middleware/Database/AuthUser.js";
-import { redeemShipment } from "../../Database/Transfer/Shipments/RedeemShipment.js";
+import { redeemShipment } from "../../Database/Transfer/Shipment/RedeemShipment.js";
 
 dotenv.config();
 const router = express.Router();
