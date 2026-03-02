@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
+import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -82,10 +83,10 @@ export default function Products() {
             onSearch={setSearchQuery} searchVal={searchQuery}
             onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
           />
-          
-          {isShipmentModalOpen && (
-            <CreateShipmentModal onClose={() => setIsShipmentModalOpen(false)} />
-          )}
+      <CreateShipmentModal
+  isOpen={isShipmentModalOpen}
+  onClose={() => setIsShipmentModalOpen(false)}
+/>
 
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">

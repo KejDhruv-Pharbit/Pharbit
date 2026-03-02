@@ -17,3 +17,16 @@ export const OrgDetails = async (OrgId) => {
   // Employee found
   return data
 };
+
+export const getAllOrganizations = async () => {
+  const { data, error } = await supabase
+    .from("organizations")
+    .select("id ,  name, address ") 
+    .order("name", { ascending: true })
+  if (error) {
+    console.error("Error fetching organizations:", error.message);
+    throw new Error(`Failed to fetch organizations: ${error.message}`);
+  }
+
+  return data;
+};

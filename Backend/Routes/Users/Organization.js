@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 import { createOrgWallet } from "../../Database/Users/Organization/AddOrganization.js";
+import { getAllOrganizations } from "../../Database/Users/Organization/FindOrganization.js";
 
 dotenv.config();
 const router = express.Router();
@@ -50,6 +51,19 @@ router.post("/organization", async (req, res) => {
     }
 });
 
+router.get("/organization", async (req, res) => {
+    try {
+        const organizations = await getAllOrganizations();
+        return res.status(200).json(organizations);
+        
+    } catch (err) {
+        // This will catch both Supabase errors and connection issues
+        console.error("Fetch organization error:", err);
+        return res.status(400).json({
+            error: err.message
+        });
+    }
+});
 
 
 

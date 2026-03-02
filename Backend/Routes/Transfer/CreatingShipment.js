@@ -21,7 +21,7 @@ router.post("/create-shipment", async (req, res) => {
     const { batch_id, amount, receiver_org_id, pricePerToken } = req.body;
 
     /* =========================
-       1️⃣ AUTH
+       1️⃣ AUTHp
     ========================== */
     const authUser = await getAuthUser(req);
     if (!authUser) return res.status(401).json({ error: "Unauthorized" });
