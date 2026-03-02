@@ -24,10 +24,9 @@ const PORT = 6090;
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "*",
+  origin: "http://localhost:5173",
   credentials: true
 }));
-
 // Only parse JSON
 app.use(express.json({ type: "application/json" }));
 app.use(express.urlencoded({ extended: true }));
