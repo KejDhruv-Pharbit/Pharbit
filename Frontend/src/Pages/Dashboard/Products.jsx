@@ -19,6 +19,7 @@ export default function Products() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
+       const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
 
     // Sort & Filter States
     const [filterStatus, setFilterStatus] = useState("all");
@@ -77,10 +78,14 @@ export default function Products() {
 
     return (
         <div className="inventory-view">
-            <Header
-                onSearch={setSearchQuery}
-                searchVal={searchQuery}
-            />
+          <Header
+            onSearch={setSearchQuery} searchVal={searchQuery}
+            onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+          />
+          
+          {isShipmentModalOpen && (
+            <CreateShipmentModal onClose={() => setIsShipmentModalOpen(false)} />
+          )}
 
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">

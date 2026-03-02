@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Search, Plus } from "lucide-react"; // Added Plus icon
+import { Search, Plus, Layers, Truck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../../Styles/Components/Header.css";
 
 const url = import.meta.env.VITE_API_URL;
 
-export default function Header({ onSearch, searchVal }) {
+export default function Header({ onSearch, searchVal, onOpenShipmentModal }) {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,8 +26,10 @@ export default function Header({ onSearch, searchVal }) {
 
   return (
     <div className="profile-header-container">
-      {/* Search + Add Action Area */}
+
+      {/* LEFT SECTION */}
       <div className="header-left-actions">
+
         <div className="search-wrapper">
           <Search size={18} className="search-icon" />
           <input
@@ -36,13 +40,39 @@ export default function Header({ onSearch, searchVal }) {
             onChange={(e) => onSearch(e.target.value)}
           />
         </div>
-        
-        <button className="header-add-btn" title="Add New Product">
-          <Plus size={20} strokeWidth={3} />
-          <span>Add Product</span>
-        </button>
+
+        {/* ACTION BUTTONS */}
+        <div className="header-action-buttons">
+
+          <button
+            className="header-add-btn"
+            onClick={() => navigate("/dashboard/add-product")}
+          >
+            <Plus size={18} />
+            <span>Add Product</span>
+          </button>
+
+          <button
+            className="header-batch-btn"
+            onClick={() => navigate("/dashboard/batches")}
+          >
+            <Layers size={18} />
+            <span>Mint Batch</span>
+          </button>
+
+          <button
+            className="header-shipment-btn"
+            onClick={onOpenShipmentModal}
+          >
+            <Truck size={18} />
+            <span>Create Shipment</span>
+          </button>
+
+        </div>
+
       </div>
 
+      {/* RIGHT SECTION */}
       <div className="profile-header-right">
         {user ? (
           <div className="profile-header-profile">
@@ -50,7 +80,9 @@ export default function Header({ onSearch, searchVal }) {
               {firstLetter}
             </div>
             <div className="profile-header-info">
-              <p className="profile-header-name">{user.first_name} {user.last_name}</p>
+              <p className="profile-header-name">
+                {user.first_name} {user.last_name}
+              </p>
               <p className="profile-header-email">{user.email}</p>
             </div>
           </div>

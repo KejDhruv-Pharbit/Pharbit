@@ -213,3 +213,40 @@
     white-space: nowrap;
   }
 }
+
+/* Action Buttons Container */
+.header-action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+/* All Action Buttons Same Premium Style */
+.header-add-btn,
+.header-batch-btn,
+.header-shipment-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #ffffff;
+  color: #0e345d;
+  border: 1px solid rgba(186, 218, 255, 0.5);
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.04), 
+    0 10px 20px -5px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hover Effect Same As Old Add Button */
+.header-add-btn:hover,
+.header-batch-btn:hover,
+.header-shipment-btn:hover {
+  transform: translateY(-2px);
+  background: #0e345d;
+  color: #ffffff;
+  box-shadow: 0 15px 30px -10px rgba(30, 58, 138, 0.35);
+}

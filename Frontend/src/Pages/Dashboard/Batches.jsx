@@ -19,7 +19,7 @@ export default function Batches() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
-
+    const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("date");
     const [isSortOpen, setIsSortOpen] = useState(false);
@@ -78,7 +78,15 @@ export default function Batches() {
 
     return (
         <div className="inventory-view">
-            <Header onSearch={setSearchQuery} searchVal={searchQuery} />
+
+<Header
+  onSearch={setSearchQuery} searchVal={searchQuery}
+  onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+/>
+
+{isShipmentModalOpen && (
+  <CreateShipmentModal onClose={() => setIsShipmentModalOpen(false)} />
+)}
 
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">

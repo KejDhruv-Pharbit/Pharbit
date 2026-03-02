@@ -18,7 +18,7 @@ export default function Shipment() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
-
+       const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("newest");
     const [isSortOpen, setIsSortOpen] = useState(false);
@@ -81,7 +81,14 @@ export default function Shipment() {
 
     return (
         <div className="inventory-view">
-            <Header onSearch={setSearchQuery} searchVal={searchQuery} />
+        <Header
+                   onSearch={setSearchQuery} searchVal={searchQuery}
+                   onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                 />
+                 
+                 {isShipmentModalOpen && (
+                   <CreateShipmentModal onClose={() => setIsShipmentModalOpen(false)} />
+                 )} 
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area"><h1>Shipment Logistics</h1></div>
