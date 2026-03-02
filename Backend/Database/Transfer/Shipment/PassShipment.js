@@ -4,7 +4,7 @@ import { createShipmentLog } from "./Logs/CreateShipmentLog.js";
 
 export async function PassShipment(data, orgId) {
   try {
-    const { shipment_id, next_holder_org_id, temperature  } = data;
+    const { shipment_id, next_holder_org_id, temperature } = data;
 
     if (!shipment_id || !next_holder_org_id) {
       return {
