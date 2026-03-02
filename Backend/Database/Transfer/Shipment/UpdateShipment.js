@@ -3,6 +3,7 @@ import { createShipmentLog } from "./Logs/CreateShipmentLog.js";
 
 export async function updateShipmentOnScan(trackingCode, orgId) {
   try {
+
     /* =========================
        1️⃣ Fetch Shipment
     ========================== */
@@ -17,22 +18,12 @@ export async function updateShipmentOnScan(trackingCode, orgId) {
     }
 
     /* =========================
-       2️⃣ Check If Final Destination
+       2️⃣ Check Authorization
     ========================== */
-    if (shipment.destination_org_id === orgId) {
-      return {
-        success: true,
-        status: 200,
-        message: "Final destination reached. Proceed to redeem.",
-        action: "REDEEM",
-        shipment,
-      };
-    }
-
-    /* =========================
-       3️⃣ Check If Expected Intermediate
-    ========================== */
-    if (shipment.next_expected_holder_org_id !== orgId) {
+    if (
+      shipment.next_expected_holder_org_id !== orgId &&
+      shipment.destination_org_id !== orgId
+    ) {
       return {
         success: false,
         status: 403,
@@ -41,8 +32,10 @@ export async function updateShipmentOnScan(trackingCode, orgId) {
     }
 
     /* =========================
-       4️⃣ Update Shipment State
+       3️⃣ Update Shipment State
     ========================== */
+    const isFinalDestination = shipment.destination_org_id === orgId;
+
     const { data: updatedShipment, error: updateError } = await supabase
       .from("shipments")
       .update({
@@ -58,7 +51,7 @@ export async function updateShipmentOnScan(trackingCode, orgId) {
     if (updateError) throw updateError;
 
     /* =========================
-       5️⃣ Fetch Org Address (JSONB)
+       4️⃣ Fetch Org Address
     ========================== */
     const { data: org } = await supabase
       .from("organizations")
@@ -67,16 +60,34 @@ export async function updateShipmentOnScan(trackingCode, orgId) {
       .single();
 
     /* =========================
-       6️⃣ Create Log
+       5️⃣ ALWAYS Create RECEIVED Log
     ========================== */
     await createShipmentLog({
       shipment_id: shipment.id,
       organization_id: orgId,
       action: "RECEIVED",
       location: org?.address || null,
-      notes: "Shipment received by intermediate organization",
+      notes: isFinalDestination
+        ? "Shipment received at final destination"
+        : "Shipment received by intermediate organization",
     });
 
+    /* =========================
+       6️⃣ If Final Destination → Allow Redeem
+    ========================== */
+    if (isFinalDestination) {
+      return {
+        success: true,
+        status: 200,
+        message: "Final destination reached. Proceed to redeem.",
+        action: "REDEEM",
+        data: updatedShipment,
+      };
+    }
+
+    /* =========================
+       7️⃣ Otherwise Normal Receive
+    ========================== */
     return {
       success: true,
       status: 200,

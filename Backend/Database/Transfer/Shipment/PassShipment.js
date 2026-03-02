@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 import { createShipmentLog } from "./Logs/CreateShipmentLog.js";
+import { OrgDetails } from "../../Users/Organization/FindOrganization.js";
 
 export async function PassShipment(data, orgId) {
   try {
@@ -69,13 +70,13 @@ export async function PassShipment(data, orgId) {
     if (updateError) throw updateError;
 
     /* =========================
-       5️⃣ Fetch Org Address (JSONB)
+       5️⃣ Get Organization Details (Using orgDetails)
     ========================== */
-    const { data: org } = await supabase
-      .from("organizations")
-      .select("address")
-      .eq("id", orgId)
-      .single();
+    const org = await OrgDetails(orgId);
+
+    if (!org) {
+      throw new Error("Organization not found");
+    }
 
     /* =========================
        6️⃣ Create Log
@@ -83,10 +84,10 @@ export async function PassShipment(data, orgId) {
     await createShipmentLog({
       shipment_id,
       organization_id: orgId,
+      location: org.address || null,      // ✅ from orgDetails
       action: "FORWARDED",
-      location: org?.address || null,
       temperature: temperature || null,
-      notes: `Forwarded to organization ${next_holder_org_id}`,
+      notes: `Forwarded to organization ${org.name}`,
     });
 
     return {
