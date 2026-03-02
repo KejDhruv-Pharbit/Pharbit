@@ -89,7 +89,7 @@ export async function redeemShipment(data, orgId) {
                 .update({
                     redeemed: true,
                     escrowed: false,
-                    status: "REDEEMED",
+                    status: "DELIVERED",
                     redeem_tx_hash: receipt.hash,
                     updated_at: new Date(),
                 })

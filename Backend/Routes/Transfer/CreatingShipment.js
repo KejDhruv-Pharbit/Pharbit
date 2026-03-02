@@ -35,7 +35,7 @@ router.post("/create-shipment", async (req, res) => {
     /* =========================
        2️⃣ Fetch Batch
     ========================== */
-    const batch = await FindBatchById(batch_id);
+    const batch = await FindBatchbyId(batch_id);
     if (!batch.success)
       return res.status(404).json({ error: "Batch not found" });
 

@@ -40,7 +40,7 @@ app.use("/", CreateShipment);
 app.use("/", FetchShipment);
 app.use("/", PassShip);
 app.use("/", RedeemShip);
-app.use("/" , UpdateShip)
+app.use("/", UpdateShip)
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
