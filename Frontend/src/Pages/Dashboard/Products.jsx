@@ -28,18 +28,49 @@ export default function Products() {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     useEffect(() => {
+        const CACHE_KEY = "org_medicines_cache";
+        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+
         const fetchMedicines = async () => {
             try {
                 setLoading(true);
+
+                // Check cache first
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+
+                    if (Date.now() - parsed.timestamp < CACHE_TIME) {
+                        setMedicines(parsed.data);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
+                // Fetch from API if cache missing/expired
                 const res = await fetch(`${url}/Orgmeds`, { credentials: "include" });
                 const result = await res.json();
-                if (result.success && result.data) setMedicines(result.data);
+
+                if (result.success && result.data) {
+                    setMedicines(result.data);
+
+                    // Save to cache
+                    localStorage.setItem(
+                        CACHE_KEY,
+                        JSON.stringify({
+                            data: result.data,
+                            timestamp: Date.now()
+                        })
+                    );
+                }
+
             } catch (err) {
                 console.error("Failed to fetch medicines:", err);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchMedicines();
     }, []);
 

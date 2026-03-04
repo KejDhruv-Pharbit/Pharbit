@@ -27,9 +27,23 @@ export default function Requests() {
     }, []);
 
     const fetchRequests = async () => {
-        try {
+        const CACHE_KEY = "incoming_shipments_requests_cache";
+        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
 
+        try {
             setLoading(true);
+
+            // Check cache first
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+
+                if (Date.now() - parsed.timestamp < CACHE_TIME) {
+                    setRequests(parsed.data);
+                    setLoading(false);
+                    return;
+                }
+            }
 
             const res = await fetch(`${url}/shipments/next`, {
                 credentials: "include"
@@ -39,6 +53,15 @@ export default function Requests() {
 
             if (result.success) {
                 setRequests(result.data);
+
+                // Save to cache
+                localStorage.setItem(
+                    CACHE_KEY,
+                    JSON.stringify({
+                        data: result.data,
+                        timestamp: Date.now()
+                    })
+                );
             }
 
         } catch (err) {

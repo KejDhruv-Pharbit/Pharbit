@@ -26,18 +26,49 @@ export default function Batches() {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     useEffect(() => {
+        const CACHE_KEY = "org_batches_cache";
+        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+
         const fetchBatches = async () => {
             try {
                 setLoading(true);
+
+                // Check cache first
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+
+                    if (Date.now() - parsed.timestamp < CACHE_TIME) {
+                        setBatches(parsed.data);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
+                // Fetch from API if cache missing or expired
                 const res = await fetch(`${url}/OrgBatches`, { credentials: "include" });
                 const result = await res.json();
-                if (result.success && result.data) setBatches(result.data);
+
+                if (result.success && result.data) {
+                    setBatches(result.data);
+
+                    // Save to cache
+                    localStorage.setItem(
+                        CACHE_KEY,
+                        JSON.stringify({
+                            data: result.data,
+                            timestamp: Date.now()
+                        })
+                    );
+                }
+
             } catch (err) {
                 console.error("Failed to fetch batches:", err);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchBatches();
     }, []);
 

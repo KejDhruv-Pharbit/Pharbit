@@ -25,9 +25,25 @@ export default function Shipment() {
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     useEffect(() => {
+        const CACHE_KEY = "dashboard_shipments_cache";
+        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+
         const fetchAllShipments = async () => {
             try {
                 setLoading(true);
+
+                // Check cache first
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+
+                    if (Date.now() - parsed.timestamp < CACHE_TIME) {
+                        setShipments(parsed.data);
+                        setLoading(false);
+                        return;
+                    }
+                }
+
                 const [sourceRes, destRes] = await Promise.all([
                     fetch(`${url}/shipments/source`, { credentials: "include" }),
                     fetch(`${url}/shipments/destination`, { credentials: "include" })
@@ -40,14 +56,28 @@ export default function Shipment() {
                 if (sourceResult.success) combinedData = [...combinedData, ...sourceResult.data];
                 if (destResult.success) combinedData = [...combinedData, ...destResult.data];
 
-                const uniqueShipments = Array.from(new Map(combinedData.map(item => [item.id, item])).values());
+                const uniqueShipments = Array.from(
+                    new Map(combinedData.map(item => [item.id, item])).values()
+                );
+
                 setShipments(uniqueShipments);
+
+                // Save to cache
+                localStorage.setItem(
+                    CACHE_KEY,
+                    JSON.stringify({
+                        data: uniqueShipments,
+                        timestamp: Date.now()
+                    })
+                );
+
             } catch (err) {
                 console.error("Failed to fetch shipments:", err);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchAllShipments();
     }, []);
 
