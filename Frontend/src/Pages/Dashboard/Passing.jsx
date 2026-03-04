@@ -14,7 +14,7 @@ export default function Passing() {
     const [loading, setLoading] = useState(!shipmentCache);
     const [selectedShipment, setSelectedShipment] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    
+
     const itemsPerPage = 4;
 
     const fetchShipments = useCallback(async (silent = false) => {
@@ -42,7 +42,7 @@ export default function Passing() {
     }, [fetchShipments]);
 
     // --- Performance Optimization with useMemo ---
-    
+
     const { currentItems, totalPages, indexOfFirstItem } = useMemo(() => {
         const total = Math.ceil(shipments.length / itemsPerPage);
         const lastIdx = currentPage * itemsPerPage;

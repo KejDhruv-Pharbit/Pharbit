@@ -104,7 +104,7 @@ export default function Requests() {
                                 <th>Medicine & Batch</th>
                                 <th>Origin</th>
                                 <th>Destination</th>
-                                 <th>Incoming</th>
+                                <th>Incoming</th>
                                 <th>Amount</th>
                                 <th></th>
                             </tr>
@@ -122,7 +122,7 @@ export default function Requests() {
 
                                 currentItems.map((ship) => {
 
-                
+
 
 
                                     return (
@@ -139,23 +139,23 @@ export default function Requests() {
                                                 </div>
                                             </td>
 
-                                           <td>
-  <div className="origin-cell">
-    {ship.source_org?.name}
-  </div>
-</td>
+                                            <td>
+                                                <div className="origin-cell">
+                                                    {ship.source_org?.name}
+                                                </div>
+                                            </td>
 
-<td>
-  <div className="origin-cell">
-    {ship.destination_org?.name}
-  </div>
-</td>
+                                            <td>
+                                                <div className="origin-cell">
+                                                    {ship.destination_org?.name}
+                                                </div>
+                                            </td>
 
-<td>
-  <div className="origin-cell">
-    {ship.current_holder_org?.name}
-  </div>
-</td>
+                                            <td>
+                                                <div className="origin-cell">
+                                                    {ship.current_holder_org?.name}
+                                                </div>
+                                            </td>
 
                                             <td>
                                                 {ship.medicines_amount} Units

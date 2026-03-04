@@ -102,10 +102,6 @@ export default function PassingModal({ shipment, onClose, onSuccess }) {
                     Pass Shipment
                 </h2>
 
-                <div className="create-ship-modal-field">
-                    <label>Shipment ID</label>
-                    <input value={shipment.id} disabled />
-                </div>
 
                 <div className="create-ship-modal-field">
                     <label>Next Organization</label>
