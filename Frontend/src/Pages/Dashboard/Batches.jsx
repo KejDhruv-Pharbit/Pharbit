@@ -19,7 +19,7 @@ export default function Batches() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 5;
     const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("date");
@@ -28,7 +28,7 @@ export default function Batches() {
 
     useEffect(() => {
         const CACHE_KEY = "org_batches_cache";
-        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+        const CACHE_TIME = 1 * 60 * 1000; // 5 minutes
 
         const fetchBatches = async () => {
             try {

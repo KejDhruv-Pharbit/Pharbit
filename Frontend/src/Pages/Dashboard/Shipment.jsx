@@ -19,7 +19,7 @@ export default function Shipment() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 5;
     const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("newest");
@@ -28,7 +28,7 @@ export default function Shipment() {
 
     useEffect(() => {
         const CACHE_KEY = "dashboard_shipments_cache";
-        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+        const CACHE_TIME = 1 * 60 * 1000; // 5 minutes
 
         const fetchAllShipments = async () => {
             try {

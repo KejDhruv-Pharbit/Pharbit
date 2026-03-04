@@ -20,7 +20,7 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 5;
     const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
 
