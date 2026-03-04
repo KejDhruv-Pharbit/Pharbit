@@ -9,7 +9,8 @@ import {
     LogOut,          // Logout
     ChevronLeft,
     ChevronRight,
-    Truck,
+    Truck, 
+    Inbox , 
     User
 } from "lucide-react";
 import "../../Styles/Components/Sidebar.css";
@@ -24,6 +25,7 @@ export default function Sidebar() {
         { to: "/Dashboard/batches", icon: Layers, label: "Batches" },
         { to: "/Dashboard/add-product", icon: PlusCircle, label: "Add Products" },
         { to: "/Dashboard/Shipments", icon: Truck, label: "Track Shipments" },
+         { to: "/Dashboard/Requests", icon: Inbox, label: "Requests" },
     ];
 
     const handleLogout = () => {

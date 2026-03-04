@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { FindOrganization, getAuthUser } from "../../Middleware/Database/AuthUser.js";
-import { FindShipment, FindShipmentForDestination, FindShipmentForSource } from "../../Database/Transfer/Shipment/GetShipment.js";
+import { FindIncomingShipment, FindShipment, FindShipmentForDestination, FindShipmentForSource } from "../../Database/Transfer/Shipment/GetShipment.js";
 
 
 dotenv.config();
@@ -46,6 +46,34 @@ router.get("/shipments/current", async (req, res) => {
 
   } catch (error) {
     console.error("Get Current Shipments Error:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Server error: " + error.message,
+    });
+  }
+});
+
+
+
+/* ============================================================
+   1️⃣ Get Shipments Where Org Is Next Holder
+============================================================ */
+
+router.get("/shipments/next", async (req, res) => {
+  try {
+    const orgId = await getOrgIdFromRequest(req, res);
+    if (!orgId) return;
+
+    const shipments = await FindIncomingShipment(orgId);
+
+    return res.status(200).json({
+      success: true,
+      count: shipments.length,
+      data: shipments,
+    });
+
+  } catch (error) {
+    console.error("Get Incoming Shipments Error:", error);
     return res.status(500).json({
       success: false,
       error: "Server error: " + error.message,

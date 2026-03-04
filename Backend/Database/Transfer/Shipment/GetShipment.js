@@ -42,9 +42,20 @@ const shipmentSelect = `
     organization:organization_id (
       name
     )
+  ),
+
+  source_org:source_org_id (
+    name
+  ),
+
+  destination_org:destination_org_id (
+    name
+  ),
+
+  current_holder_org:current_holder_org_id (
+    name
   )
 `;
-
 /* ============================================================
    Helper: Attach Shipment Logs
 ============================================================ */
@@ -76,6 +87,35 @@ const FindShipment = async (orgId) => {
       .from("shipments")
       .select(shipmentSelect)
       .eq("current_holder_org_id", orgId)
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return await attachLogs(data);
+
+  } catch (err) {
+    console.error("FindShipment Exception:", err.message);
+    return [];
+  }
+};
+
+
+
+/* ============================================================
+   1️⃣ Shipments Where Org Is Next Holder
+============================================================ */
+
+
+
+const FindIncomingShipment = async (orgId) => {
+  try {
+    if (!orgId) return [];
+
+    const { data, error } = await supabase
+      .from("shipments")
+      .select(shipmentSelect)
+      .eq("next_expected_holder_org_id", orgId)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
 
@@ -147,4 +187,5 @@ export {
   FindShipment,
   FindShipmentForDestination,
   FindShipmentForSource,
+  FindIncomingShipment
 };

@@ -9,6 +9,7 @@ import Products from "./Pages/Dashboard/Products";
 import InviteEmployee from "./Pages/Dashboard/InviteEmployee";
 import Batches from "./Pages/Dashboard/Batches";
 import Shipment from "./Pages/Dashboard/Shipment";
+import Requests from "./Pages/Dashboard/Requests";
 
 
 function App() {
@@ -28,7 +29,8 @@ function App() {
         {/* Add placeholders for other sidebar links so they don't break */}
         <Route path="add-product" element={<MedicalForm />} />
         <Route path="Batches" element={<Batches />} />
-        <Route path="Shipments" element={<Shipment/>} />
+        <Route path="Shipments" element={<Shipment />} />
+         <Route path="Requests" element={<Requests/>} />
         {/* <Route path="Employee" element={<InviteEmployee/>} /> */} 
       </Route>
     </Routes>
