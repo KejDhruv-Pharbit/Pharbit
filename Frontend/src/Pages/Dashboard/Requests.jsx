@@ -16,12 +16,12 @@ import "../../Styles/Pages/Product.css";
 const url = import.meta.env.VITE_API_URL;
 
 export default function Requests() {
- const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedShipment, setSelectedShipment] = useState(null);
- const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
-const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
+    const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
+    const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
@@ -88,24 +88,20 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
 
     return (
         <div className="inventory-view">
-
-
-             <Header
-                          onSearch={setSearchQuery} searchVal={searchQuery}
-                          onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
-                          onOpenInviteModal={() => setInviteEmployeeOpen(true)
-                          }
-                      />
-            
-                        <CreateShipmentModal
-                            isOpen={isShipmentModalOpen}
-                            onClose={() => setIsShipmentModalOpen(false)}
-                        />
-                           <InviteEmployeeModal
-                                     isOpen={isInviteEmployeeOpen}
-                                     onClose={() => setInviteEmployeeOpen(false)}
-                                 />
-
+            <Header
+                onSearch={setSearchQuery} searchVal={searchQuery}
+                onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                }
+            />
+            <CreateShipmentModal
+                isOpen={isShipmentModalOpen}
+                onClose={() => setIsShipmentModalOpen(false)}
+            />
+            <InviteEmployeeModal
+                isOpen={isInviteEmployeeOpen}
+                onClose={() => setInviteEmployeeOpen(false)}
+            />
             <div className="inventory-glass-card">
 
                 <header className="inventory-top-bar">
@@ -129,7 +125,6 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
                         </thead>
 
                         <tbody>
-
                             {loading ? (
                                 <tr>
                                     <td colSpan="5" className="status-cell">
@@ -140,12 +135,8 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
 
                                 currentItems.map((ship) => {
 
-
-
-
                                     return (
                                         <tr key={ship.id} className="fade-in-row">
-
                                             <td>
                                                 <div className="med-identity">
                                                     <span className="m-name">
@@ -187,39 +178,26 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
                                                     Receive Shipment
                                                 </button>
                                             </td>
-
                                         </tr>
                                     );
-                                })
-
-                            ) : (
-
-                                <tr>
+                                })) : (<tr>
                                     <td colSpan="5" className="empty-msg">
                                         No incoming shipment requests.
                                     </td>
                                 </tr>
 
                             )}
-
                         </tbody>
-
                     </table>
                 </div>
-
-
                 {/* Pagination */}
 
                 {!loading && requests.length > itemsPerPage && (
-
                     <footer className="pagination-footer">
-
                         <p className="page-info">
                             Showing <b>{indexOfFirstItem + 1}-{Math.min(indexOfLastItem, requests.length)}</b> of {requests.length}
                         </p>
-
                         <div className="pagination-controls">
-
                             <button
                                 disabled={currentPage === 1}
                                 onClick={() => setCurrentPage(p => p - 1)}
@@ -227,9 +205,7 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
                             >
                                 <ChevronLeft size={16} />
                             </button>
-
                             <div className="page-numbers">
-
                                 {getPageNumbers().map((num) => (
                                     <button
                                         key={num}
@@ -239,9 +215,7 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
                                         {num}
                                     </button>
                                 ))}
-
                             </div>
-
                             <button
                                 disabled={currentPage === totalPages}
                                 onClick={() => setCurrentPage(p => p + 1)}
@@ -249,16 +223,10 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
                             >
                                 <ChevronRight size={16} />
                             </button>
-
                         </div>
-
                     </footer>
-
                 )}
-
             </div>
-
-
             {selectedShipment && (
                 <ReceiveShipmentModal
                     shipment={selectedShipment}
@@ -266,7 +234,6 @@ const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
                     onSuccess={fetchRequests}
                 />
             )}
-
         </div>
     );
 }

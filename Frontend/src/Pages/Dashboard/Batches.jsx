@@ -24,7 +24,7 @@ export default function Batches() {
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("date");
     const [isSortOpen, setIsSortOpen] = useState(false);
-     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
+    const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
 
     useEffect(() => {
         const CACHE_KEY = "org_batches_cache";
@@ -124,11 +124,11 @@ export default function Batches() {
                 onClose={() => setIsShipmentModalOpen(false)}
             />
 
-            
-             <InviteEmployeeModal
-                         isOpen={isInviteEmployeeOpen}
-                         onClose={() => setInviteEmployeeOpen(false)}
-                     />
+
+            <InviteEmployeeModal
+                isOpen={isInviteEmployeeOpen}
+                onClose={() => setInviteEmployeeOpen(false)}
+            />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area">

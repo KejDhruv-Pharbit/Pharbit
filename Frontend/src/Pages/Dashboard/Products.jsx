@@ -112,18 +112,18 @@ export default function Products() {
 
     return (
         <div className="inventory-view">
-             <Header
-                          onSearch={setSearchQuery} searchVal={searchQuery}
-                          onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
-                          onOpenInviteModal={() => setInviteEmployeeOpen(true)
-                          }
-                      />
+            <Header
+                onSearch={setSearchQuery} searchVal={searchQuery}
+                onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                }
+            />
             <CreateShipmentModal
                 isOpen={isShipmentModalOpen}
                 onClose={() => setIsShipmentModalOpen(false)}
             />
 
-             <InviteEmployeeModal
+            <InviteEmployeeModal
                 isOpen={isInviteEmployeeOpen}
                 onClose={() => setInviteEmployeeOpen(false)}
             />

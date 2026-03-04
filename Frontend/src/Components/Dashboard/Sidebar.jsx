@@ -9,8 +9,8 @@ import {
     LogOut,          // Logout
     ChevronLeft,
     ChevronRight,
-    Truck, 
-    Inbox , 
+    Truck,
+    Inbox,
     User
 } from "lucide-react";
 import "../../Styles/Components/Sidebar.css";

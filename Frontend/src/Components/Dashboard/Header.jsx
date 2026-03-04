@@ -5,7 +5,7 @@ import "../../Styles/Components/Header.css";
 
 const url = import.meta.env.VITE_API_URL;
 
-export default function Header({ onSearch, searchVal, onOpenShipmentModal , onOpenInviteModal }) {
+export default function Header({ onSearch, searchVal, onOpenShipmentModal, onOpenInviteModal }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -68,9 +68,9 @@ export default function Header({ onSearch, searchVal, onOpenShipmentModal , onOp
             <span>Create Shipment</span>
           </button>
 
-          
 
-            <button
+
+          <button
             className="header-shipment-btn"
             onClick={onOpenInviteModal}
           >

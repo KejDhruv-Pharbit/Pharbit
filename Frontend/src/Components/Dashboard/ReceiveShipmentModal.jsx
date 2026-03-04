@@ -52,9 +52,9 @@ export default function ReceiveShipmentModal({ shipment, onClose, onSuccess }) {
                     <button className="receive-btn-secondary" onClick={onClose}>
                         Cancel
                     </button>
-                    <button 
-                        className="receive-btn-primary" 
-                        onClick={handleSubmit} 
+                    <button
+                        className="receive-btn-primary"
+                        onClick={handleSubmit}
                         disabled={loading || !trackingCode}
                     >
                         {loading ? "Processing..." : "Confirm Receipt"}

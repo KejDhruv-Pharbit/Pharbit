@@ -114,21 +114,21 @@ export default function Shipment() {
 
     return (
         <div className="inventory-view">
-              <Header
-                           onSearch={setSearchQuery} searchVal={searchQuery}
-                           onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
-                           onOpenInviteModal={() => setInviteEmployeeOpen(true)
-                           }
-                       />
+            <Header
+                onSearch={setSearchQuery} searchVal={searchQuery}
+                onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                }
+            />
 
             <CreateShipmentModal
                 isOpen={isShipmentModalOpen}
                 onClose={() => setIsShipmentModalOpen(false)}
             />
-               <InviteEmployeeModal
-                         isOpen={isInviteEmployeeOpen}
-                         onClose={() => setInviteEmployeeOpen(false)}
-                     />
+            <InviteEmployeeModal
+                isOpen={isInviteEmployeeOpen}
+                onClose={() => setInviteEmployeeOpen(false)}
+            />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area"><h1>Shipment Logistics</h1></div>
