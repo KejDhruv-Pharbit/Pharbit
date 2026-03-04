@@ -10,6 +10,7 @@ import InviteEmployee from "./Pages/Dashboard/InviteEmployee";
 import Batches from "./Pages/Dashboard/Batches";
 import Shipment from "./Pages/Dashboard/Shipment";
 import Requests from "./Pages/Dashboard/Requests";
+import Passing from "./Pages/Dashboard/Passing";
 
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
         <Route path="add-product" element={<MedicalForm />} />
         <Route path="Batches" element={<Batches />} />
         <Route path="Shipments" element={<Shipment />} />
-         <Route path="Requests" element={<Requests/>} />
+        <Route path="Requests" element={<Requests />} />
+         <Route path="Passing" element={<Passing/>} />
         {/* <Route path="Employee" element={<InviteEmployee/>} /> */} 
       </Route>
     </Routes>

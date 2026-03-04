@@ -25,7 +25,8 @@ export default function Sidebar() {
         { to: "/Dashboard/batches", icon: Layers, label: "Batches" },
         { to: "/Dashboard/add-product", icon: PlusCircle, label: "Add Products" },
         { to: "/Dashboard/Shipments", icon: Truck, label: "Track Shipments" },
-         { to: "/Dashboard/Requests", icon: Inbox, label: "Requests" },
+        { to: "/Dashboard/Requests", icon: Inbox, label: "Requests" },
+         { to: "/Dashboard/Passing", icon: Inbox, label: "Passing" },
     ];
 
     const handleLogout = () => {
