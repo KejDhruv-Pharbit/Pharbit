@@ -274,3 +274,131 @@
   color: #94a3b8;
   font-weight: 600;
 }
+
+/* =========================
+   Mint Form Container
+========================= */
+
+.mint-form {
+  margin-top: 28px;
+  padding: 22px;
+
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  animation: fadeMintForm 0.25s ease;
+}
+
+@keyframes fadeMintForm {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   Title
+========================= */
+
+.mint-form h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+/* =========================
+   Inputs
+========================= */
+
+.mint-form input {
+  padding: 10px 12px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+
+  font-size: 14px;
+  background: rgba(255,255,255,0.85);
+
+  transition: all 0.15s ease;
+}
+
+.mint-form input:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22,163,74,0.15);
+}
+
+/* =========================
+   File Upload
+========================= */
+
+.mint-form input[type="file"] {
+  background: rgba(240,240,240,0.6);
+  cursor: pointer;
+}
+
+/* =========================
+   Submit Button
+========================= */
+
+.mint-submit-btn {
+  margin-top: 6px;
+
+  padding: 11px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  background: linear-gradient(135deg,#16a34a,#15803d);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.mint-submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.mint-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+
+  .mint-form {
+    padding: 18px;
+  }
+
+  .mint-form input {
+    font-size: 13px;
+  }
+
+}

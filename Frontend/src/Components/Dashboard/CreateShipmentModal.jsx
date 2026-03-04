@@ -125,7 +125,7 @@ export default function CreateShipmentModal({ isOpen, onClose }) {
 
             if (!res.ok) throw new Error(data.error || "Failed to create shipment");
 
-            showToast("Shipment created successfully 🚀", "success");
+            showToast("Shipment request submitted. Processing in background 🚚", "success");
             onClose();
 
         } catch (err) {
