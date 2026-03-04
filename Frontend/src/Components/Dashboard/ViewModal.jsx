@@ -46,11 +46,11 @@ export default function ViewModal({ open, onClose, medicine }) {
       }
 
       // 3. Success Feedback
-      console.log("Minting & DB Sync Successful:", result);
+      console.log("Mint request accepted:", result);
+
       alert(
-        `Success!\n` +
-        `Batch ID: ${result.batchId}\n` +
-        `Tx Hash: ${result.transactionHash.substring(0, 20)}...`
+        "Mint request submitted successfully.\n" +
+        "The batch is being minted in the background. Please refresh the batches page shortly to see the new batch."
       );
 
       onClose();

@@ -31,7 +31,7 @@ export default function Products() {
 
     useEffect(() => {
         const CACHE_KEY = "org_medicines_cache";
-        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+        const CACHE_TIME = 2 * 60 * 1000; // 5 minutes
 
         const fetchMedicines = async () => {
             try {
@@ -44,7 +44,7 @@ export default function Products() {
 
                     if (Date.now() - parsed.timestamp < CACHE_TIME) {
                         setMedicines(parsed.data);
-                        setLoading(false);
+                        setLoading(false);2
                         return;
                     }
                 }

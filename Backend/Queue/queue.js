@@ -1,0 +1,14 @@
+import { Queue } from "bullmq";
+import { redisConnection } from "./redis.js";
+
+export const mintQueue = new Queue("mintQueue", {
+  connection: redisConnection
+});
+
+export const shipmentQueue = new Queue("shipmentQueue", {
+  connection: redisConnection
+});
+
+export const redeemQueue = new Queue("redeemQueue", {
+  connection: redisConnection
+});
