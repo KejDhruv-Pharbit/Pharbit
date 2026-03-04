@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Search, Plus, Layers, Truck } from "lucide-react";
+import { Search, Plus, Layers, Truck, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/Components/Header.css";
 
 const url = import.meta.env.VITE_API_URL;
 
-export default function Header({ onSearch, searchVal, onOpenShipmentModal }) {
+export default function Header({ onSearch, searchVal, onOpenShipmentModal , onOpenInviteModal }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -68,6 +68,15 @@ export default function Header({ onSearch, searchVal, onOpenShipmentModal }) {
             <span>Create Shipment</span>
           </button>
 
+          
+
+            <button
+            className="header-shipment-btn"
+            onClick={onOpenInviteModal}
+          >
+            <User size={18} />
+            <span>Invite Employee</span>
+          </button>
         </div>
 
       </div>

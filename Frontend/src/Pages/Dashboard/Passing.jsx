@@ -3,7 +3,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "../../Components/Dashboard/Header";
 import PassingModal from "../../Components/Dashboard/PassingModal";
 import "../../Styles/Pages/Product.css";
-
+import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
+import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
 const url = import.meta.env.VITE_API_URL;
 
 // Simple Global Cache for Shipments
@@ -12,7 +13,10 @@ let shipmentCache = null;
 export default function Passing() {
     const [shipments, setShipments] = useState(shipmentCache || []);
     const [loading, setLoading] = useState(!shipmentCache);
+    const [searchQuery, setSearchQuery] = useState("");
     const [selectedShipment, setSelectedShipment] = useState(null);
+    const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
+    const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 4;
@@ -64,7 +68,21 @@ export default function Passing() {
 
     return (
         <div className="inventory-view">
-            <Header />
+            <Header
+                         onSearch={setSearchQuery} searchVal={searchQuery}
+                         onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                         onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                         }
+                     />
+                     <CreateShipmentModal
+                         isOpen={isShipmentModalOpen}
+                         onClose={() => setIsShipmentModalOpen(false)}
+                     />
+         
+                      <InviteEmployeeModal
+                         isOpen={isInviteEmployeeOpen}
+                         onClose={() => setInviteEmployeeOpen(false)}
+                     />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area">

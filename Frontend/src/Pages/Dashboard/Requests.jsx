@@ -8,17 +8,20 @@ import {
 
 import Header from "../../Components/Dashboard/Header";
 import ReceiveShipmentModal from "../../Components/Dashboard/ReceiveShipmentModal";
+import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
+import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
 
 import "../../Styles/Pages/Product.css";
 
 const url = import.meta.env.VITE_API_URL;
 
 export default function Requests() {
-
+ const [searchQuery, setSearchQuery] = useState("");
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedShipment, setSelectedShipment] = useState(null);
-
+ const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
+const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
@@ -86,7 +89,22 @@ export default function Requests() {
     return (
         <div className="inventory-view">
 
-            <Header />
+
+             <Header
+                          onSearch={setSearchQuery} searchVal={searchQuery}
+                          onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                          onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                          }
+                      />
+            
+                        <CreateShipmentModal
+                            isOpen={isShipmentModalOpen}
+                            onClose={() => setIsShipmentModalOpen(false)}
+                        />
+                           <InviteEmployeeModal
+                                     isOpen={isInviteEmployeeOpen}
+                                     onClose={() => setInviteEmployeeOpen(false)}
+                                 />
 
             <div className="inventory-glass-card">
 

@@ -9,6 +9,7 @@ import {
 import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
 import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
+import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -23,6 +24,7 @@ export default function Shipment() {
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("newest");
     const [isSortOpen, setIsSortOpen] = useState(false);
+    const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
 
     useEffect(() => {
         const CACHE_KEY = "dashboard_shipments_cache";
@@ -112,15 +114,21 @@ export default function Shipment() {
 
     return (
         <div className="inventory-view">
-            <Header
-                onSearch={setSearchQuery} searchVal={searchQuery}
-                onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
-            />
+              <Header
+                           onSearch={setSearchQuery} searchVal={searchQuery}
+                           onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                           onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                           }
+                       />
 
             <CreateShipmentModal
                 isOpen={isShipmentModalOpen}
                 onClose={() => setIsShipmentModalOpen(false)}
             />
+               <InviteEmployeeModal
+                         isOpen={isInviteEmployeeOpen}
+                         onClose={() => setInviteEmployeeOpen(false)}
+                     />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area"><h1>Shipment Logistics</h1></div>

@@ -10,7 +10,7 @@ import {
 import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
 import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
-
+import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
 const url = import.meta.env.VITE_API_URL;
 
 export default function Batches() {
@@ -24,6 +24,7 @@ export default function Batches() {
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("date");
     const [isSortOpen, setIsSortOpen] = useState(false);
+     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
 
     useEffect(() => {
         const CACHE_KEY = "org_batches_cache";
@@ -114,6 +115,8 @@ export default function Batches() {
             <Header
                 onSearch={setSearchQuery} searchVal={searchQuery}
                 onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenInviteModal={() => setInviteEmployeeOpen(true)
+                }
             />
 
             <CreateShipmentModal
@@ -121,6 +124,11 @@ export default function Batches() {
                 onClose={() => setIsShipmentModalOpen(false)}
             />
 
+            
+             <InviteEmployeeModal
+                         isOpen={isInviteEmployeeOpen}
+                         onClose={() => setInviteEmployeeOpen(false)}
+                     />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area">

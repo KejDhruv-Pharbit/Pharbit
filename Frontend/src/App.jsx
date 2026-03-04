@@ -6,7 +6,6 @@ import PendingRequests from "./Pages/Admin/PendingRequest";
 // Import your Layout and Pages
 import ProfileDashboard from "./Layout/Dashboard/profiledashboard";
 import Products from "./Pages/Dashboard/Products";
-import InviteEmployee from "./Pages/Dashboard/InviteEmployee";
 import Batches from "./Pages/Dashboard/Batches";
 import Shipment from "./Pages/Dashboard/Shipment";
 import Requests from "./Pages/Dashboard/Requests";
