@@ -184,7 +184,7 @@ export default function Shipment() {
                                         </td>
                                         <td><code className="tracking-id">{ship.tracking_code.slice(0, 13)}...</code></td>
                                         <td>{ship.medicines_amount} Units</td>
-                                        <td>{ship.batch.organization.name}</td>
+                                        <td>{ship.source_org.name}</td>
                                         <td><div className={`m-status ${ship.status === 'REDEEMED' ? 'is-ok' : 'is-wait'}`}>{ship.status}</div></td>
                                         <td><button onClick={() => setSelectedShipment(ship)} className="view-link">View Chain</button></td>
                                     </tr>

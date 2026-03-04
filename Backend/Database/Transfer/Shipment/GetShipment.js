@@ -1,72 +1,59 @@
 import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 import FindShipmentLogs from "./Logs/GetShipmentLog.js";
 
-
 /* ============================================================
-   BASE SHIPMENT SELECT (Shared Across All Queries)
+   SELECT STRINGS (Data Minimization)
 ============================================================ */
 
-const shipmentSelect = `
-  id,
-  tracking_code,
-  status,
-  medicines_amount,
-  created_at,
-
+// Use this for Source/Destination/Admin views
+const shipmentSelectFull = `
+  id, tracking_code, status, medicines_amount, created_at,
   batch:batches (
-    id,
+    id, blockchain_mint_id, manufacturing_date, expiry_date, is_quality_verified,
+    medicines:medicine_id ( id, name, brand_name, composition, dosage_form, strength, drug_code, mrp, cost_price, storage_conditions, warnings, side_effects, category )
+  ),
+  source_org:source_org_id ( name ),
+  destination_org:destination_org_id ( name ),
+  current_holder_org:current_holder_org_id ( name )
+`;
+
+// Use this for Current & Next Holders (Logistics/Transit View)
+const shipmentSelectLean = `
+  id, 
+  tracking_code, 
+  status, 
+  medicines_amount,
+  
+  batch:batches (
     blockchain_mint_id,
-    manufacturing_date,
     expiry_date,
     is_quality_verified,
-
     medicines:medicine_id (
-      id,
       name,
       brand_name,
-      composition,
       dosage_form,
       strength,
-      route_of_administration,
-      drug_code,
-      hsn_code,
-      schedule,
-      mrp,
-      cost_price,
-      storage_conditions,
-      warnings,
-      side_effects,
-      category
-    ),
-
-    organization:organization_id (
-      name
+      storage_conditions
     )
   ),
-
-  source_org:source_org_id (
-    name
-  ),
-
-  destination_org:destination_org_id (
-    name
-  ),
-
+   
   current_holder_org:current_holder_org_id (
-    name
-  )
+
+name
+
+) , 
+  source_org:source_org_id ( name ),
+  destination_org:destination_org_id ( name )
 `;
+
 /* ============================================================
    Helper: Attach Shipment Logs
 ============================================================ */
-
 const attachLogs = async (shipments) => {
   if (!shipments || shipments.length === 0) return [];
-
   return await Promise.all(
     shipments.map(async (shipment) => {
       const logsResult = await FindShipmentLogs(shipment.id);
-
       return {
         ...shipment,
         shipment_logs: logsResult.success ? logsResult.data : [],
@@ -76,112 +63,86 @@ const attachLogs = async (shipments) => {
 };
 
 /* ============================================================
-   1️⃣ Shipments Where Org Is Current Holder
+   LEAN QUERIES (Current & Next Holders)
 ============================================================ */
 
+// 1. Current Holder: Only sees logistics-essential data
 const FindShipment = async (orgId) => {
   try {
     if (!orgId) return [];
-
     const { data, error } = await supabase
       .from("shipments")
-      .select(shipmentSelect)
+      .select(shipmentSelectLean) // LEAN DATA
       .eq("current_holder_org_id", orgId)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-
     return await attachLogs(data);
-
   } catch (err) {
     console.error("FindShipment Exception:", err.message);
     return [];
   }
 };
 
-
-
-/* ============================================================
-   1️⃣ Shipments Where Org Is Next Holder
-============================================================ */
-
-
-
+// 2. Incoming/Next Holder: Only sees logistics-essential data
 const FindIncomingShipment = async (orgId) => {
   try {
     if (!orgId) return [];
-
     const { data, error } = await supabase
       .from("shipments")
-      .select(shipmentSelect)
+      .select(shipmentSelectLean) // LEAN DATA
       .eq("next_expected_holder_org_id", orgId)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-
     return await attachLogs(data);
-
   } catch (err) {
-    console.error("FindShipment Exception:", err.message);
+    console.error("FindIncomingShipment Exception:", err.message);
     return [];
   }
 };
 
 /* ============================================================
-   2️⃣ Shipments Where Org Is Destination
+   FULL QUERIES (Source & Destination)
 ============================================================ */
 
 const FindShipmentForDestination = async (orgId) => {
   try {
     if (!orgId) return [];
-
     const { data, error } = await supabase
       .from("shipments")
-      .select(shipmentSelect)
+      .select(shipmentSelectFull) // FULL DATA
       .eq("destination_org_id", orgId)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-
     return await attachLogs(data);
-
   } catch (err) {
     console.error("FindShipmentForDestination Exception:", err.message);
     return [];
   }
 };
 
-/* ============================================================
-   3️⃣ Shipments Where Org Is Source
-============================================================ */
-
 const FindShipmentForSource = async (orgId) => {
   try {
     if (!orgId) return [];
-
     const { data, error } = await supabase
       .from("shipments")
-      .select(shipmentSelect)
+      .select(shipmentSelectFull) // FULL DATA
       .eq("source_org_id", orgId)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-
     return await attachLogs(data);
-
   } catch (err) {
     console.error("FindShipmentForSource Exception:", err.message);
     return [];
   }
 };
-
-/* ============================================================
-   EXPORTS
-============================================================ */
 
 export {
   FindShipment,
