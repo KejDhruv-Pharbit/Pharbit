@@ -10,15 +10,43 @@ export default function Header({ onSearch, searchVal, onOpenShipmentModal, onOpe
   const navigate = useNavigate();
 
   useEffect(() => {
+    const CACHE_KEY = "auth_me_cache";
+    const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+
     const fetchUser = async () => {
       try {
+        // Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+
+          if (Date.now() - parsed.timestamp < CACHE_TIME) {
+            setUser(parsed.data);
+          }
+        }
+
+        // Always try to refresh in background
         const res = await fetch(`${url}/auth/me`, { credentials: "include" });
         const data = await res.json();
-        if (data && data.employee) setUser(data.employee);
+
+        if (data && data.employee) {
+          setUser(data.employee);
+
+          // Update cache
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({
+              data: data.employee,
+              timestamp: Date.now()
+            })
+          );
+        }
+
       } catch (err) {
         console.error("Failed to fetch user:", err);
       }
     };
+
     fetchUser();
   }, []);
 
