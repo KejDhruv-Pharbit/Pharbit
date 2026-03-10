@@ -12,3 +12,7 @@ export const shipmentQueue = new Queue("shipmentQueue", {
 export const redeemQueue = new Queue("redeemQueue", {
   connection: redisConnection
 });
+
+export const freezeQueue = new Queue("freezeQueue", {
+  connection: redisConnection
+});
