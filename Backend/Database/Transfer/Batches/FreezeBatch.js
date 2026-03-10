@@ -1,12 +1,8 @@
 import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export async function freezeBatch(batchMintId, orgId, recallReason = null) {
-  try {
-
-    /* =========================
-       Validate Input
-    ========================== */
-
+    try {
+      
     if (!batchMintId) {
       return {
         success: false,
@@ -14,10 +10,6 @@ export async function freezeBatch(batchMintId, orgId, recallReason = null) {
         error: "Batch Mint ID is required",
       };
     }
-
-    /* =========================
-       Fetch Batch (minimal fields)
-    ========================== */
 
     const { data: batch, error: fetchError } = await supabase
       .from("batches")
@@ -34,11 +26,6 @@ export async function freezeBatch(batchMintId, orgId, recallReason = null) {
         error: "Batch not found",
       };
     }
-
-    /* =========================
-       Ownership Check
-    ========================== */
-
     if (batch.organization_id !== orgId) {
       return {
         success: false,
@@ -46,11 +33,6 @@ export async function freezeBatch(batchMintId, orgId, recallReason = null) {
         error: "Unauthorized: You do not own this batch",
       };
     }
-
-    /* =========================
-       Prevent Double Freeze
-    ========================== */
-
     if (!batch.is_active) {
       return {
         success: false,
@@ -58,10 +40,6 @@ export async function freezeBatch(batchMintId, orgId, recallReason = null) {
         error: "Batch already frozen",
       };
     }
-
-    /* =========================
-       Freeze Batch (atomic update)
-    ========================== */
 
     const { data: updated, error: updateError } = await supabase
       .from("batches")
@@ -86,11 +64,6 @@ export async function freezeBatch(batchMintId, orgId, recallReason = null) {
         error: "Batch already frozen or updated by another process",
       };
     }
-
-    /* =========================
-       Success Response
-    ========================== */
-
     return {
       success: true,
       status: 200,
@@ -99,9 +72,7 @@ export async function freezeBatch(batchMintId, orgId, recallReason = null) {
     };
 
   } catch (err) {
-
     console.error("Freeze batch error:", err);
-
     return {
       success: false,
       status: 500,

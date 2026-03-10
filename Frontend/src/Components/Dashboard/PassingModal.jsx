@@ -64,6 +64,7 @@ export default function PassingModal({ shipment, onClose, onSuccess }) {
                 },
                 body: JSON.stringify({
                     shipment_id: shipment.id,
+                    batch_id : shipment.batch_id , 
                     next_holder_org_id: nextOrg,
                     temperature: temperature
                 })

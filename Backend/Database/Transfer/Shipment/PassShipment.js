@@ -5,16 +5,41 @@ import { OrgDetails } from "../../Users/Organization/FindOrganization.js";
 
 export async function PassShipment(data, orgId) {
   try {
-    const { shipment_id, next_holder_org_id, temperature } = data;
+    const { shipment_id, batch_id ,  next_holder_org_id, temperature } = data;
 
-    if (!shipment_id || !next_holder_org_id) {
+    if (!shipment_id || !next_holder_org_id || !batch_id ) {
       return {
         success: false,
         status: 400,
-        error: "Shipment ID and next holder are required",
+        error: "Shipment ID , batch Id ,  next holder are required ",
       };
     }
 
+     /* =========================
+       1️⃣ Batch Status 
+    ========================== */
+
+      const { data: batch, error: batchError } = await supabase
+      .from("batches")
+      .select("is_active")
+      .eq("id", batch_id)
+      .single();
+
+    if (batchError || !batch) {
+      return {
+        success: false,
+        status: 404,
+        error: "Batch not found",
+      };
+    }
+
+    if (!batch.is_active) {
+      return {
+        success: false,
+        status: 409,
+        error: "Batch is frozen / recalled. Shipment cannot be forwarded.",
+      };
+    }
     /* =========================
        1️⃣ Fetch Shipment
     ========================== */

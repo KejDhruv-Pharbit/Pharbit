@@ -42,11 +42,43 @@ export async function redeemShipment(data, orgId) {
             };
         }
 
+        if (!shipment.is_active) {
+            return {
+                success: false,
+                status: 400,
+                error: "Shipment is inactive",
+            };
+        }
+
         if (shipment.redeemed) {
             return {
                 success: false,
                 status: 400,
                 error: "Shipment already redeemed",
+            };
+        }
+
+        const { data: batch, error: batchError } = await supabase
+            .from("batches")
+            .select("is_active")
+            .eq("id", shipment.batch_id)
+            .maybeSingle();
+
+        if (batchError) throw batchError;
+
+        if (!batch) {
+            return {
+                success: false,
+                status: 404,
+                error: "Batch not found",
+            };
+        }
+
+        if (!batch.is_active) {
+            return {
+                success: false,
+                status: 409,
+                error: "Batch is frozen / recalled. Shipment cannot be redeemed.",
             };
         }
 

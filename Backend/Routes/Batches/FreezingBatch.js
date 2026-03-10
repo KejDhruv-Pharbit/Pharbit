@@ -12,11 +12,6 @@ router.post("/freeze-batch", async (req, res) => {
   try {
 
     const { batchId, recallReason , medicineId } = req.body;
-
-    /* =========================
-       AUTH
-    ========================== */
-
     const authUser = await getAuthUser(req);
     if (!authUser) return res.status(401).json({ error: "Unauthorized" });
 
@@ -26,8 +21,7 @@ router.post("/freeze-batch", async (req, res) => {
       return res.status(404).json({ error: orgResult.error });
     }
 
-    
-        const meds = await FindMeds(medicineId);
+    const meds = await FindMeds(medicineId);
     if (!meds || !meds.data)
       return res.status(404).json({ error: "Medicine not found" });
 
@@ -36,10 +30,6 @@ router.post("/freeze-batch", async (req, res) => {
         error: "You don't own this medicine record",
       });
     }
-    /* =========================
-       Add job to queue
-    ========================== */
-
     await freezeQueue.add("freezeBatch", {
       batchId,
       orgId: orgResult.data.id,
