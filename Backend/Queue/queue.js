@@ -16,3 +16,7 @@ export const redeemQueue = new Queue("redeemQueue", {
 export const freezeQueue = new Queue("freezeQueue", {
   connection: redisConnection
 });
+
+export const recallQueue = new Queue("recallQueue", {
+  connection: redisConnection
+});

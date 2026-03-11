@@ -51,4 +51,42 @@ router.post("/freeze-batch", async (req, res) => {
   }
 });
 
+router.post("/redeem-recall-batch", async (req, res) => {
+  try {
+
+    const { shipment_id, tracking_code } = req.body;
+
+    const authUser = await getAuthUser(req);
+    if (!authUser) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const orgResult = await FindOrganization(authUser.id);
+
+    if (!orgResult.success) {
+      return res.status(404).json({ error: orgResult.error });
+    }
+
+    await recallQueue.add("recallBatch", {
+      shipment_id,
+      tracking_code , 
+      orgId: orgResult.data.id,
+      returnSource: "ESCROW"
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Recall request queued. Processing in background.",
+    });
+
+  } catch (error) {
+
+    console.error("Recall Queue Error:", error);
+
+    return res.status(500).json({
+      error: "Recall request failed: " + error.message,
+    });
+  }
+});
+
 export default router;
