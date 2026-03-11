@@ -296,7 +296,7 @@
 .form-inner form input:focus {
   outline: none;
   border-color: var(--primary-yellow);
-  box-shadow: 0 0 0 4px rgba(252, 211, 77, 0.2);
+  box-shadow: 0 0 0 4px rgba(1, 143, 232, 0.2);
 }
 
 /* SUBMIT BUTTON */
@@ -383,7 +383,7 @@
   outline: none;
   background: white;
   border-color: var(--primary-yellow);
-  box-shadow: 0 0 0 4px rgba(252, 211, 77, 0.15);
+  box-shadow: 0 0 0 4px rgba(1, 143, 232, 0.15);
 }
 
 /* SUBMIT BUTTON - WARM YELLOW */
@@ -476,7 +476,7 @@
 @media (max-width: 768px) {
   .auth-container {
     /* Background adjustment for a cleaner mobile look */
-    background: radial-gradient(circle at top, #fff9e6, #f1f5f9);
+    background: radial-gradient(circle at top right, #018fe8c5, #f1f5f9);
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
