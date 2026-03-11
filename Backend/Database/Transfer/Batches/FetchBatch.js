@@ -154,8 +154,73 @@ const FindBatchbyId = async (id) => {
   }
 };
 
+/**
+ * Fetches Transfered Batch by OrganizationId 
+ */
+
+const FindTransferedBatch = async (orgId) => {
+  if (!orgId) {
+    console.error("Fetch Error: Organization ID is missing");
+    return [];
+  }
+
+  try {
+
+    const { data: transmittedBatch, error } = await supabase
+      .from("batch_transmitted")
+      .select(`
+        id,
+        amount,
+        deposit_tx_hash,
+        redeem_tx_hash,
+        created_at,
+
+        batch:batches (
+          id,
+          blockchain_mint_id,
+          manufacturing_date,
+          expiry_date,
+          is_active,
+          is_quality_verified,
+
+          medicines:medicine_id (
+            id,
+            name,
+            brand_name,
+            dosage_form,
+            strength,
+            storage_conditions
+          )
+        ),
+
+        organization:organization_id (
+          id,
+          name
+        ),
+
+        shipment:shipment_id (
+          id,
+          tracking_code,
+          status
+        )
+      `)
+      .eq("organization_id", orgId)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return transmittedBatch || [];
+
+  } catch (err) {
+    console.error("Error in FindTransferedBatch:", err.message);
+    return [];
+  }
+};
+
+
 export {
   FindBatch,
   FindOrganizationBatch,
-  FindBatchbyId
+  FindBatchbyId,
+  FindTransferedBatch
 };
