@@ -11,6 +11,7 @@ import {
     ChevronRight,
     Truck,
     Inbox,
+    ArrowBigDown , 
     User
 } from "lucide-react";
 import "../../Styles/Components/Sidebar.css";
@@ -27,6 +28,7 @@ export default function Sidebar() {
         { to: "/Dashboard/Requests", icon: Inbox, label: "Requests" },
         { to: "/Dashboard/Passing", icon: Inbox, label: "Passing" },
         { to: "/Dashboard/Shipments", icon: Truck, label: "Track Shipments" },
+        { to: "/Dashboard/Transfer/Batches", icon: ArrowBigDown , label: "Incoming Batch" },
     ];
 
     const handleLogout = () => {
