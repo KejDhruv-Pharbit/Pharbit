@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/Auth.css";
 import toast, { Toaster } from "react-hot-toast";
-import phoneimg from "../assets/Phone.png";
+import phoneimg from "../assets/Phone2.svg";
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
@@ -115,15 +115,6 @@ export default function Auth() {
       <div className="auth-left">
         <div className="phone-mockup">
           <img src={phoneimg} alt="phone" className="phone-frame" />
-
-          <div className="phone-screen">
-            <h3>PHARBIT</h3>
-            <p>Verify Your Medicine</p>
-            <div className="phone-card"><span>💊 Scan Medicine</span></div>
-            <div className="phone-card"><span>🔗 Token ID</span></div>
-            <div className="phone-card"><span>🏪 Nearby Stores</span></div>
-            <button className="phone-btn">Find Store</button>
-          </div>
 
           <div className="circle c1">💊</div>
           <div className="circle c2">🔗</div>

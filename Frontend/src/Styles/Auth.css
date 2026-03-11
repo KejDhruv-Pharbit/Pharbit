@@ -39,6 +39,7 @@
 
 .phone-frame {
   width: 100%;
+  
   position: relative;
   z-index: 2;
   display: block;
@@ -49,7 +50,7 @@
 .phone-mockup {
   position: relative;
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   margin-top: 20px;
   display: flex;
   /* Centers the image to the container */
@@ -67,71 +68,6 @@
   /* Keeps frame above background elements */
 }
 
-/* 3. Use Precise percentages for the screen area */
-.phone-screen {
-  position: absolute;
-  /* Adjust these percentages based on your specific PNG's bezel size */
-  top: 6.5%;
-  left: 31%;
-  width: 33%;
-  height: 75%;
-  background: linear-gradient(180deg, #ffffff 0%, #018fe818 100%);
-  border-radius: 30px;
-  /* Slightly higher for modern phone frames */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 8px;
-  z-index: 1;
-  /* Sits behind the frame if the frame has a transparent hole */
-  overflow: hidden;
-}
-
-.phone-screen h3 {
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 4px;
-  /* Wide spacing */
-  text-transform: uppercase;
-  color: var(--dark-text);
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 0;
-}
-
-.phone-screen p {
-  font-size: 11px;
-  color: #475569;
-  margin-bottom: 8px;
-}
-
-.phone-card {
-  width: 85%;
-  padding: 10px;
-  background: white;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.phone-btn {
-  width: 70%;
-  padding: 10px;
-  background: var(--primary-yellow);
-  color: #451a03;
-  border: none;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 5px;
-}
 
 /* FLOATING CIRCLES */
 .circle {
