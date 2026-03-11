@@ -94,7 +94,7 @@ router.get("/TransferedBatch", async (req, res) => {
     }
 
     // Role-based Access Control
-    const allowedRoles = ["manager", "employee", "admin"]; // Added admin just in case
+    const allowedRoles = ["manager", "staff", "admin"]; // Added admin just in case
     if (!allowedRoles.includes(orgdata.role)) {
       return res.status(403).json({ error: "Access denied" });
     }
