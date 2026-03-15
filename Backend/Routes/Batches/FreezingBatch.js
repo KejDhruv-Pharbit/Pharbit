@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
-import { freezeQueue } from "../../Queue/queue.js";
+import { freezeQueue, recallQueue } from "../../Queue/queue.js";
+
+import supabase from "../../Middleware/Database/DatabaseConnect.js";
 
 import { getAuthUser, FindOrganization } from "../../Middleware/Database/AuthUser.js";
 import { FindMeds } from "../../Database/Product/Medicines/Get/FindMedicines.js";
@@ -29,9 +31,30 @@ router.post("/freeze-batch", async (req, res) => {
       return res.status(403).json({
         error: "You don't own this medicine record",
       });
+    } 
+
+
+     const { data, error } = await supabase
+      .from("batches")
+      .select("blockchain_mint_id")
+       .eq("id", batchId)
+    .eq("is_active" , true )
+
+    if (error || !data) {
+      return res.status(404).json({
+        error: "Batch not found or inactive",
+      });
     }
-    await freezeQueue.add("freezeBatch", {
-      batchId,
+
+    const blockchainBatchId = data[0].blockchain_mint_id;
+    console.log("Blockchain batch ID:", blockchainBatchId);
+
+    /* =========================
+       Add job to queue
+    ========================== */
+
+      await freezeQueue.add("freezeBatch", {
+      batchId: blockchainBatchId,   // 👈 IMPORTANT
       orgId: orgResult.data.id,
       recallReason: recallReason || "Quality recall",
     });

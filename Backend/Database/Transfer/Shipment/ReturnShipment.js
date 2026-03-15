@@ -34,13 +34,6 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
        2️⃣ Validate Shipment Status
     ========================== */
 
-    if (shipment.status !== "RECALLING") {
-      return {
-        success: false,
-        status: 400,
-        error: "Shipment is not in recalling state",
-      };
-    }
       
        if (shipment.tracking_code !== tracking_code) {
       return {
@@ -121,7 +114,7 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
       status: 200,
       message: "Shipment returned successfully",
       batch_blockchain_id: batch.blockchain_mint_id,
-      amount: shipment.amount,
+      amount: shipment.medicines_amount,
       data: updatedShipment,
     };
 

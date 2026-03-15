@@ -36,6 +36,8 @@ new Worker(
       const batchId = dbResult.batch_blockchain_id;
       const amount = dbResult.amount;
 
+      console.log(batchId); 
+
       const provider = new ethers.JsonRpcProvider(RPC_URL);
 
       let signer;

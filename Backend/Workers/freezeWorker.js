@@ -45,7 +45,7 @@ new Worker(
         abi.abi || abi,
         signer
       );
-
+      
       /* =========================
          Blockchain Freeze
       ========================== */
