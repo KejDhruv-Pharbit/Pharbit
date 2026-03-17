@@ -6,6 +6,7 @@ import "../../Styles/Pages/Product.css";
 import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
 import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
 const url = import.meta.env.VITE_API_URL;
+import FreezeBatchModal from "../../Components/Dashboard/FreezeBatchModal";
 
 // Simple Global Cache for Shipments
 let shipmentCache = null;
@@ -18,6 +19,7 @@ export default function Passing() {
     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
     const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [isFreezeModal, setFreezeModalOpen] = useState(false);
 
     const itemsPerPage = 4;
 
@@ -68,9 +70,10 @@ export default function Passing() {
 
     return (
         <div className="inventory-view">
-            <Header
+         <Header
                 onSearch={setSearchQuery} searchVal={searchQuery}
                 onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenFreezeModal={() => setFreezeModalOpen(true)}
                 onOpenInviteModal={() => setInviteEmployeeOpen(true)
                 }
             />
@@ -83,6 +86,10 @@ export default function Passing() {
                 isOpen={isInviteEmployeeOpen}
                 onClose={() => setInviteEmployeeOpen(false)}
             />
+            <FreezeBatchModal
+                            isOpen={isFreezeModal}
+                            onClose={() => setFreezeModalOpen(false)}
+                        />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area">

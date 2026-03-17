@@ -11,6 +11,7 @@ import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
 import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
 import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
+import FreezeBatchModal from "../../Components/Dashboard/FreezeBatchModal";
 const url = import.meta.env.VITE_API_URL;
 
 export default function Batches() {
@@ -25,6 +26,7 @@ export default function Batches() {
     const [sortKey, setSortKey] = useState("date");
     const [isSortOpen, setIsSortOpen] = useState(false);
     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
+    const [isFreezeModal, setFreezeModalOpen] = useState(false);
 
     useEffect(() => {
         const CACHE_KEY = "org_batches_cache";
@@ -112,23 +114,26 @@ export default function Batches() {
     return (
         <div className="inventory-view">
 
-            <Header
+          <Header
                 onSearch={setSearchQuery} searchVal={searchQuery}
                 onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenFreezeModal={() => setFreezeModalOpen(true)}
                 onOpenInviteModal={() => setInviteEmployeeOpen(true)
                 }
             />
-
             <CreateShipmentModal
                 isOpen={isShipmentModalOpen}
                 onClose={() => setIsShipmentModalOpen(false)}
             />
 
-
             <InviteEmployeeModal
                 isOpen={isInviteEmployeeOpen}
                 onClose={() => setInviteEmployeeOpen(false)}
             />
+            <FreezeBatchModal
+                            isOpen={isFreezeModal}
+                            onClose={() => setFreezeModalOpen(false)}
+                        />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area">

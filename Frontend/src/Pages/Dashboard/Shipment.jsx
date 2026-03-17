@@ -10,7 +10,7 @@ import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
 import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
 import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
-
+import FreezeBatchModal from "../../Components/Dashboard/FreezeBatchModal";
 const url = import.meta.env.VITE_API_URL;
 
 export default function Shipment() {
@@ -25,6 +25,7 @@ export default function Shipment() {
     const [sortKey, setSortKey] = useState("newest");
     const [isSortOpen, setIsSortOpen] = useState(false);
     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
+    const [isFreezeModal, setFreezeModalOpen] = useState(false);
 
     useEffect(() => {
         const CACHE_KEY = "dashboard_shipments_cache";
@@ -114,21 +115,26 @@ export default function Shipment() {
 
     return (
         <div className="inventory-view">
-            <Header
+             <Header
                 onSearch={setSearchQuery} searchVal={searchQuery}
                 onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenFreezeModal={() => setFreezeModalOpen(true)}
                 onOpenInviteModal={() => setInviteEmployeeOpen(true)
                 }
             />
-
             <CreateShipmentModal
                 isOpen={isShipmentModalOpen}
                 onClose={() => setIsShipmentModalOpen(false)}
             />
+
             <InviteEmployeeModal
                 isOpen={isInviteEmployeeOpen}
                 onClose={() => setInviteEmployeeOpen(false)}
             />
+            <FreezeBatchModal
+                            isOpen={isFreezeModal}
+                            onClose={() => setFreezeModalOpen(false)}
+                        />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area"><h1>Shipment Logistics</h1></div>

@@ -5,7 +5,7 @@ import "../../Styles/Components/Header.css";
 
 const url = import.meta.env.VITE_API_URL;
 
-export default function Header({ onSearch, searchVal, onOpenShipmentModal, onOpenInviteModal }) {
+export default function Header({ onSearch, searchVal, onOpenShipmentModal, onOpenInviteModal , onOpenFreezeModal }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -82,10 +82,10 @@ export default function Header({ onSearch, searchVal, onOpenShipmentModal, onOpe
 
           <button
             className="header-batch-btn"
-            onClick={() => navigate("/dashboard/batches")}
+            onClick={onOpenFreezeModal}
           >
             <Layers size={18} />
-            <span>Mint Batch</span>
+            <span>Freeze Batch</span>
           </button>
 
           <button

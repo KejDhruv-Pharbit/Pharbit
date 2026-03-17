@@ -11,6 +11,7 @@ import "../../Styles/Pages/Product.css";
 import Header from "../../Components/Dashboard/Header";
 import CreateShipmentModal from "../../Components/Dashboard/CreateShipmentModal";
 import InviteEmployeeModal from "../../Components/Dashboard/InviteEmployeeModal";
+import FreezeBatchModal from "../../Components/Dashboard/FreezeBatchModal";
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -23,7 +24,7 @@ export default function Products() {
     const itemsPerPage = 5;
     const [isShipmentModalOpen, setIsShipmentModalOpen] = useState(false);
     const [isInviteEmployeeOpen, setInviteEmployeeOpen] = useState(false);
-
+const [isFreezeModal, setFreezeModalOpen] = useState(false);
     // Sort & Filter States
     const [filterStatus, setFilterStatus] = useState("all");
     const [sortKey, setSortKey] = useState("name");
@@ -115,6 +116,7 @@ export default function Products() {
             <Header
                 onSearch={setSearchQuery} searchVal={searchQuery}
                 onOpenShipmentModal={() => setIsShipmentModalOpen(true)}
+                onOpenFreezeModal={() => setFreezeModalOpen(true)}
                 onOpenInviteModal={() => setInviteEmployeeOpen(true)
                 }
             />
@@ -127,7 +129,10 @@ export default function Products() {
                 isOpen={isInviteEmployeeOpen}
                 onClose={() => setInviteEmployeeOpen(false)}
             />
-
+            <FreezeBatchModal
+                            isOpen={isFreezeModal}
+                            onClose={() => setFreezeModalOpen(false)}
+                        />
             <div className="inventory-glass-card">
                 <header className="inventory-top-bar">
                     <div className="title-area">
