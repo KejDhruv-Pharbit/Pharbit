@@ -1,8 +1,8 @@
 import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 
 export async function freezeBatch(batchMintId, orgId, recallReason = null) {
-    try {
-      
+  try {
+
     if (!batchMintId) {
       return {
         success: false,

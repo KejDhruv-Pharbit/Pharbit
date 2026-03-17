@@ -5,9 +5,9 @@ import { OrgDetails } from "../../Users/Organization/FindOrganization.js";
 
 export async function PassShipment(data, orgId) {
   try {
-    const { shipment_id, batch_id ,  next_holder_org_id, temperature } = data;
+    const { shipment_id, batch_id, next_holder_org_id, temperature } = data;
 
-    if (!shipment_id || !next_holder_org_id || !batch_id ) {
+    if (!shipment_id || !next_holder_org_id || !batch_id) {
       return {
         success: false,
         status: 400,
@@ -15,11 +15,11 @@ export async function PassShipment(data, orgId) {
       };
     }
 
-     /* =========================
-       1️⃣ Batch Status 
-    ========================== */
+    /* =========================
+      1️⃣ Batch Status 
+   ========================== */
 
-      const { data: batch, error: batchError } = await supabase
+    const { data: batch, error: batchError } = await supabase
       .from("batches")
       .select("is_active")
       .eq("id", batch_id)

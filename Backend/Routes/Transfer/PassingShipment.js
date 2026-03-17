@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/pass-shipment", async (req, res) => {
   try {
-    const { shipment_id, batch_id , next_holder_org_id, temperature } = req.body;
+    const { shipment_id, batch_id, next_holder_org_id, temperature } = req.body;
     const authUser = await getAuthUser(req);
     if (!authUser) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -27,7 +27,7 @@ router.post("/pass-shipment", async (req, res) => {
        2️⃣ Call PassShipment
     ========================== */
     const result = await PassShipment(
-      { shipment_id, batch_id ,  next_holder_org_id, temperature },
+      { shipment_id, batch_id, next_holder_org_id, temperature },
       orgId
     );
 

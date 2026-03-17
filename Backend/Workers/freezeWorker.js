@@ -19,7 +19,7 @@ new Worker(
   async (job) => {
     try {
 
-      const { batchId, orgId, recallReason  } = job.data;
+      const { batchId, orgId, recallReason } = job.data;
 
       console.log("Processing freeze job:", job.id);
 
@@ -45,7 +45,7 @@ new Worker(
         abi.abi || abi,
         signer
       );
-      
+
       /* =========================
          Blockchain Freeze
       ========================== */
