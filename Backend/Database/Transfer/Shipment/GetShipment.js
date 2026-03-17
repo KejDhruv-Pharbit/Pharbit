@@ -133,7 +133,6 @@ const FindShipmentForSource = async (orgId) => {
       .from("shipments")
       .select(shipmentSelectFull) // FULL DATA
       .eq("source_org_id", orgId)
-      .eq("is_active", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
