@@ -114,6 +114,20 @@ export async function ReturnShipment(shipmentId, tracking_code, orgId) {
 
     if (updateError) throw updateError;
 
+
+
+
+      const { data: updatedBatch, error: updatingbatcherror } = await supabase
+      .from("batch_transmitted")
+      .update({
+        returned : true ,
+      })
+      .eq("shipment_id", shipmentId)
+      .select()
+      .single();
+
+    
+     if (updatingbatcherror) throw updatingbatcherror; 
     /* =========================
        6️⃣ Org Details + Logs
     ========================== */

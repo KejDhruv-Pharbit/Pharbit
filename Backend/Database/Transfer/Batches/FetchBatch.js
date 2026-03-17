@@ -174,13 +174,15 @@ const FindTransferedBatch = async (orgId) => {
         deposit_tx_hash,
         redeem_tx_hash,
         created_at,
+        returned , 
 
         batch:batches (
           id,
           blockchain_mint_id,
           manufacturing_date,
           expiry_date,
-          is_active,
+          is_active, 
+          is_recalled , 
           is_quality_verified,
 
           medicines:medicine_id (

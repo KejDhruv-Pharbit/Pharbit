@@ -232,7 +232,10 @@ export default function Transferred() {
                                                 >
                                                     Details
                                                 </button>
+                                                
                                             </td>
+
+                                            
                                         </tr>
                                     );
                                 })

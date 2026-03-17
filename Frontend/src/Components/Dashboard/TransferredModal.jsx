@@ -1,9 +1,12 @@
 import "../../Styles/Components/ViewModal.css";
+import { useState } from "react";
 import { ShieldCheck, AlertTriangle, Box, Calendar, Hash } from "lucide-react";
+
+const url = import.meta.env.VITE_API_URL;
 
 export default function TransferViewModal({ open, onClose, batch }) {
   if (!open || !batch) return null;
-
+ const [recallLoading, setRecallLoading] = useState(false); 
   // Real batch object comes nested from API
   const realBatch = batch.batch || {};
   const medicine = realBatch.medicines || {};
@@ -11,6 +14,38 @@ export default function TransferViewModal({ open, onClose, batch }) {
   // Choose whichever tx exists
   const txHash = batch.deposit_tx_hash || batch.redeem_tx_hash;
   const txUrl = txHash ? `https://sepolia.etherscan.io/tx/${txHash}` : null;
+
+ 
+
+  const handleRecall = async () => {
+    try {
+      setRecallLoading(true);
+
+      const res = await fetch(`${url}/redeem-recall-batch`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          shipment_id: batch.shipment?.id,
+          tracking_code: batch.shipment?.tracking_code,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Recall failed");
+
+      alert("Recall initiated successfully 🚨");
+      onClose();
+
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setRecallLoading(false);
+    }
+  };
 
   return (
     <div className="dashboard-modal-overlay" onClick={onClose}>
@@ -137,9 +172,26 @@ export default function TransferViewModal({ open, onClose, batch }) {
 
         {/* Footer */}
         <div className="dashboard-modal-actions">
+
+          {(batch.batch.is_recalled && !batch.returned) && (
+            <button
+              onClick={handleRecall}
+              className="dashboard-modal-close-btn"
+              style={{
+                marginRight: "10px",
+                background: "#ef4444",
+                color: "white"
+              }}
+              disabled={recallLoading}
+            >
+              {recallLoading ? "Recalling..." : "Recall Batch"}
+            </button>
+          )}
+
           <button onClick={onClose} className="dashboard-modal-close-btn">
             Close Details
           </button>
+
         </div>
 
         <div className="dashboard-modal-footer-meta">
