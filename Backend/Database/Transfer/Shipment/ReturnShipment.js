@@ -2,9 +2,8 @@ import supabase from "../../../Middleware/Database/DatabaseConnect.js";
 import { createShipmentLog } from "./Logs/CreateShipmentLog.js";
 import { OrgDetails } from "../../Users/Organization/FindOrganization.js";
 
-export async function ReturnShipment(shipmentId,tracking_code , orgId) {
+export async function ReturnShipment(shipmentId, tracking_code, orgId) {
   try {
-
     if (!shipmentId || !orgId) {
       return {
         success: false,
@@ -31,11 +30,9 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
     }
 
     /* =========================
-       2️⃣ Validate Shipment Status
+       2️⃣ Validations
     ========================== */
-
-      
-       if (shipment.tracking_code !== tracking_code) {
+    if (shipment.tracking_code !== tracking_code) {
       return {
         success: false,
         status: 400,
@@ -43,7 +40,7 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
       };
     }
 
-    if (shipment.redeemed) {
+    if (!shipment.is_active) {
       return {
         success: false,
         status: 400,
@@ -52,9 +49,40 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
     }
 
     /* =========================
-       3️⃣ Fetch Batch
+       3️⃣ Handle Redeemed Case
     ========================== */
 
+    let amount;
+    let returnSource;
+
+    if (shipment.redeemed) {
+      // 🔹 ESCROW FLOW
+      const { data: batchTx, error: batchError } = await supabase
+        .from("batch_transmitted")
+        .select("amount, returned")
+        .eq("batch_id", shipment.batch_id)
+        .single();
+
+      if (batchError || !batchTx || batchTx.returned) {
+        return {
+          success: false,
+          status: 400,
+          error: "Batch not found or already returned",
+        };
+      }
+
+      amount = batchTx.amount;
+      returnSource = "ORGANIZATION";
+
+    } else {
+      // 🔹 NORMAL FLOW
+      amount = shipment.medicines_amount;
+      returnSource = "ESCROW";
+    }
+
+    /* =========================
+       4️⃣ Fetch Batch (for blockchain ID)
+    ========================== */
     const { data: batch, error: batchError } = await supabase
       .from("batches")
       .select("blockchain_mint_id")
@@ -70,16 +98,15 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
     }
 
     /* =========================
-       4️⃣ Update Shipment Status
+       5️⃣ Update Shipment
     ========================== */
-
     const { data: updatedShipment, error: updateError } = await supabase
       .from("shipments")
       .update({
         status: "RETURNED",
-        redeemed: true,
         current_holder_org_id: shipment.source_org_id,
         updated_at: new Date(),
+        is_active: false,
       })
       .eq("id", shipmentId)
       .select()
@@ -88,18 +115,11 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
     if (updateError) throw updateError;
 
     /* =========================
-       5️⃣ Organization Details
+       6️⃣ Org Details + Logs
     ========================== */
-
     const org = await OrgDetails(orgId);
 
-    if (!org) {
-      throw new Error("Organization not found");
-    }
-
-    /* =========================
-       6️⃣ Create Shipment Log
-    ========================== */
+    if (!org) throw new Error("Organization not found");
 
     await createShipmentLog({
       shipment_id: shipmentId,
@@ -109,17 +129,20 @@ export async function ReturnShipment(shipmentId,tracking_code , orgId) {
       notes: `Shipment returned to manufacturer warehouse`,
     });
 
+    /* =========================
+       ✅ Final Return
+    ========================== */
     return {
       success: true,
       status: 200,
       message: "Shipment returned successfully",
       batch_blockchain_id: batch.blockchain_mint_id,
-      amount: shipment.medicines_amount,
+      amount: amount,
+      returnSource: returnSource,
       data: updatedShipment,
     };
 
   } catch (err) {
-
     console.error("Return shipment error:", err);
 
     return {

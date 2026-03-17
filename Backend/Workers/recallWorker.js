@@ -19,7 +19,7 @@ new Worker(
   async (job) => {
     try {
 
-      const { shipment_id, tracking_code , orgId, returnSource } = job.data;
+      const { shipment_id, tracking_code , orgId  } = job.data;
 
       console.log("Processing recall return:", shipment_id);
 
@@ -27,7 +27,7 @@ new Worker(
          1️⃣ DB Return Logic
       ========================== */
 
-      const dbResult = await ReturnShipment(shipment_id, tracking_code , orgId);
+      const dbResult = await ReturnShipment(shipment_id, tracking_code , orgId );
 
       if (!dbResult.success) {
         throw new Error(dbResult.error);
@@ -35,6 +35,7 @@ new Worker(
 
       const batchId = dbResult.batch_blockchain_id;
       const amount = dbResult.amount;
+      const returnSource = dbResult.returnSource; 
 
       console.log(batchId); 
 

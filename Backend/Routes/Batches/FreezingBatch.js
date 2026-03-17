@@ -88,13 +88,12 @@ router.post("/redeem-recall-batch", async (req, res) => {
 
     if (!orgResult.success) {
       return res.status(404).json({ error: orgResult.error });
-    }
+    } 
 
     await recallQueue.add("recallBatch", {
       shipment_id,
       tracking_code , 
       orgId: orgResult.data.id,
-      returnSource: "ESCROW"
     });
 
     return res.status(200).json({
