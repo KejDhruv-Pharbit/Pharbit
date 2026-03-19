@@ -112,72 +112,112 @@ export default function PassingModal({ shipment, onClose, onSuccess }) {
 
 };
 
+    const handleRecall = async () => {
+        if (!shipment?.id || !shipment?.tracking_code) {
+            showToast("Invalid shipment data");
+            return;
+        }
+        try {
+            setLoading(true);
+
+            const res = await fetch(`${url}/redeem-recall-batch`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    shipment_id: shipment?.id,
+                    tracking_code: shipment?.tracking_code,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.error || "Recall failed");
+
+            showToast("Recall initiated successfully 🚨");
+            onSuccess();
+            onClose();
+
+        } catch (err) {
+            showToast(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="create-ship-modal-overlay" onClick={onClose}>
-
             <div
                 className="create-ship-modal-container"
                 onClick={(e) => e.stopPropagation()}
             >
-
                 <h2 className="create-ship-modal-title">
-                    Pass Shipment
+                    {shipment?.batch?.is_recalled ? "Recall Shipment" : "Pass Shipment"}
                 </h2>
 
+                {shipment?.batch?.is_recalled === true ? (
+                    <div className="create-ship-modal-actions" style={{ justifyContent: "center", marginTop: "20px" }}>
+                        <button
+                            className="create-ship-modal-submit"
+                            onClick={handleRecall}
+                            disabled={loading}
+                        >
+                            {loading ? "Processing..." : "Recall Shipment"}
+                        </button>
+                    </div>
+                ) : (
+                    <>
+                        <div className="create-ship-modal-field">
+                            <label>Next Organization</label>
+                            <select
+                                value={nextOrg}
+                                onChange={(e) => setNextOrg(e.target.value)}
+                            >
+                                <option value="">Select organization</option>
 
-                <div className="create-ship-modal-field">
-                    <label>Next Organization</label>
-                    <select
-                        value={nextOrg}
-                        onChange={(e) => setNextOrg(e.target.value)}
-                    >
-                        <option value="">Select organization</option>
+                                {organizations.map((org) => (
+                                    <option key={org.id} value={org.id}>
+                                        {org.name}
+                                    </option>
+                                ))}
 
-                        {organizations.map((org) => (
-                            <option key={org.id} value={org.id}>
-                                {org.name}
-                            </option>
-                        ))}
+                            </select>
+                        </div>
 
-                    </select>
-                </div>
+                        <div className="create-ship-modal-field">
+                            <label>Temperature</label>
+                            <input
+                                placeholder="Example: 2°C - 8°C"
+                                value={temperature}
+                                onChange={(e) => setTemperature(e.target.value)}
+                            />
+                        </div>
 
-                <div className="create-ship-modal-field">
-                    <label>Temperature</label>
-                    <input
-                        placeholder="Example: 2°C - 8°C"
-                        value={temperature}
-                        onChange={(e) => setTemperature(e.target.value)}
-                    />
-                </div>
-
-                <div className="create-ship-modal-actions">
-
-                    <button
-                        className="create-ship-modal-cancel"
-                        onClick={onClose}
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        className="create-ship-modal-submit"
-                        onClick={handlePassShipment}
-                        disabled={loading}
-                    >
-                        {loading ? "Passing..." : "Pass Shipment"}
-                    </button>
-
-                </div>
-
+                        <div className="create-ship-modal-actions">
+                            <button
+                                className="create-ship-modal-cancel"
+                                onClick={onClose}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="create-ship-modal-submit"
+                                onClick={handlePassShipment}
+                                disabled={loading}
+                            >
+                                {loading ? "Passing..." : "Pass Shipment"}
+                            </button>
+                        </div>
+                    </>
+                )}
                 {toast && (
                     <div className="create-ship-modal-toast">
                         {toast}
                     </div>
                 )}
-
             </div>
-
         </div>
     );
 }

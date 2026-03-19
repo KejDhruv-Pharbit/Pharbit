@@ -35,18 +35,17 @@ const shipmentSelectLean = `
       dosage_form,
       strength,
       storage_conditions
-    )
+    ),
+    is_recalled ,
+    is_active 
   ),
    
   current_holder_org:current_holder_org_id (
-
-name
-
-) , 
+    name
+  ), 
   source_org:source_org_id ( name ),
   destination_org:destination_org_id ( name )
 `;
-
 /* ============================================================
    Helper: Attach Shipment Logs
 ============================================================ */
@@ -75,7 +74,7 @@ const FindShipment = async (orgId) => {
       .from("shipments")
       .select(shipmentSelectLean) // LEAN DATA
       .eq("current_holder_org_id", orgId)
-      .eq("is_active", true)
+      .eq("is_active" , true )
       .order("created_at", { ascending: false });
 
     if (error) throw error;

@@ -31,7 +31,7 @@ export default function Requests() {
 
     const fetchRequests = async () => {
         const CACHE_KEY = "incoming_shipments_requests_cache";
-        const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+        const CACHE_TIME = 0 * 60 * 1000; // 5 minutes
 
         try {
             setLoading(true);

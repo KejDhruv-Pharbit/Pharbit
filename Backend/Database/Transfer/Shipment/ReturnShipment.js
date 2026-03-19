@@ -19,7 +19,7 @@ export async function ReturnShipment(shipmentId, tracking_code, orgId) {
       .from("shipments")
       .select("*")
       .eq("id", shipmentId)
-      .single();
+      .maybeSingle();
 
     if (error || !shipment) {
       return {
@@ -115,19 +115,24 @@ export async function ReturnShipment(shipmentId, tracking_code, orgId) {
     if (updateError) throw updateError;
 
 
-
-
+    // Update batch_transmitted.returned only if shipment.redeemed
+    if (shipment.redeemed) {
       const { data: updatedBatch, error: updatingbatcherror } = await supabase
-      .from("batch_transmitted")
-      .update({
-        returned : true ,
-      })
-      .eq("shipment_id", shipmentId)
-      .select()
-      .single();
+        .from("batch_transmitted")
+        .update({
+          returned: true,
+        })
+        .eq("batch_id", shipment.batch_id)
+        .select()
+        .maybeSingle();
 
-    
-     if (updatingbatcherror) throw updatingbatcherror; 
+      if (updatingbatcherror) throw updatingbatcherror;
+
+      // optional: no need to throw if not found, just log
+      if (!updatedBatch) {
+        console.warn("No batch_transmitted record found (safe to ignore)");
+      }
+    }
     /* =========================
        6️⃣ Org Details + Logs
     ========================== */
