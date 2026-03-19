@@ -47,49 +47,70 @@ export default function PassingModal({ shipment, onClose, onSuccess }) {
 
     const handlePassShipment = async () => {
 
-        if (!nextOrg || !temperature) {
-            showToast("Fill all fields");
-            return;
-        }
+    if (!nextOrg || !temperature) {
+        showToast("Fill all fields");
+        return;
+    }
 
-        try {
+    // 🔍 DEBUG BLOCK START
+    console.log("========== PASS SHIPMENT DEBUG ==========");
+    console.log("Full shipment object:", shipment);
 
-            setLoading(true);
+    console.log("shipment.id:", shipment?.id);
+    console.log("shipment.batch:", shipment?.batch);
+    console.log("shipment.batch.id:", shipment?.batch?.id);
 
-            const res = await fetch(`${url}/pass-shipment`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    shipment_id: shipment.id,
-                    batch_id : shipment.batch_id , 
-                    next_holder_org_id: nextOrg,
-                    temperature: temperature
-                })
-            });
+    console.log("nextOrg (raw):", nextOrg, "type:", typeof nextOrg);
+    console.log("temperature:", temperature);
 
-            const result = await res.json();
-
-            if (!res.ok) throw new Error(result.error);
-
-            showToast("Shipment passed successfully");
-
-            onSuccess();
-            onClose();
-
-        } catch (err) {
-
-            showToast(err.message);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
+    const payload = {
+        shipment_id: shipment?.id,
+        batch_id: shipment?.batch?.id,
+        next_holder_org_id: nextOrg,
+        temperature: temperature?.trim()
     };
+
+    console.log("FINAL PAYLOAD:", payload);
+    console.log("========================================");
+    // 🔍 DEBUG BLOCK END
+
+    try {
+
+        setLoading(true);
+
+        const res = await fetch(`${url}/pass-shipment`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        console.log("RESPONSE STATUS:", res.status);
+        console.log("RESPONSE BODY:", result);
+
+        if (!res.ok) throw new Error(result.error);
+
+        showToast("Shipment passed successfully");
+
+        onSuccess();
+        onClose();
+
+    } catch (err) {
+
+        console.error("ERROR:", err);
+        showToast(err.message);
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+};
 
     return (
         <div className="create-ship-modal-overlay" onClick={onClose}>

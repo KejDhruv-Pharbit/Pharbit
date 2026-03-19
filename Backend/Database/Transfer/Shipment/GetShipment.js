@@ -25,6 +25,7 @@ const shipmentSelectLean = `
   medicines_amount,
   
   batch:batches (
+    id , 
     blockchain_mint_id,
     expiry_date,
     is_quality_verified,

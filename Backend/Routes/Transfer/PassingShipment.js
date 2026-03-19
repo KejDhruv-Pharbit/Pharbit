@@ -9,7 +9,7 @@ dotenv.config();
 const router = express.Router();
 
 router.post("/pass-shipment", async (req, res) => {
-  try {
+  try { 
     const { shipment_id, batch_id, next_holder_org_id, temperature } = req.body;
     const authUser = await getAuthUser(req);
     if (!authUser) {
@@ -25,7 +25,7 @@ router.post("/pass-shipment", async (req, res) => {
 
     /* =========================
        2️⃣ Call PassShipment
-    ========================== */
+    ========================== */ 
     const result = await PassShipment(
       { shipment_id, batch_id, next_holder_org_id, temperature },
       orgId
