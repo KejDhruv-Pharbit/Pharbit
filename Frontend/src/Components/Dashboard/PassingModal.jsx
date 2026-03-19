@@ -9,6 +9,7 @@ export default function PassingModal({ shipment, onClose, onSuccess }) {
     const [nextOrg, setNextOrg] = useState("");
     const [temperature, setTemperature] = useState("");
     const [loading, setLoading] = useState(false);
+    const [confirmText, setConfirmText] = useState("");
 
     const [toast, setToast] = useState(null);
 
@@ -153,19 +154,46 @@ export default function PassingModal({ shipment, onClose, onSuccess }) {
                 className="create-ship-modal-container"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="create-ship-modal-title">
-                    {shipment?.batch?.is_recalled ? "Recall Shipment" : "Pass Shipment"}
-                </h2>
+                {!shipment?.batch?.is_recalled && (
+                    <h2 className="create-ship-modal-title">
+                        Pass Shipment
+                    </h2>
+                )}
 
                 {shipment?.batch?.is_recalled === true ? (
-                    <div className="create-ship-modal-actions" style={{ justifyContent: "center", marginTop: "20px" }}>
-                        <button
-                            className="create-ship-modal-submit"
-                            onClick={handleRecall}
-                            disabled={loading}
-                        >
-                            {loading ? "Processing..." : "Recall Shipment"}
-                        </button>
+                    <div style={{ marginTop: "20px", textAlign: "center" }}>
+                        <p style={{ marginBottom: "10px", fontSize: "14px" }}>
+                            Type <b>RECALL SHIPMENT</b> to confirm
+                        </p>
+
+                        <input
+                            value={confirmText}
+                            onChange={(e) => setConfirmText(e.target.value)}
+                            placeholder="RECALL SHIPMENT"
+                            style={{
+                                padding: "10px",
+                                borderRadius: "8px",
+                                border: "1px solid #ccc",
+                                width: "80%",
+                                marginBottom: "15px",
+                                textAlign: "center"
+                            }}
+                        />
+
+                        <div className="create-ship-modal-actions" style={{ justifyContent: "center" }}>
+                            <button
+                                className="create-ship-modal-submit"
+                                onClick={handleRecall}
+                                disabled={loading || confirmText !== "RECALL SHIPMENT"}
+                                style={{
+                                    backgroundColor: "#ff4d4f",
+                                    border: "none",
+                                    color: "white"
+                                }}
+                            >
+                                {loading ? "Processing..." : "Recall Shipment"}
+                            </button>
+                        </div>
                     </div>
                 ) : (
                     <>

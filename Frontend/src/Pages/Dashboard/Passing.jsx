@@ -136,7 +136,13 @@ export default function Passing() {
                                                 disabled={ship.status === "FORWARDED"}
                                                 style={ship.status === "FORWARDED" ? { pointerEvents: "none", opacity: 0.5, cursor: "not-allowed" } : {}}
                                             >
-                                                {ship.status === "FORWARDED" ? "Shipment Passed" : "Pass Shipment"}
+                                                {ship.batch?.is_active === false && ship.batch?.is_recalled === true
+                                                    ? "Recall Shipment"
+                                                    : ship.batch?.is_active === false
+                                                    ? "Returned"
+                                                    : ship.status === "FORWARDED"
+                                                    ? "Shipment Passed"
+                                                    : "Pass Shipment"}
                                             </button>
                                         </td>
                                     </tr>
