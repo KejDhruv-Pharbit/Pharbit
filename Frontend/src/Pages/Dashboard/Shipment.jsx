@@ -29,7 +29,7 @@ export default function Shipment() {
 
     useEffect(() => {
         const CACHE_KEY = "dashboard_shipments_cache";
-        const CACHE_TIME = 1 * 60 * 1000; // 5 minutes
+        const CACHE_TIME = 0 * 60 * 1000; // 5 minutes
 
         const fetchAllShipments = async () => {
             try {
@@ -47,17 +47,15 @@ export default function Shipment() {
                     }
                 }
 
-                const [sourceRes, destRes] = await Promise.all([
+                const [sourceRes ] = await Promise.all([
                     fetch(`${url}/shipments/source`, { credentials: "include" }),
-                    fetch(`${url}/shipments/destination`, { credentials: "include" })
                 ]);
 
                 const sourceResult = await sourceRes.json();
-                const destResult = await destRes.json();
+
 
                 let combinedData = [];
                 if (sourceResult.success) combinedData = [...combinedData, ...sourceResult.data];
-                if (destResult.success) combinedData = [...combinedData, ...destResult.data];
 
                 const uniqueShipments = Array.from(
                     new Map(combinedData.map(item => [item.id, item])).values()
