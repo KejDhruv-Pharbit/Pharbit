@@ -39,16 +39,24 @@ const MedsLocate = () => {
         fetchDetails();
     }, [id]);
 
+    // Function to create text-based store labels
+    const createStoreLabel = (name) => {
+        return L.divIcon({
+            className: 'user-med-custom-label',
+            html: `<span>${name}</span>`,
+            iconSize: [120, 30], 
+            iconAnchor: [60, 15] 
+        });
+    };
+
     if (loading) return <div className="user-med-loader">Loading Pharbit Chain...</div>;
 
-    // Filter logic to handle null batches from the API
     const validBatches = data.filter(item => item.batch !== null);
     const medInfo = validBatches.length > 0 ? validBatches[0].batch.medicines : null;
     const locations = validBatches.filter(item => item.organization?.lat && item.organization?.long);
 
     return (
         <div className="user-med-details-container">
-            {/* LEFT SIDE: INFO & GRID */}
             <div className="user-med-left-panel">
                 {medInfo ? (
                     <div className="user-med-info-card">
@@ -96,7 +104,6 @@ const MedsLocate = () => {
                 </div>
             </div>
 
-            {/* RIGHT SIDE: MAP */}
             <div className="user-med-right-panel">
                 {locations.length > 0 ? (
                     <MapContainer 
@@ -104,9 +111,16 @@ const MedsLocate = () => {
                         zoom={13} 
                         className="user-med-leaflet-map"
                     >
-                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                        <TileLayer 
+                            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                        />
                         {locations.map((loc) => (
-                            <Marker key={loc.id} position={[parseFloat(loc.organization.long), parseFloat(loc.organization.lat)]}>
+                            <Marker 
+                                key={loc.id} 
+                                position={[parseFloat(loc.organization.long), parseFloat(loc.organization.lat)]}
+                                icon={createStoreLabel(loc.organization.name)}
+                            >
                                 <Popup>
                                     <strong className="user-med-popup-title">{loc.organization.name}</strong><br />
                                     {loc.amount} units available.

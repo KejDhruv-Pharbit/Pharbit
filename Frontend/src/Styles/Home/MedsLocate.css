@@ -172,3 +172,67 @@
         order: -1; /* Move map to top on mobile */
     }
 }
+
+/* Custom Map Filter - Gives a clean, medical/tech look */
+.user-med-leaflet-map .leaflet-tile-container {
+    filter: saturate(0.8) brightness(1.02) hue-rotate(5deg);
+}
+
+/* Customize the Leaflet Popup to match your UI */
+.user-med-leaflet-map .leaflet-popup-content-wrapper {
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 12px;
+    padding: 5px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+}
+
+.user-med-leaflet-map .leaflet-popup-tip {
+    background: #ffffff;
+}
+
+.user-med-popup-title {
+    color: #2d6aff;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Optional: Pulse effect for markers to show "Live" blockchain data */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    70% { transform: scale(3); opacity: 0; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+.leaflet-marker-icon {
+    /* Adding a subtle drop shadow to markers */
+    filter: drop-shadow(0 4px 6px rgba(45, 106, 255, 0.3));
+}
+
+
+.user-med-custom-label span {
+    background-color: #2d6aff;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(45, 106, 255, 0.3);
+    border: 2px solid #ffffff;
+    display: inline-block;
+}
+
+/* Adds a small pointer tail to the label */
+.user-med-custom-label span::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #2d6aff;
+}
