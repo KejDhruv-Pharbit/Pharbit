@@ -177,6 +177,45 @@ const FindBatchNearby = async (medicineid) => {
 
 
 
+const FindAllMeds = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("medicines")
+      .select(`
+        id,
+        name
+      `);
+
+    if (error) {
+      throw error;
+    }
+    if (!data || data.length === 0) {
+      return {
+        success: false,
+        status: 404,
+        error: "No medicines found"
+      };
+    }
+
+    return {
+      success: true,
+      status: 200,
+      count: data.length,
+      data
+    };
+
+  } catch (err) {
+    console.error("FindAllMeds error:", err);
+
+    return {
+      success: false,
+      status: 500,
+      error: err.message || "Internal Server Error"
+    };
+  }
+};
+
+
 
 
 export {
@@ -184,5 +223,6 @@ export {
   FindMeds,
   FindOrganizationMeds,
   FindOrganizationMedsEmployee,
-  FindBatchNearby
+  FindBatchNearby,
+  FindAllMeds
 };

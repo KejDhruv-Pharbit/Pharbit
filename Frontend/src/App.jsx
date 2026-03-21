@@ -11,14 +11,16 @@ import Shipment from "./Pages/Dashboard/Shipment";
 import Requests from "./Pages/Dashboard/Requests";
 import Passing from "./Pages/Dashboard/Passing";
 import Transferred from "./Pages/Dashboard/Transferred";
+import HomeSearch from "./Pages/Home/home";
 
 
 function App() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Auth />} />
+      <Route path="/Auth" element={<Auth />} />
       <Route path="/Form" element={<MedicalForm />} />
+      <Route path="/" element={<HomeSearch/>} />
       <Route path="/Pending" element={<PendingRequests />} />
 
       {/* Dashboard Protected Routes */}
