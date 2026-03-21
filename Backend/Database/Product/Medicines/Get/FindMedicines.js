@@ -154,7 +154,7 @@ const FindBatchNearby = async (medicineid) => {
     )
   `)
   .eq("batch.medicine_id", medicineid) 
-  .eq("organization.type", "RETAILER")
+  .eq("organization.type", "retailer")
   .eq("returned", true)
   .gt("amount", 0);
 

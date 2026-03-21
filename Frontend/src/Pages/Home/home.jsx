@@ -53,7 +53,7 @@ const HomeSearch = () => {
 
   const handleSend = () => {
     if (selectedMedId) {
-      navigate(`/med-details/${selectedMedId}`);
+      navigate(`/Home/${selectedMedId}`);
     } else {
       const exactMatch = meds.find(m => m.name.toLowerCase() === query.toLowerCase());
       if (exactMatch) navigate(`/med-details/${exactMatch.id}`);

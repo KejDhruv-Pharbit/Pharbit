@@ -1,0 +1,174 @@
+.user-med-details-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color: #f8faff;
+    overflow: hidden;
+}
+
+/* --- Left Panel Layout --- */
+.user-med-left-panel {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.user-med-info-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #eef2f6;
+}
+
+.user-med-title {
+    font-size: 2rem;
+    color: #0f172a;
+    margin-bottom: 5px;
+}
+
+.user-med-strength {
+    font-size: 1rem;
+    color: #2d6aff;
+    background: #f0f6ff;
+    padding: 4px 12px;
+    border-radius: 50px;
+    vertical-align: middle;
+}
+
+.user-med-brand {
+    color: #64748b;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.user-med-divider {
+    border: none;
+    border-top: 1px solid #f1f5f9;
+    margin: 15px 0;
+}
+
+.user-med-details-row {
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+.user-med-mrp-badge {
+    display: inline-block;
+    margin-top: 15px;
+    font-weight: 700;
+    color: #059669;
+    font-size: 1.2rem;
+}
+
+/* --- Grid & Batches --- */
+.user-med-section-title {
+    font-size: 1.2rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.user-med-batches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.user-med-batch-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #eef2f6;
+    transition: all 0.3s ease;
+}
+
+.user-med-batch-card:hover {
+    transform: translateY(-5px);
+    border-color: #2d6aff;
+    box-shadow: 0 10px 20px rgba(45, 106, 255, 0.1);
+}
+
+.user-med-batch-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.user-med-mint-id {
+    background: #0f172a;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.user-med-amount {
+    color: #2d6aff;
+    font-weight: 600;
+}
+
+.user-med-expiry {
+    font-size: 0.85rem;
+    color: #ef4444;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+/* --- Empty States --- */
+.user-med-no-batches-found {
+    grid-column: 1 / -1;
+    padding: 50px;
+    background: #ffffff;
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+/* --- Map Panel --- */
+.user-med-right-panel {
+    flex: 1;
+    position: relative;
+    border-left: 1px solid #eef2f6;
+}
+
+.user-med-leaflet-map {
+    width: 100%;
+    height: 100%;
+}
+
+.user-med-map-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    color: #94a3b8;
+}
+
+/* --- Global States --- */
+.user-med-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-weight: 600;
+    color: #2d6aff;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 992px) {
+    .user-med-details-container {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .user-med-right-panel {
+        height: 400px;
+        order: -1; /* Move map to top on mobile */
+    }
+}

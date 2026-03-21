@@ -12,6 +12,7 @@ import Requests from "./Pages/Dashboard/Requests";
 import Passing from "./Pages/Dashboard/Passing";
 import Transferred from "./Pages/Dashboard/Transferred";
 import HomeSearch from "./Pages/Home/home";
+import MedsLocate from "./Pages/Home/MedsLocate";
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
       {/* Public Routes */}
       <Route path="/Auth" element={<Auth />} />
       <Route path="/Form" element={<MedicalForm />} />
-      <Route path="/" element={<HomeSearch/>} />
+      <Route path="/" element={<HomeSearch />} />
+       <Route path="/Home/:id" element={<MedsLocate/>} />
       <Route path="/Pending" element={<PendingRequests />} />
 
       {/* Dashboard Protected Routes */}
