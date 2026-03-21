@@ -115,9 +115,74 @@ const FindMeds = async (id) => {
 };
 
 
+const FindBatchNearby = async (medicineid) => {
+  if (!medicineid) {
+    throw new Error("Medicine ID is required");
+  }
+  const { data, error } = await supabase
+  .from("batch_transmitted")
+  .select(`
+    id,
+    amount,
+    created_at,
+
+    batch:batches (
+      id,
+      blockchain_mint_id,
+      expiry_date,
+      medicine_id,
+      medicines:medicine_id (
+        id,
+        name,
+        brand_name , 
+        composition , 
+        dosage_form,
+        strength,
+        route_of_administration,
+        side_effects,
+        mrp 
+
+      )
+    ),
+
+    organization:organization_id (
+      id,
+      name,
+      lat , 
+      long , 
+      address
+    )
+  `)
+  .eq("batch.medicine_id", medicineid) 
+  .eq("organization.type", "RETAILER")
+  .eq("returned", true)
+  .gt("amount", 0);
+
+  if (error) throw error;
+
+  if (!data) {
+    return {
+      success: false,
+      status: 404,
+      error: "Medicine not found"
+    };
+  }
+
+  return {
+    success: true,
+    status: 200,
+    data
+  };
+};
+
+
+
+
+
 export {
   FindMedicine,
   FindMeds,
   FindOrganizationMeds,
-  FindOrganizationMedsEmployee
+  FindOrganizationMedsEmployee,
+  FindBatchNearby
 };

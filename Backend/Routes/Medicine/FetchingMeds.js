@@ -1,5 +1,5 @@
 import express from "express";
-import { FindMedicine, FindOrganizationMeds, FindOrganizationMedsEmployee } from "../../Database/Product/Medicines/Get/FindMedicines.js";
+import { FindBatchNearby, FindMedicine, FindOrganizationMeds, FindOrganizationMedsEmployee } from "../../Database/Product/Medicines/Get/FindMedicines.js";
 import { FindOrganization, FindRole, getAuthUser } from "../../Middleware/Database/AuthUser.js";
 
 const router = express.Router();
@@ -102,7 +102,30 @@ router.get("/Orgmeds", async (req, res) => {
   }
 });
 
+router.get("/NearbyBatches", async (req, res) => {
+  try {
 
+    const { id } = req.query; 
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        error: "Medicine ID is required",
+      });
+    }
+
+    const batches = await FindBatchNearby(id);
+
+    return res.status(200).json({
+      success: true,
+      count: batches.length,
+      data: batches
+    });
+
+  } catch (err) {
+    console.error("Error fetching all Batches:", err);
+    return res.status(500).json({ error: "Failed to fetch all Batches" });
+  }
+});
 
 
 
