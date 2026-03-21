@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { SearchIcon } from 'lucide-react';
 import "../../Styles/Home/home.css";
 
 const HomeSearch = () => {
@@ -68,7 +69,7 @@ const HomeSearch = () => {
             <Link to="/">PHARBIT</Link>
           </div>
           <nav className="home-search-nav-links">
-            <Link to="/signin" className="home-search-nav-item">Sign In</Link>
+            <Link to="/Auth" className="home-search-nav-item">Sign In</Link>
             <Link to="/register-business" className="home-search-nav-btn">
               Join as Business Partner
             </Link>
@@ -93,7 +94,7 @@ const HomeSearch = () => {
 
           <div className="home-search-bar-container">
             <div className="home-search-input-group">
-              <span className="home-search-icon">🔍</span>
+                          <span className="home-search-icon"></span>
               <input
                 type="text"
                 className="home-search-input-field"
@@ -103,7 +104,7 @@ const HomeSearch = () => {
                 onFocus={() => query.length > 0 && setShowDropdown(true)}
               />
               <button className="home-search-send-btn" onClick={handleSend}>
-                Send
+                Find
               </button>
             </div>
 
