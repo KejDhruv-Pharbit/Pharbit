@@ -327,3 +327,30 @@
     background: #1e293b;
     color: white;
 }
+
+
+.med-locate-wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* 🔥 IMPORTANT */
+}
+.med-content-sidebar {
+    width: 700px;
+    height: 100vh; /* 🔥 FIX */
+    overflow-y: auto;
+    padding: 40px;
+}
+.med-map-container {
+    flex: 1;
+    height: 100vh;       /* full height */
+    position: sticky;    /* 🔥 MAGIC */
+    top: 0;
+}
+
+.leaflet-full-view {
+    height: 100%;
+    width: 100%;
+}
+.med-map-container {
+    box-shadow: inset 10px 0 30px rgba(0,0,0,0.03);
+}
