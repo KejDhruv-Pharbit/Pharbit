@@ -357,9 +357,6 @@
 
 /* --- RESPONSIVENESS --- */
 
-/* --- TABLET RESPONSIVENESS --- */
-
-/* 1. LANDSCAPE TABLET (Horizontal) */
 /* Targets screens like iPad Pro/Air in landscape */
 @media (min-width: 1024px) and (max-width: 1366px) {
     .med-locate-wrapper {
@@ -391,8 +388,6 @@
         border-radius: 20px;
     }
 }
-
-
 
 
 /* --- IPAD AIR / TABLET PORTRAIT (820px) --- */
