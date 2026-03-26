@@ -1,24 +1,9 @@
-// FIXED MedsLocate.jsx (only map-related fixes applied)
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import "../../Styles/Home/MedsLocate.css";
-
-// 🔥 Leaflet icon fix (important)
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-let DefaultIcon = L.icon({
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
 
 const MedsLocate = () => {
     const { id } = useParams();
@@ -58,35 +43,49 @@ const MedsLocate = () => {
     const medInfo = validBatches.length > 0 ? validBatches[0].batch.medicines : null;
     const locations = validBatches.filter(item => item.organization?.lat && item.organization?.long);
 
-    // 🔥 FIX: Safe center fallback
     const center = locations.length > 0
-        ? [
-            parseFloat(locations[0].organization.lat),
-            parseFloat(locations[0].organization.long)
-        ]
+        ? [parseFloat(locations[0].organization.lat), parseFloat(locations[0].organization.long)]
         : [28.6139, 77.2090];
 
     return (
         <div className="med-locate-wrapper">
             <div className="med-content-sidebar">
                 {medInfo && (
-                    <div className="med-hero-section">
+                    <div className="med-details-card">
                         <div className="status-tag">Verified Supply</div>
                         <h1 className="med-name">{medInfo.name} <small>{medInfo.strength}</small></h1>
                         <p className="med-brand-name">{medInfo.brand_name}</p>
-                        <div className="med-price">₹{medInfo.mrp}</div>
+                        
+                        <div className="info-grid">
+                            <div className="info-item">
+                                <label>Category</label>
+                                <span>{medInfo.category || "General"}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Route</label>
+                                <span>{medInfo.route_of_administration || "Oral"}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Price</label>
+                                <span className="price-val">EUR{medInfo.mrp}</span>
+                            </div>
+                        </div>
 
-                        <div className="med-tags">
-                            {medInfo.composition.slice(0, 2).map((c, i) => (
-                                <span key={i} className="tag">{c}</span>
-                            ))}
+                        <div className="med-meta-section">
+                            <label>Composition</label>
+                            <p>{medInfo.composition.join(", ")}</p>
+                        </div>
+
+                        <div className="med-meta-section">
+                            <label>Side Effects</label>
+                            <p className="side-effects-text">{medInfo.side_effects.join(", ")}</p>
                         </div>
                     </div>
                 )}
 
                 <div className="availability-section">
-                    <h3 className="section-heading">Nearby Pharmacies</h3>
-                    <div className="pharmacy-list">
+                    <h3 className="section-heading">Available Locations</h3>
+                    <div className="pharmacy-grid">
                         {validBatches.map((item) => {
                             const isLowStock = item.amount < 30;
                             return (
@@ -96,19 +95,15 @@ const MedsLocate = () => {
                                             <h4>{item.organization.name}</h4>
                                             <p>{item.organization.address.city}</p>
                                         </div>
-                                        <div className="stock-badge">
-                                            <span className="count">{item.amount}</span>
-                                            <span className="label">Units</span>
-                                        </div>
+                                    </div>
+                                    
+                                    <div className="stock-row">
+                                        <span className="stock-count">{item.amount} Units</span>
+                                        {isLowStock && <span className="low-stock-label">Low Stock</span>}
                                     </div>
 
-                                    {isLowStock && (
-                                        <div className="urgency-banner">⚠️ Limited availability - Act fast</div>
-                                    )}
-
                                     <div className="item-footer">
-                                        <span className="exp-date">Expires: {item.batch.expiry_date}</span>
-                                        <button className="nav-btn">Directions</button>
+                                        <button className="nav-btn">Route</button>
                                     </div>
                                 </div>
                             );
@@ -117,37 +112,28 @@ const MedsLocate = () => {
                 </div>
             </div>
 
-            {/* 🔥 FIXED MAP */}
             <div className="med-map-container">
-                {locations.length > 0 && (
-                    <MapContainer
-                        key={center.join(",")} // 🔥 forces rerender
-                        center={center}
-                        zoom={14}
-                        className="leaflet-full-view"
-                        zoomControl={false}
-                    >
-                        <TileLayer
-                            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-                        />
-
-                        {locations.map((loc) => (
-                            <Marker
-                                key={loc.id}
-                                position={[
-                                    parseFloat(loc.organization.long),
-                                    parseFloat(loc.organization.lat)
-                                ]}
-                                icon={createStoreLabel(loc.organization.name)}
-                            >
-                                <Popup className="premium-popup">
-                                    <strong>{loc.organization.name}</strong><br />
-                                    Ready for pickup.
-                                </Popup>
-                            </Marker>
-                        ))}
-                    </MapContainer>
-                )}
+                <MapContainer
+                    key={center.join(",")} 
+                    center={center}
+                    zoom={14}
+                    className="leaflet-full-view"
+                    zoomControl={false}
+                >
+                    <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+                    {locations.map((loc) => (
+                        <Marker 
+                            key={loc.id} 
+                            position={[parseFloat(loc.organization.long), parseFloat(loc.organization.lat)]}
+                            icon={createStoreLabel(loc.organization.name)}
+                        >
+                            <Popup className="premium-popup">
+                                <strong>{loc.organization.name}</strong><br />
+                                Quantity: {loc.amount}
+                            </Popup>
+                        </Marker>
+                    ))}
+                </MapContainer>
             </div>
         </div>
     );
