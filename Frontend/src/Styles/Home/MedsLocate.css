@@ -354,3 +354,75 @@
 .med-map-container {
     box-shadow: inset 10px 0 30px rgba(0,0,0,0.03);
 }
+
+/* --- RESPONSIVENESS --- */
+
+/* --- TABLET RESPONSIVENESS --- */
+
+/* 1. LANDSCAPE TABLET (Horizontal) */
+/* Targets screens like iPad Pro/Air in landscape */
+@media (min-width: 1024px) and (max-width: 1366px) {
+    .med-locate-wrapper {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .med-content-sidebar {
+        width: 450px; /* Slimmer sidebar to give Map more breathing room */
+        padding: 24px;
+        border-radius: 20px;
+    }
+
+    .pharmacy-grid {
+        grid-template-columns: 1fr; /* Switch to 1 column so cards don't get squished */
+        gap: 12px;
+    }
+
+    .med-details-card {
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr 1fr; /* 2 columns for med info instead of 3 */
+    }
+
+    .med-map-container {
+        border-radius: 20px;
+    }
+}
+
+
+
+
+/* --- IPAD AIR / TABLET PORTRAIT (820px) --- */
+@media (min-width: 810px) and (max-width: 1023px)  {
+    .med-locate-wrapper {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .med-content-sidebar {
+        width: 350px; /* Slimmer sidebar to give Map more breathing room */
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .pharmacy-grid {
+        grid-template-columns: 1fr; /* Switch to 1 column so cards don't get squished */
+        gap: 12px;
+    }
+
+    .med-details-card {
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr 1fr; /* 2 columns for med info instead of 3 */
+    }
+
+    .med-map-container {
+        border-radius: 20px;
+    }
+}
