@@ -44,7 +44,7 @@ const MedsLocate = () => {
     const locations = validBatches.filter(item => item.organization?.lat && item.organization?.long);
 
     const center = locations.length > 0
-        ? [parseFloat(locations[0].organization.lat), parseFloat(locations[0].organization.long)]
+        ? [parseFloat(locations[0].organization.long), parseFloat(locations[0].organization.lat)]
         : [28.6139, 77.2090];
 
     return (
