@@ -5,7 +5,6 @@ import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { mintQueue } from "../../Queue/queue.js";
 
-
 import { FindMeds } from "../../Database/Product/Medicines/Get/FindMedicines.js";
 import { getAuthUser, FindOrganization } from "../../Middleware/Database/AuthUser.js";
 
@@ -59,9 +58,14 @@ router.post("/auto-mint", upload.single("serials_csv"), async (req, res) => {
         columns: false,
         skip_empty_lines: true,
         trim: true,
+        relax_column_count: true,
       });
 
-      serialNumbers = records.map((row) => row[0]);
+      // 🔥 FIX: remove null/empty + safe trim
+      serialNumbers = records
+        .map(row => row[0])
+        .filter(val => val !== null && val !== undefined && val !== "")
+        .map(val => String(val).trim());
 
       fs.unlinkSync(req.file.path);
     }
@@ -78,7 +82,9 @@ router.post("/auto-mint", upload.single("serials_csv"), async (req, res) => {
       expiryDate,
       warehouseLocation,
       orgId: orgResult.data.id,
-      serialNumbers,
+
+      // 🔥 FIX: match worker field name
+      serial_numbers: serialNumbers,
     });
 
     return res.status(200).json({

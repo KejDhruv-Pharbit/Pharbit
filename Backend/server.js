@@ -17,15 +17,16 @@ import PassShip from "./Routes/Transfer/PassingShipment.js"
 import RedeemShip from "./Routes/Transfer/RedeemShipment.js"
 import UpdateShip from "./Routes/Transfer/UpdatingShipment.js"
 import FreezeBatch from "./Routes/Batches/FreezingBatch.js"
+import PackageOrder from "./Routes/Batches/PackingOrder.js"
 dotenv.config();
 
 const app = express();
-const PORT = 6090;
+const PORT = 4500;
 
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "http://localhost:5174",
+  origin: "http://localhost:5173",
   credentials: true
 }));
 // Only parse JSON
@@ -45,6 +46,7 @@ app.use("/", PassShip);
 app.use("/", RedeemShip);
 app.use("/", UpdateShip);
 app.use("/", FreezeBatch);
+app.use("/", PackageOrder)
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

@@ -39,7 +39,7 @@ new Worker(
         expiryDate,
         warehouseLocation,
         orgId,
-        serialNumbers,
+        serial_numbers,
       } = job.data;
 
       console.log("Processing mint job:", job.id);
@@ -113,7 +113,7 @@ new Worker(
         expiry_date: expiryDate,
         batch_quantity: supply,
         warehouse_location: warehouseLocation || "Main Warehouse",
-        serial_numbers: serialNumbers,
+        serial_numbers: serial_numbers,
       };
 
       const dbResult = await createBatch(batchPayload, orgId);

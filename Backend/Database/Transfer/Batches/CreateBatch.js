@@ -12,6 +12,7 @@ export async function createBatch(data, orgId) {
     }
 
     const mintId = data.batch_number;
+    console.log("DATA RECEIVED:", data.serial_numbers?.length);
 
     const { data: existingBatch, error: checkError } = await supabase
       .from("batches")
@@ -75,8 +76,11 @@ export async function createBatch(data, orgId) {
     ============================================================ */
 
     if (data.serial_numbers && Array.isArray(data.serial_numbers)) {
+      console.log("SERIAL ARRAY CHECK:", Array.isArray(data.serial_numbers));
 
-      const serialNumbers = data.serial_numbers.map(s => s.trim());
+      const serialNumbers = data.serial_numbers
+        .filter(s => s !== null && s !== undefined && s !== "")
+        .map(s => String(s).trim());
 
       // 1️⃣ Validate count matches batch_quantity
       if (serialNumbers.length !== Number(data.batch_quantity)) {
@@ -103,19 +107,20 @@ export async function createBatch(data, orgId) {
         batch_id: inserted.id,
         shipment_id: null,
       }));
+      console.log("SERIAL PAYLOAD COUNT:", serialPayload.length);
 
       // 4️⃣ Insert in chunks (safe for Supabase limits)
       const chunkSize = 500;
 
       for (let i = 0; i < serialPayload.length; i += chunkSize) {
         const chunk = serialPayload.slice(i, i + chunkSize);
-
+        console.log("INSERTING CHUNK SIZE:", chunk.length);
         const { error: serialError } = await supabase
           .from("batch_serials")
           .insert(chunk);
 
         if (serialError) {
-
+          console.error("SERIAL INSERT ERROR:", serialError);
           // Rollback batch if serial insert fails
           await supabase
             .from("batches")
