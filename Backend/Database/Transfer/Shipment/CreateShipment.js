@@ -103,38 +103,57 @@ export async function createShipment(data, orgId) {
     ========================== */
 
 
-    // 1️⃣ Fetch available serials
-    const { data: availableSerials, error: serialFetchError } = await supabase
+    /* =========================
+    4️⃣ Allocate ALL Serial Numbers (FULL BATCH)
+ ========================== */
+
+    // 1️⃣ Fetch ALL unassigned serials of this batch
+    const { data: serialsToAssign, error: serialFetchError } = await supabase
       .from("batch_serials")
-      .select("serial_number")
+      .select("serial_number, box_id")
       .eq("batch_id", data.batch_id)
-      .is("shipment_id", null)
-      .eq("is_locked", false)
-      .limit(requestedAmount);
+      .is("shipment_id", null); // 🔥 ONLY unassigned
 
     if (serialFetchError) throw serialFetchError;
 
-    if (!availableSerials || availableSerials.length < requestedAmount) {
+    if (!serialsToAssign || serialsToAssign.length === 0) {
       return {
         success: false,
         status: 400,
-        error: "Not enough unallocated serial numbers available",
+        error: "No unassigned serials found for this batch",
       };
     }
 
-    // 2️⃣ Extract serial numbers
-    const serialNumbersToAssign = availableSerials.map(s => s.serial_number);
+    // Extract
+    const serialNumbersToAssign = serialsToAssign.map(s => s.serial_number);
+    const boxIds = [...new Set(serialsToAssign.map(s => s.box_id).filter(Boolean))];
 
-    // 3️⃣ Assign shipment_id to them
+    // 2️⃣ Update ALL serials
     const { error: serialUpdateError } = await supabase
       .from("batch_serials")
       .update({
         shipment_id: shipment.id,
         is_locked: true
       })
-      .in("serial_number", serialNumbersToAssign);
+      .eq("batch_id", data.batch_id);
 
     if (serialUpdateError) throw serialUpdateError;
+
+    // 3️⃣ Update ALL boxes of this batch
+    const { error: boxUpdateError } = await supabase
+      .from("boxes")
+      .update({ shipment_id: shipment.id })
+      .eq("batch_id", data.batch_id);
+
+    if (boxUpdateError) throw boxUpdateError;
+
+    // 4️⃣ Update ALL pallets of this batch (direct by batch_id)
+    const { error: palletUpdateError } = await supabase
+      .from("pallets")
+      .update({ shipment_id: shipment.id })
+      .eq("batch_id", data.batch_id);
+
+    if (palletUpdateError) throw palletUpdateError;
 
     /* =========================
        5️⃣ Create Shipment Log
